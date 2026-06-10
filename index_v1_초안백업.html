@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>택가이코드 발표자료</title>
+<style>
+:root{
+  --bg:#f6f4ef; --paper:#fffaf2; --ink:#151922; --muted:#69717f; --line:#e6ded0;
+  --blue:#427cff; --blue2:#6ca3ff; --navy:#101827; --green:#2dd4bf; --orange:#ffb86b;
+  --terminal:#242831; --terminal2:#0f172a; --terminalText:#d7dde8;
+  --shadow:0 24px 80px rgba(17,24,39,.14),0 2px 10px rgba(17,24,39,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:#111827;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard','Segoe UI',sans-serif;overflow:hidden}
+.deck{position:relative;width:100vw;height:100vh;background:radial-gradient(circle at 20% 0%,#fdf7e9,#f4f1eb 42%,#e9edf7 100%)}
+.slide{position:absolute;inset:0;padding:56px 72px 70px;display:none;overflow:hidden}
+.slide.active{display:flex;flex-direction:column;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.slide:before{content:'';position:absolute;inset:18px;border:1px solid rgba(17,24,39,.07);border-radius:28px;pointer-events:none}
+.kicker,.eyebrow{font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:800}
+h1{font-size:112px;line-height:.92;margin:24px 0 14px;letter-spacing:-.08em;color:var(--ink)}
+h2{font-size:52px;line-height:1.05;margin:0 0 24px;letter-spacing:-.055em;color:var(--ink)}
+h3{font-size:25px;margin:0 0 10px;letter-spacing:-.03em}
+p{font-size:24px;line-height:1.48;color:var(--muted);margin:0}.subtitle{font-size:35px;color:#333b4b}.note{margin-top:24px;font-size:22px;color:#6b7280}.title-slide{justify-content:center}.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}.hero-card{border-radius:24px;padding:24px;min-height:158px;border:1px solid var(--line);box-shadow:var(--shadow)}.hero-card span{display:block;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em}.hero-card strong{display:block;font-size:30px;margin:16px 0 10px}.hero-card small{font-size:18px;color:inherit}.hero-card.dark{background:var(--navy);color:white}.hero-card.dark span,.hero-card.dark small{color:#aeb8c8}.hero-card.blue{background:linear-gradient(135deg,#2e5cf4,#7fb5ff);color:white}.hero-card.blue span,.hero-card.blue small{color:#eaf1ff}.hero-card.light{background:white}.agenda{display:grid;gap:16px;margin-top:28px}.agenda div{display:grid;grid-template-columns:86px 280px 1fr;gap:20px;align-items:center;background:white;border:1px solid var(--line);border-radius:22px;padding:22px 26px;box-shadow:0 8px 28px rgba(17,24,39,.06)}.agenda b{font-size:28px;color:var(--blue)}.agenda strong{font-size:30px}.agenda span{font-size:22px;color:var(--muted)}.big-quote{font-size:64px;line-height:1.18;letter-spacing:-.055em;font-weight:900;margin:auto 0 48px}.big-quote em{color:var(--blue);font-style:normal}.three-points,.value-grid,.matrix,.dept-grid,.template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.three-points div,.value-grid div,.matrix div,.dept-grid div,.template-grid div{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(17,24,39,.05)}.three-points strong,.value-grid strong,.matrix b,.template-grid b{display:block;font-size:28px;margin-bottom:10px}.three-points span,.value-grid span,.matrix span,.template-grid span{font-size:21px;color:var(--muted);line-height:1.45}.product-map{display:grid;grid-template-columns:1.2fr auto 1.1fr auto 1fr;gap:18px;align-items:center;margin:auto 0}.map-node,.map-stack{background:white;border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:var(--shadow)}.map-node small{display:block;color:var(--blue);font-weight:900;letter-spacing:.08em;text-transform:uppercase}.map-node strong{display:block;font-size:36px;margin:12px 0}.map-node span{font-size:22px;color:var(--muted);line-height:1.45}.arrow{font-size:44px;color:var(--blue);font-weight:900}.map-stack{display:grid;gap:12px}.map-stack div{background:#f1f4ff;border-radius:16px;padding:18px;font-size:24px;font-weight:800}.map-stack em{font-size:16px;color:var(--muted);font-style:normal}.four-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;height:100%;align-items:stretch}.four-cards article{background:white;border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column}.four-cards img{width:100%;height:230px;object-fit:cover;border-radius:15px;background:#eef1f7}.four-cards h3{margin-top:16px}.four-cards p{font-size:18px}.split{display:grid;grid-template-columns:1fr .9fr;gap:36px;align-items:center;height:100%}.split.image-right{grid-template-columns:.85fr 1.15fr}.clean-list{list-style:none;padding:0;margin:18px 0;display:grid;gap:14px}.clean-list li{font-size:27px;line-height:1.35;background:white;border:1px solid var(--line);border-radius:18px;padding:18px 20px}.clean-list li:before{content:'→';color:var(--blue);font-weight:900;margin-right:10px}.panel{border-radius:28px;padding:36px}.blue-panel{background:linear-gradient(135deg,#2e5cf4,#7fb5ff);color:white;box-shadow:var(--shadow)}.blue-panel strong{font-size:40px}.blue-panel p{color:#eef4ff;margin-top:18px}.screenshot-frame{background:white;border:1px solid var(--line);border-radius:28px;padding:14px;box-shadow:var(--shadow);height:78%;display:flex;align-items:center}.screenshot-frame.small{height:auto}.screenshot-frame img{width:100%;height:100%;object-fit:contain;border-radius:18px}.caption-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.caption-grid span{background:white;border:1px solid var(--line);border-radius:999px;padding:12px 18px;text-align:center;color:#4b5563;font-weight:700}.matrix{grid-template-columns:repeat(2,1fr);margin:auto 0}.terminal-theme{background:#242831;color:var(--terminalText)}.terminal-theme:before{border-color:rgba(255,255,255,.09)}.terminal-theme h2,.terminal-theme h1{color:#e5e9f2}.terminal-title{font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#7fb5ff;font-size:34px;border-bottom:1px solid #566071;padding-bottom:18px;margin-bottom:36px}.terminal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:auto 0}.terminal-card{background:#111827;border:1px solid #4b5563;border-radius:22px;padding:30px}.terminal-card span{color:#7fb5ff;font-weight:800}.terminal-card strong{display:block;font-size:36px;margin:12px 0;color:white}.terminal-card p{font-size:22px;color:#c7d0dd}.cli-line{font-family:'SFMono-Regular',Menlo,Consolas,monospace;background:#111827;border:1px solid #4b5563;border-radius:14px;padding:18px;color:#d7dde8}.cli-line em{color:#7fb5ff;font-style:normal}.terminal-split{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}.terminal-split img{width:100%;border-radius:20px;border:1px solid #4b5563;box-shadow:0 30px 80px rgba(0,0,0,.35)}.terminal-split ul{font-size:24px;line-height:1.6}.terminal-split code{color:#ff7b7b;background:#111827;padding:2px 8px;border-radius:6px}.video{width:100%;height:74vh;object-fit:contain;background:#05070b;border-radius:26px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.08)}.video-caption{text-align:center;margin-top:12px}.case-layout{display:grid;grid-template-columns:.82fr 1.18fr;gap:26px;align-items:center}.video.portrait{height:70vh}.engine-diagram{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:auto 0}.lane{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;min-height:330px;display:flex;flex-direction:column;justify-content:space-between}.lane b{font-size:28px;color:var(--blue)}.lane span{font-size:22px;color:var(--muted);line-height:1.55}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:auto 0}.flow div{background:white;border:1px solid var(--line);border-radius:24px;padding:28px;font-size:28px;font-weight:900;min-height:240px}.flow small{display:block;font-size:18px;color:var(--muted);font-weight:500;margin-top:18px}.dept-grid{grid-template-columns:repeat(3,1fr);margin:auto 0}.dept-grid h3{font-size:30px;color:var(--blue)}.dept-grid li{font-size:22px;margin:14px 0;color:#4b5563}.template-page{margin:auto 0}.template-grid{grid-template-columns:repeat(2,1fr);margin-top:30px}.planned{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin:auto 0}.person{background:white;border:1px solid var(--line);border-radius:28px;padding:34px;box-shadow:var(--shadow)}.person strong{font-size:54px}.person span{display:block;color:var(--blue);font-weight:800;margin:10px 0 22px}.person li{font-size:26px;line-height:1.55}.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.metric-box{background:white;border:1px solid var(--line);border-radius:22px;padding:24px}.metric-box small{color:var(--muted);font-weight:800}.metric-box strong{display:block;font-size:50px;margin:14px 0;color:var(--blue)}.metric-box span{color:var(--muted)}.bar-template{display:grid;gap:14px;margin-top:30px}.bar-template div{position:relative;background:white;border:1px solid var(--line);border-radius:18px;padding:18px 22px;overflow:hidden;display:grid;grid-template-columns:1fr auto}.bar-template span{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#dce8ff,#f7fbff);z-index:0}.bar-template b,.bar-template em{position:relative;z-index:1;font-size:24px}.bar-template em{color:var(--blue);font-style:normal}.log-table{display:grid;gap:10px;margin:auto 0}.log-table>div{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .7fr;gap:12px;background:white;border:1px solid var(--line);border-radius:16px;padding:18px;font-size:23px}.log-table .head{background:#111827;color:white;font-weight:800}.ok{color:#087443}.warn{color:#a15c00}.err{color:#b42318}.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:auto 0}.timeline div{background:white;border:1px solid var(--line);border-radius:26px;padding:28px;min-height:300px}.timeline b{display:inline-block;background:#111827;color:white;border-radius:999px;padding:7px 12px}.timeline strong{display:block;font-size:32px;margin:24px 0 16px}.timeline span{font-size:22px;color:var(--muted);line-height:1.5}.closing{margin:auto;text-align:center;max-width:1000px}.closing h2{font-size:62px}.closing p{font-size:30px}.final-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:42px}.final-actions span{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;font-weight:800}.progress{position:fixed;left:0;top:0;height:5px;background:linear-gradient(90deg,var(--blue),var(--green));width:0;z-index:30}.controls{position:fixed;right:26px;bottom:22px;display:flex;gap:8px;z-index:30}.controls button{border:1px solid rgba(17,24,39,.15);background:rgba(255,255,255,.72);backdrop-filter:blur(12px);border-radius:14px;padding:11px 14px;font-weight:900;cursor:pointer}.counter{position:fixed;left:28px;bottom:26px;background:rgba(255,255,255,.72);backdrop-filter:blur(12px);border:1px solid rgba(17,24,39,.12);border-radius:999px;padding:10px 14px;font-weight:800;color:#4b5563;z-index:30}.hint{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;color:#6b7280;font-size:14px;z-index:30}.notes{position:fixed;left:28px;right:28px;bottom:72px;background:#111827;color:#e5e7eb;border:1px solid #374151;border-radius:16px;padding:16px 20px;font-size:18px;line-height:1.5;display:none;z-index:40}.notes.show{display:block}
+@media print{body{overflow:visible}.deck{height:auto;background:white}.slide{position:relative;display:flex!important;width:100vw;height:100vh;page-break-after:always}.controls,.counter,.hint,.notes,.progress{display:none!important}}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="progress"></div>
+  <section class="slide title-slide active" data-notes="오늘 발표는 택가이코드를 중심으로 합니다. 웹은 통로이자 관리면, 코드 제품은 실제 개발자가 손에 쥐는 도구입니다.">
+  <div class="kicker">TECHAI CODE · AI Coding Agent for Shinhan internal network</div>
+  <h1>택가이코드</h1>
+  <p class="subtitle">터미널과 VS Code에서 쓰는 사내 AI 개발 에이전트</p>
+  <div class="hero-grid">
+    <div class="hero-card dark"><span>Core</span><strong>Terminal Agent</strong><small>파일 · 셸 · git · 검색 · MCP</small></div>
+    <div class="hero-card blue"><span>Editor</span><strong>VS Code Extension</strong><small>같은 엔진, 에디터 안에서 실행</small></div>
+    <div class="hero-card light"><span>Control</span><strong>택가이웹</strong><small>SSO · API Key · 사용량/로그 관리</small></div>
+  </div>
+</section><section class="slide agenda-slide" data-notes="발표 흐름을 짧게 안내합니다.">
+  <div class="agenda">
+    <div><b>01</b><strong>택가이웹</strong><span>접속·인증·API Key·관리 시스템</span></div>
+    <div><b>02</b><strong>택가이코드</strong><span>터미널 버전과 VS Code Extension, 같은 엔진</span></div>
+    <div><b>03</b><strong>땡겨요 POC</strong><span>실제 업무 활용 사례와 영상</span></div>
+    <div><b>04</b><strong>확장 계획</strong><span>부서별·외부개발자·예정 사용자·운영 지표</span></div>
+  </div>
+</section><section class="slide thesis-slide" data-notes="기존 웹 챗봇이 아니라, 개발 워크플로우 안으로 들어가는 사내형 AI 에이전트라는 메시지입니다.">
+  <div class="big-quote">“택가이코드는 사내 개발 환경에 맞춘<br><em>관리 가능한 AI 코딩 에이전트</em>입니다.”</div>
+  <div class="three-points">
+    <div><strong>보안/통제</strong><span>사내 SSO, 개인별 API Key, 사용량 추적</span></div>
+    <div><strong>개발 실효성</strong><span>파일 검색, 코드 수정, 셸 실행, git 작업</span></div>
+    <div><strong>확장성</strong><span>터미널·VS Code·데스크톱으로 같은 엔진 확장</span></div>
+  </div>
+</section><section class="slide product-map-slide" data-notes="택가이웹과 택가이코드의 역할을 분리해서 설명합니다.">
+  <div class="product-map">
+    <div class="map-node web"><small>택가이웹</small><strong>Gateway / Admin</strong><span>SSO 로그인 · 모델 권한 · API Key 발급 · 로그/사용량 관리</span></div>
+    <div class="arrow">→</div>
+    <div class="map-node engine"><small>택가이코드 엔진</small><strong>Same Core</strong><span>tool calling · session · memory · MCP · model routing</span></div>
+    <div class="arrow">→</div>
+    <div class="map-stack">
+      <div>Terminal Agent</div><div>VS Code Extension</div><div>Desktop App <em>제작중</em></div>
+    </div>
+  </div>
+  <p class="note">GPT/Claude/Gemini 웹처럼 접속해서 쓰는 면은 택가이웹, 개발자가 실제 코드를 고치는 면은 택가이코드입니다.</p>
+</section><section class="slide four-products-slide" data-notes="agent-builder-talk 14~17의 제품군 재료를 한 장에 모았습니다.">
+  <div class="four-cards">
+    <article><img src="assets/agent_tweb.png"><h3>택가이웹</h3><p>웹 화면, 관리자, 모델/로그/대시보드, DB와 연결되는 제품 표면</p></article>
+    <article><img src="assets/techaicode_terminal.png"><h3>택가이코드 Terminal</h3><p>Go TUI, 파일/셸/git/검색 도구, 세션, 메모리, MCP</p></article>
+    <article><img src="assets/techaicode_vscode.png"><h3>VS Code Extension</h3><p>VS Code 안에서 로컬 서버와 HTTP/SSE로 통신하는 에디터형 에이전트</p></article>
+    <article><img src="assets/techaicode_desktop.png"><h3>택가이 데스크톱</h3><p>Electron 기반 데스크톱 앱. 현재 제작중</p></article>
+  </div>
+</section><section class="slide web-role-slide" data-notes="택가이웹은 개발도구 자체보다 인증/관리/사용 통제의 중심입니다.">
+  <div class="split">
+    <div>
+      <h2>웹에서 접속하는 AI 도구</h2>
+      <ul class="clean-list">
+        <li>GPT, Claude, Gemini 웹처럼 브라우저에서 접속</li>
+        <li>사내 <strong>스윙 SSO</strong>로 로그인</li>
+        <li>사번 기반 사용자 식별과 권한 부여</li>
+        <li>일반 사용자는 채팅/파일/도구를 웹에서 사용</li>
+      </ul>
+    </div>
+    <div class="panel blue-panel"><strong>택가이웹의 핵심 역할</strong><p>AI 사용을 열어주는 화면이면서, 동시에 사내 정책에 맞게 통제 가능한 관문입니다.</p></div>
+  </div>
+</section><section class="slide web-screen-slide" data-notes="사내발표 14번 슬라이드의 화면 이미지를 재활용했습니다.">
+  <div class="screenshot-frame"><img src="assets/tweb_screen.png" alt="택가이웹 화면"></div>
+  <div class="caption-grid">
+    <span>대화 목록</span><span>모델 선택</span><span>메시지 입력</span><span>API Key / 관리자 페이지</span>
+  </div>
+</section><section class="slide admin-slide" data-notes="사용량/로그/키 관리가 가능한 점을 강조합니다.">
+  <div class="matrix">
+    <div><b>사용량 측정</b><span>부서별 / 개인별 / 모델별 토큰·요청 수</span></div>
+    <div><b>메시지 로깅</b><span>대화 이력, 요청/응답 메타데이터, 감사 추적</span></div>
+    <div><b>오류 로깅</b><span>실패 요청, 모델 오류, 도구 실행 실패, 재시도 추적</span></div>
+    <div><b>API Key 발급</b><span>택가이코드에서 쓸 개인별 키 발급과 회수</span></div>
+  </div>
+  <p class="note">관리자는 “누가, 어느 부서에서, 어떤 모델을, 얼마나 썼는지”를 볼 수 있어야 합니다.</p>
+</section><section class="slide code-overview-slide terminal-theme" data-notes="터미널과 VS Code는 UI만 다르고 엔진은 같습니다.">
+  <div class="terminal-title">$ tgc --mode code</div>
+  <div class="terminal-grid">
+    <div class="terminal-card"><span>Surface A</span><strong>Terminal Version</strong><p>개발자가 터미널에서 바로 실행. 파일 탐색, 코드 수정, 명령 실행, git 작업.</p></div>
+    <div class="terminal-card"><span>Surface B</span><strong>VS Code Extension</strong><p>에디터 안에서 동일 엔진을 호출. HTTP/SSE 기반 로컬 서버 연동.</p></div>
+  </div>
+  <div class="cli-line"><em>same engine</em> · model routing · tool calling · logs · usage tracking</div>
+</section><section class="slide terminal-slide terminal-theme" data-notes="택가이코드의 실제 개발자 경험을 보여줍니다.">
+  <div class="terminal-split">
+    <img src="assets/techaicode_terminal.png" alt="택가이코드 터미널">
+    <div>
+      <h2>개발 워크플로우 안으로 들어간 AI</h2>
+      <ul>
+        <li><code>file_read</code> / <code>grep_search</code> / <code>glob_search</code></li>
+        <li><code>hashline_edit</code> / <code>file_write</code> 기반 안전 편집</li>
+        <li>셸 명령, git 상태 확인, 프로젝트 분석</li>
+        <li>MCP와 멀티 에이전트 확장 가능</li>
+      </ul>
+    </div>
+  </div>
+</section><section class="slide terminal-video-slide terminal-theme" data-notes="필요하면 여기서 짧게 터미널 버전 영상을 재생합니다.">
+  <video class="video" src="assets/techai_terminal_demo.mp4" controls preload="metadata"></video>
+  <p class="video-caption">터미널 기반 택가이코드 제품 데모</p>
+</section><section class="slide vscode-slide" data-notes="VS Code extension은 같은 엔진을 에디터 경험으로 감싸는 것입니다.">
+  <div class="split image-right">
+    <div>
+      <h2>에디터 안에서 쓰는 같은 엔진</h2>
+      <ul class="clean-list">
+        <li>VS Code Extension UI</li>
+        <li>로컬 <strong>tgc-server</strong>와 HTTP/SSE 통신</li>
+        <li>터미널 버전과 동일한 모델/도구/세션 개념</li>
+        <li>개인 API Key로 모델·사용량 추적 가능</li>
+      </ul>
+    </div>
+    <div class="screenshot-frame small"><img src="assets/techaicode_vscode.png" alt="VS Code Extension"></div>
+  </div>
+</section><section class="slide engine-slide" data-notes="택가이코드가 사내에서 운영 가능하려면 엔진과 관리면이 같이 있어야 합니다.">
+  <div class="engine-diagram">
+    <div class="lane"><b>Input</b><span>사용자 요청<br>파일/프로젝트 컨텍스트</span></div>
+    <div class="lane"><b>Policy</b><span>개인 API Key<br>모델 권한·사용량 제한</span></div>
+    <div class="lane"><b>Agent Core</b><span>계획 수립<br>도구 선택<br>실행/검증 루프</span></div>
+    <div class="lane"><b>Tools</b><span>파일 · 셸 · 검색 · git · MCP</span></div>
+    <div class="lane"><b>Logs</b><span>메시지 · 오류 · 사용량</span></div>
+  </div>
+</section><section class="slide api-key-flow-slide" data-notes="운영 관점에서 택가이웹과 택가이코드가 어떻게 연결되는지 설명합니다.">
+  <div class="flow">
+    <div>1. 스윙 SSO 로그인<br><small>사번 기반 사용자 식별</small></div>
+    <div>2. 택가이웹에서 API Key 발급<br><small>개인별 모델 권한 연결</small></div>
+    <div>3. 택가이코드에 Key 등록<br><small>Terminal / VS Code에서 사용</small></div>
+    <div>4. 사용량·오류·메시지 로깅<br><small>부서/개인 단위 관리</small></div>
+  </div>
+</section><section class="slide poc-case-slide" data-notes="요청한 땡겨요 POC 자막 영상을 이 페이지에 배치했습니다.">
+  <div class="case-layout">
+    <div>
+      <h2>땡겨요 POC 활용 사례</h2>
+      <p>기존 화면/요구사항을 바탕으로 AI가 구조를 파악하고, 웹 UI 구현과 수정 흐름을 빠르게 반복한 사례입니다.</p>
+      <ul class="clean-list">
+        <li>피그마/화면 분석 → React 구조화</li>
+        <li>회원가입/검색/주문 플로우 구현</li>
+        <li>변경 요청을 코드 수정과 영상 산출로 연결</li>
+      </ul>
+    </div>
+    <video class="video portrait" src="assets/ttaeng_poc_captioned.mp4" controls preload="metadata"></video>
+  </div>
+</section><section class="slide poc-lessons-slide" data-notes="땡겨요 사례는 단순한 데모가 아니라 사용 시나리오 검증입니다.">
+  <div class="value-grid">
+    <div><strong>프로토타입 속도</strong><span>초기 화면을 빠르게 만들고 검토 가능</span></div>
+    <div><strong>변경 대응</strong><span>기획 변경을 코드 수정으로 바로 연결</span></div>
+    <div><strong>문서화</strong><span>분석·계획·실행 결과를 발표자료/영상으로 남김</span></div>
+    <div><strong>협업 확장</strong><span>개발자뿐 아니라 기획/디자인/현업과 공유 가능</span></div>
+  </div>
+</section><section class="slide dept-cases-slide" data-notes="부서별 활용사례는 현재 템플릿 형태로 구성했습니다.">
+  <div class="dept-grid">
+    <div><h3>투자서비스개발부</h3><ul><li>금융/투자 서비스 화면 수정</li><li>기존 코드 영향도 분석</li><li>운영 이슈 재현·수정 보조</li></ul></div>
+    <div><h3>디지털서비스개발부</h3><ul><li>웹/모바일 UI 프로토타입</li><li>API 연동 코드 작성</li><li>테스트 케이스/리뷰 자동화</li></ul></div>
+    <div><h3>글로벌서비스개발부</h3><ul><li>다국어/글로벌 화면 대응</li><li>레거시 코드 파악</li><li>문서·코드 변환 보조</li></ul></div>
+  </div>
+  <p class="note">※ 실제 수치와 부서별 사례명은 발표 전 담당자 확인 후 업데이트</p>
+</section><section class="slide external-dev-slide" data-notes="외부개발자 사례는 실제 적용 전 설명 템플릿으로 둡니다.">
+  <div class="template-page">
+    <h2>외부개발자 / 협력사 활용</h2>
+    <div class="template-grid">
+      <div><b>Before</b><span>사내 코드/규칙 파악에 시간이 오래 걸림</span></div>
+      <div><b>Use</b><span>택가이코드로 프로젝트 구조, 수정 포인트, 테스트 방법을 빠르게 파악</span></div>
+      <div><b>Control</b><span>개인 API Key, 사용량 제한, 메시지/오류 로깅으로 통제</span></div>
+      <div><b>Result</b><span>온보딩 시간 단축, 코드 리뷰 품질 개선, 반복 문의 감소</span></div>
+    </div>
+  </div>
+</section><section class="slide planned-users-slide" data-notes="이동희, 이찬혁 예정 사례를 넣었습니다. 숫자나 세부 업무는 확인 후 채우는 형태입니다.">
+  <div class="planned">
+    <div class="person"><strong>이동희</strong><span>적용 예정 시나리오</span><ul><li>프로젝트 구조 분석</li><li>반복 수정/검증 업무</li><li>업무 문서와 코드 연결</li></ul></div>
+    <div class="person"><strong>이찬혁</strong><span>적용 예정 시나리오</span><ul><li>기능 개발 보조</li><li>테스트/리뷰 자동화</li><li>터미널·VS Code 사용성 피드백</li></ul></div>
+  </div>
+  <p class="note">※ 실제 사용 시작일, 대상 업무, 성과 지표는 인터뷰 후 업데이트</p>
+</section><section class="slide usage-template-slide" data-notes="실제 숫자는 넣지 않고 대시보드 레이아웃만 만들어 둔 페이지입니다.">
+  <div class="dashboard mock">
+    <div class="metric-box"><small>총 사용자</small><strong>__명</strong><span>SSO 기준</span></div>
+    <div class="metric-box"><small>활성 사용자</small><strong>__명</strong><span>최근 7일</span></div>
+    <div class="metric-box"><small>총 요청 수</small><strong>__건</strong><span>월 누적</span></div>
+    <div class="metric-box"><small>토큰/비용</small><strong>__</strong><span>모델별 집계</span></div>
+  </div>
+  <div class="bar-template">
+    <div><span style="width:72%"></span><b>투자서비스개발부</b><em>__건</em></div>
+    <div><span style="width:55%"></span><b>디지털서비스개발부</b><em>__건</em></div>
+    <div><span style="width:42%"></span><b>글로벌서비스개발부</b><em>__건</em></div>
+  </div>
+</section><section class="slide ops-template-slide" data-notes="관리자가 볼 운영 로그 화면의 템플릿입니다.">
+  <div class="log-table">
+    <div class="head"><span>시간</span><span>사용자</span><span>Surface</span><span>모델</span><span>상태</span></div>
+    <div><span>2026-06-__</span><span>사번 ____</span><span>Terminal</span><span>Super</span><strong class="ok">OK</strong></div>
+    <div><span>2026-06-__</span><span>사번 ____</span><span>VS Code</span><span>Dev</span><strong class="warn">Retry</strong></div>
+    <div><span>2026-06-__</span><span>사번 ____</span><span>Web</span><span>GPT-OSS</span><strong class="err">Error</strong></div>
+  </div>
+  <p class="note">메시지 로깅, 오류 로깅, 모델별 사용량을 같은 관리면에서 추적하는 것이 목표입니다.</p>
+</section><section class="slide desktop-roadmap-slide" data-notes="데스크톱은 미래 확장 방향으로 짧게 보여줍니다.">
+  <div class="split image-right">
+    <div>
+      <h2>데스크톱 앱은 제작중</h2>
+      <ul class="clean-list">
+        <li>일반 앱처럼 실행하는 AI 개발 도구</li>
+        <li>로컬 tgc-server와 연결</li>
+        <li>파일·셸·검색·MCP 도구를 더 쉽게 사용</li>
+        <li>Terminal / VS Code와 같은 엔진을 공유</li>
+      </ul>
+    </div>
+    <div class="screenshot-frame small"><img src="assets/techaicode_desktop.png" alt="택가이 데스크톱"></div>
+  </div>
+</section><section class="slide roadmap-slide" data-notes="마지막에는 현재/다음/관리/확장 로드맵을 보여줍니다.">
+  <div class="timeline">
+    <div><b>Now</b><strong>택가이코드 Terminal</strong><span>개발자용 CLI/TUI 안정화</span></div>
+    <div><b>Next</b><strong>VS Code Extension</strong><span>에디터 경험과 로컬 서버 연동 강화</span></div>
+    <div><b>Control</b><strong>택가이웹 Admin</strong><span>API Key, 사용량, 로그, 권한 관리</span></div>
+    <div><b>Later</b><strong>Desktop App</strong><span>비개발자도 실행 가능한 앱 형태</span></div>
+  </div>
+</section><section class="slide closing-slide" data-notes="발표의 마지막 메시지입니다.">
+  <div class="closing">
+    <h2>택가이코드는 “사내에서 관리 가능한 AI 개발자”입니다.</h2>
+    <p>웹에서 인증하고, 코드 도구에서 실행하고, 관리 시스템에서 사용량과 로그를 추적합니다.</p>
+    <div class="final-actions"><span>1. 핵심 사용자 확보</span><span>2. 부서별 사례 수집</span><span>3. 운영 지표 연결</span><span>4. VS Code/데스크톱 확장</span></div>
+  </div>
+</section>
+  <div class="notes"></div>
+  <div class="counter"></div>
+  <div class="hint">← → 이동 · N 노트 · F 전체화면</div>
+  <div class="controls"><button id="prev">←</button><button id="notes">Notes</button><button id="next">→</button></div>
+</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let current=0;
+const counter=document.querySelector('.counter');
+const progress=document.querySelector('.progress');
+const notes=document.querySelector('.notes');
+function show(i){
+  current=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,idx)=>s.classList.toggle('active',idx===current));
+  counter.textContent=`${current+1} / ${slides.length}`;
+  progress.style.width=`${((current+1)/slides.length)*100}%`;
+  notes.textContent=slides[current].dataset.notes||'';
+}
+function next(){show(current+1)} function prev(){show(current-1)}
+document.addEventListener('keydown',e=>{
+ if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+ if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev()}
+ if(e.key.toLowerCase()==='n') notes.classList.toggle('show');
+ if(e.key.toLowerCase()==='f') document.documentElement.requestFullscreen?.();
+});
+document.querySelector('#next').onclick=next; document.querySelector('#prev').onclick=prev;
+document.querySelector('#notes').onclick=()=>notes.classList.toggle('show');
+show(0);
+</script>
+</body>
+</html>

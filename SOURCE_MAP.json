@@ -1,0 +1,14 @@
+{
+  "updated": "2026-06-10T11:51:53",
+  "slides": 29,
+  "missing_assets": [],
+  "version": "v2 style aligned with agent-builder-talk",
+  "main": "index.html",
+  "assets": {
+    "techai_platform_map_complete.png": {
+      "source": "/var/folders/tf/dmzhdp6j1vjckwr_1pd9lr500000gp/T/clipboard-2026-06-10-130714-80701A4F.png",
+      "used_in": "slide 3 product map complete image",
+      "note": "User-provided clipboard image on 2026-06-10"
+    }
+  }
+}
