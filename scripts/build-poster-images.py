@@ -111,9 +111,9 @@ def card(img, xy, title, body, icon=None, dark=False, title_color=None, body_siz
     d.text((x,y), title, font=font(25), fill=title_color or TEXT)
     draw_text(d,(xy[0]+22,y+36),body,font(body_size),fill=MUTED,max_w=xy[2]-xy[0]-44,line_gap=5)
 
-def footer(d, page, dark=False, height=DEFAULT_H):
+def footer(d, page, dark=False, height=DEFAULT_H, left_text='신한은행 TECH혁신Unit 개발 AX Cell'):
     fill=(160,180,210) if dark else (112,129,151)
-    d.text((58,height-44),'신한은행 TECH혁신Unit 개발 AX Cell',font=font(15),fill=fill)
+    d.text((58,height-44),left_text,font=font(15),fill=fill)
     d.text((W-58,height-44),f'Poster {page}/3',font=font(15),fill=fill,anchor='ra')
 
 def page1():
@@ -239,7 +239,7 @@ def page3():
     shadow_box(img,(58,1594,1020,1814),28,(17,24,39,255),(51,65,85,255),shadow=(15,23,42,30));
     draw_text(d,(104,1630),'택가이코드는 오픈소스 모델만으로 사내 온프레미스 환경에서 이용 가능하며, 내부망 환경에서 외부솔루션과 오픈소스보다 오히려 뛰어난 AI 코드 어시스턴트입니다.',font(30),fill=WHITE,max_w=872,line_gap=8,align='center')
     rounded(d,(350,1750,730,1798),24,WHITE,None); d.text((540,1762),'techaicode.vercel.app · PDF / Poster',font=font(16),fill=TEXT,anchor='ma')
-    footer(d,3,False); return img.convert('RGB')
+    footer(d,3,False,left_text='신한은행 TECH혁신Unit 개발 AX Cell · 담당자 정: 김지원프로 · 부: 이성렬프로'); return img.convert('RGB')
 
 def main():
     pages=[page1(),page2(),page3()]
