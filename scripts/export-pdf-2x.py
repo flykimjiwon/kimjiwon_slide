@@ -59,7 +59,7 @@ def make_export_html(source: str, slide_index: int) -> str:
 
     html = SLIDE_RE.sub(mark, source)
     html = html.replace('<head>', f'<head><base href="{ROOT.as_uri()}/">', 1)
-    html = html.replace('</style>', EXPORT_CSS + '</style>', 1)
+    html = html.replace('</style>', '</style>' + EXPORT_CSS, 1)
     html = html.replace('</body>', VIDEO_SCRIPT + '</body>', 1)
     return html
 
