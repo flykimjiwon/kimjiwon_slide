@@ -111,6 +111,14 @@ def detail_bbox(png: Path) -> tuple[int, int, int, int] | None:
             for x in range(border):
                 pixels[x, y] = 0
                 pixels[width - 1 - x, y] = 0
+        # Some slides have large, low-opacity section numbers like 01 / 02 in
+        # the top-left corner. They are decorative and should not pull the PDF
+        # zoom crop away from the actual slide content.
+        decorative_w = min(width, 620)
+        decorative_h = min(height, 470)
+        for x in range(decorative_w):
+            for y in range(decorative_h):
+                pixels[x, y] = 0
         return mask.getbbox()
 
 
@@ -168,16 +176,18 @@ def build_pdf(
     width: int,
     height: int,
     zoom_after_first: float = 1.0,
+    no_zoom_pages: set[int] | None = None,
 ) -> None:
     doc = fitz.open()
     rect = fitz.Rect(0, 0, width, height)
     crop_dir = output.parent / ".pdf-export-crops"
     effective_zooms: list[float] = []
+    no_zoom_pages = no_zoom_pages or set()
     for index, png in enumerate(pngs, start=1):
         page = doc.new_page(width=width, height=height)
         pdf_png = png
         effective_zoom = 1.0
-        if index > 1 and zoom_after_first > 1.0:
+        if index > 1 and index not in no_zoom_pages and zoom_after_first > 1.0:
             crop_dir.mkdir(parents=True, exist_ok=True)
             pdf_png, effective_zoom = crop_for_zoom(
                 png,
@@ -209,8 +219,18 @@ def main() -> int:
         default=1.0,
         help='Target content-safe zoom for PDF pages after page 1. Example: 1.3 keeps page 1 unchanged and crops whitespace on pages 2+ up to 30%% without cutting detected content.',
     )
+    ap.add_argument(
+        '--no-zoom-pages',
+        default='',
+        help='Comma-separated page numbers to keep unzoomed even when --zoom-after-first is set. Example: 4,6',
+    )
     ap.add_argument('--keep-workdir', action='store_true')
     args = ap.parse_args()
+    no_zoom_pages = {
+        int(page.strip())
+        for page in args.no_zoom_pages.split(',')
+        if page.strip()
+    }
 
     if not CHROME.exists():
         raise SystemExit(f"Chrome not found: {CHROME}")
@@ -233,10 +253,19 @@ def main() -> int:
             chrome_capture(html_path, png_path, args.scale, args.width, args.height)
             pngs.append(png_path)
             print(f'captured {i:02d}/{len(slides)} {png_path.name}', flush=True)
-        build_pdf(pngs, output_path, args.width, args.height, args.zoom_after_first)
+        build_pdf(
+            pngs,
+            output_path,
+            args.width,
+            args.height,
+            args.zoom_after_first,
+            no_zoom_pages=no_zoom_pages,
+        )
         print(f'wrote {output_path.relative_to(ROOT)}', flush=True)
         print(f'pages {len(slides)}', flush=True)
         print(f'zoom_after_first {args.zoom_after_first}', flush=True)
+        if no_zoom_pages:
+            print(f'no_zoom_pages {",".join(map(str, sorted(no_zoom_pages)))}', flush=True)
         print(f'workdir {workdir}', flush=True)
     finally:
         if not args.keep_workdir:
