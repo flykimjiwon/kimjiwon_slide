@@ -56,7 +56,7 @@ def main() -> int:
     ap.add_argument('--output-pdf', default='assets/techaicode_poster.pdf')
     ap.add_argument('--output-prefix', default='assets/techaicode_poster_page')
     ap.add_argument('--width', type=int, default=1080)
-    ap.add_argument('--height', type=int, default=1920)
+    ap.add_argument('--height', type=int, default=2160)
     ap.add_argument('--scale', type=int, default=2)
     ap.add_argument('--keep-workdir', action='store_true')
     args = ap.parse_args()
