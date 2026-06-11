@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>택가이코드 사내 게시판 포스터</title>
+  <link rel="icon" type="image/svg+xml" href="assets/techai-code-favicon.svg" />
+  <style>
+    :root{
+      --blue:#0066cc;--blue2:#0a84ff;--cyan:#13a7df;--navy:#101827;--dark:#1d2430;
+      --text:#111827;--muted:#5b6472;--line:#dfe7f1;--soft:#f4f8ff;--green:#16a34a;--red:#ef4444;
+      --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Segoe UI",sans-serif;
+      --mono:"SF Mono","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    }
+    *{box-sizing:border-box} body{margin:0;background:#dce8f8;color:var(--text);font-family:var(--font)}
+    .deck{display:grid;gap:28px;justify-content:center;padding:28px}
+    .poster-page{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 15% 6%,rgba(10,132,255,.12),transparent 28%),linear-gradient(180deg,#fff,#f6f9ff);padding:54px 58px;border-radius:30px;box-shadow:0 28px 80px rgba(15,23,42,.18)}
+    .poster-page.dark{background:radial-gradient(circle at 14% 0%,rgba(55,112,255,.22),transparent 26%),linear-gradient(135deg,#141a25,#252a34);color:#f8fbff}
+    .page-mark{position:absolute;right:48px;top:36px;font:950 60px/1 var(--mono);letter-spacing:-.08em;color:rgba(0,102,204,.12)}
+    .dark .page-mark{color:rgba(147,197,253,.16)}
+    .eyebrow{font:950 15px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}.dark .eyebrow{color:#8bc1ff}
+    h1,h2,h3,p{margin:0} h1{font-size:84px;line-height:.98;letter-spacing:-.07em;margin-bottom:16px} h2{font-size:54px;line-height:1.05;letter-spacing:-.06em;margin-bottom:18px} h3{font-size:25px;letter-spacing:-.04em;line-height:1.18}.blue{color:var(--blue)}.dark .blue{color:#63b3ff}
+    .lead{font-size:27px;line-height:1.42;color:#4b5565}.dark .lead{color:#d6e6ff}.small{font-size:16px;color:#6b7280;line-height:1.45}.dark .small{color:#c7d5e7}
+    .title-row{display:grid;grid-template-columns:1.1fr .72fr;gap:30px;align-items:center}.logo-lockup{display:flex;align-items:center;gap:18px;margin:24px 0 18px}.app-icon{width:92px;height:92px;border-radius:24px;box-shadow:0 22px 50px rgba(0,0,0,.28)}.wordmark{font:950 44px/.9 var(--mono);letter-spacing:-.07em;color:#fff;text-shadow:3px 0 #2855d9}.wordmark b{display:block;color:#88b9ff}.hero-card{background:#0c1322;border:1px solid rgba(147,197,253,.24);border-radius:28px;padding:24px;box-shadow:0 24px 80px rgba(0,0,0,.26)}.hero-card img{width:100%;border-radius:18px;display:block}.url-chip{display:inline-flex;gap:10px;align-items:center;margin-top:18px;background:rgba(37,99,235,.16);border:1px solid rgba(125,211,252,.35);border-radius:999px;padding:12px 18px;color:#fff;font:900 20px var(--mono)}.url-chip span{font-size:12px;color:#93c5fd;letter-spacing:.12em;text-transform:uppercase}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:16px;font-weight:900;color:#374151}.dark .chip{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#dceafe}
+    .grid{display:grid;gap:16px}.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:repeat(3,1fr)}.grid.four{grid-template-columns:repeat(4,1fr)}
+    .card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 16px 44px rgba(15,23,42,.07)}.dark .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);box-shadow:none}.card b{display:block;font-size:24px;letter-spacing:-.035em;margin-bottom:8px}.card p{font-size:17px;line-height:1.45;color:#5d6675}.dark .card p{color:#cbd7e8}
+    .section{margin-top:28px}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}.tag{font:950 12px var(--mono);letter-spacing:.14em;color:var(--blue);text-transform:uppercase}.dark .tag{color:#8bc1ff}
+    .platform-img{background:#fff;border:1px solid #cfe0f7;border-radius:26px;padding:10px;box-shadow:0 20px 54px rgba(37,99,235,.10)}.platform-img img{width:100%;display:block;border-radius:18px}.screen-img{height:286px;object-fit:contain;background:#fff}.tight-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}.tight-list li{position:relative;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px 16px 15px 42px;font-size:19px;font-weight:800;color:#374151}.tight-list li:before{content:'→';position:absolute;left:16px;color:var(--blue);font-weight:950}.dark .tight-list li{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#e5edff}
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.flow .step{background:#0f172a;color:#fff;border-radius:21px;padding:19px}.flow .step i{display:grid;place-items:center;width:34px;height:34px;background:#2563eb;border-radius:999px;font:950 14px var(--mono);font-style:normal;margin-bottom:13px}.flow .step b{font-size:22px}.flow .step span{display:block;margin-top:5px;color:#cfe3ff;font-size:15px;line-height:1.35}
+    .product-strip{display:grid;grid-template-columns:.95fr 1.05fr;gap:22px;align-items:center}.device-shot{background:#0b1020;border:1px solid #334155;border-radius:26px;padding:14px;box-shadow:0 24px 70px rgba(0,0,0,.34)}.device-shot img{width:100%;border-radius:16px;display:block}.dark .device-shot img{background:#0b1020}.callout{background:linear-gradient(135deg,#eff6ff,#fff);border:1px solid #bfdbfe;border-radius:24px;padding:22px;color:#172033}.callout b{font-size:30px;letter-spacing:-.045em}.callout p{margin-top:8px;color:#536276;font-size:18px;line-height:1.45}.dark .callout{background:rgba(15,23,42,.82);border-color:rgba(96,165,250,.28);color:#f8fbff}.dark .callout p{color:#cbd7e8}
+    .bar-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 16px 42px rgba(15,23,42,.06)}.bar-row{display:grid;grid-template-columns:152px 1fr 42px;gap:12px;align-items:center;margin:12px 0;font-weight:900;color:#334155}.bar{height:22px;background:#e9f0f8;border-radius:999px;overflow:hidden}.bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#0ea5e9)}.bar-row.current{outline:3px solid var(--red);border-radius:15px;padding:8px;margin-left:-8px;margin-right:-8px;color:#991b1b}.bar-row.current .bar span{background:linear-gradient(90deg,#16a34a,#22c55e)}
+    .poc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.poc-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px}.poc-card img{width:46px;height:46px;margin-bottom:8px}.quote-card{background:#fff;border:1px solid #c7d2fe;border-radius:22px;padding:20px;box-shadow:0 14px 38px rgba(37,99,235,.07)}.quote-card b{display:block;color:#1d4ed8;font-size:23px}.quote-card p{font-size:16px;line-height:1.42;color:#334155;margin-top:7px}.hyemin{background:#0f172a;color:#fff;border:1px solid #334155;border-radius:24px;padding:22px}.hyemin h3{color:#93c5fd}.hyemin ul{margin:12px 0 0;padding-left:18px;display:grid;gap:7px}.hyemin li,.hyemin p{font-size:16px;line-height:1.42;color:#dbeafe}.hyemin p{margin-top:12px;border-top:1px solid #334155;padding-top:12px;font-weight:800}
+    .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.review{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;min-height:186px;box-shadow:0 10px 28px rgba(15,23,42,.055)}.review .dept{display:inline-block;background:#eff4fb;border-radius:999px;padding:6px 9px;font:900 10px var(--mono);color:#475569;text-transform:uppercase}.review h3{font-size:22px;color:#0b6ed0;margin:8px 0 4px}.review .role{font-size:13px;font-weight:900;color:#657084;margin-bottom:8px}.review p{font-size:14px;line-height:1.35;font-weight:760;color:#1f2937}.review.long p{font-size:12px;line-height:1.28}
+    .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.metric{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 12px 32px rgba(15,23,42,.055)}.metric span{display:block;color:#64748b;font-weight:900}.metric b{display:block;font-size:38px;color:#1d4ed8;letter-spacing:-.04em;margin:8px 0}.metric small{font-size:13px;color:#64748b;line-height:1.35}.ops{display:grid;grid-template-columns:.88fr 1.12fr;gap:18px}.token-box{margin-top:13px;background:linear-gradient(135deg,#09235c,#2559e8);border-radius:24px;padding:22px;color:#fff;display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center}.ring{width:106px;height:106px;border-radius:999px;background:conic-gradient(#22c55e 0 90%,#e5eefb 90% 100%);display:grid;place-items:center}.ring b{background:#fff;color:#16a34a;border-radius:999px;width:74px;height:74px;display:grid;place-items:center;font-size:24px}.token-box strong{font-size:48px;letter-spacing:-.05em}.token-box p{font-size:15px;line-height:1.38;color:#dbeafe}.rank{background:#fff;border:1px solid var(--line);border-radius:24px;padding:19px;box-shadow:0 12px 32px rgba(15,23,42,.055)}.dept-row{display:grid;grid-template-columns:26px 1fr 62px;gap:9px;align-items:center;margin:7px 0;font-weight:900;color:#334155}.dept-row i{font-style:normal;color:#64748b}.track{height:22px;background:#eaf0f7;border-radius:999px;overflow:hidden}.fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#0ea5e9);color:white;font-size:11px;line-height:22px;padding-left:9px;white-space:nowrap}.closing{background:#111827;color:#f8fbff;border-radius:26px;padding:26px;text-align:center;margin-top:18px}.closing h2{font-size:42px}.download{display:inline-flex;gap:9px;align-items:center;margin-top:14px;background:#fff;color:#0f172a;border-radius:999px;padding:12px 18px;font:950 16px var(--mono)}
+    .footer-note{position:absolute;left:58px;right:58px;bottom:32px;display:flex;justify-content:space-between;align-items:center;color:#728197;font:800 13px var(--mono);letter-spacing:.03em}.dark .footer-note{color:#9fb6d8}
+    @media print{body{background:#fff}.deck{padding:0;gap:0}.poster-page{box-shadow:none;border-radius:0;page-break-after:always}}
+  </style>
+</head>
+<body>
+<div class="deck">
+  <section class="poster-page dark" id="poster-01">
+    <div class="page-mark">01</div>
+    <div class="title-row">
+      <div>
+        <div class="eyebrow">TECHAI CODE · INTERNAL AI CODING AGENT</div>
+        <h1>택가이코드</h1>
+        <p class="lead">터미널과 VS Code에서 쓰는<br><b>사내 AI 개발 에이전트</b></p>
+        <div class="logo-lockup"><img class="app-icon" src="assets/techai_tui_icon.png" alt="TechAI Code icon"><div class="wordmark">TECHAI<b>CODE</b></div></div>
+        <div class="chips"><span class="chip">Terminal</span><span class="chip">VS Code Extension</span><span class="chip">Same Engine</span><span class="chip">On-Premise</span></div>
+        <div class="url-chip"><span>live url</span>techaicode.vercel.app</div>
+      </div>
+      <div class="hero-card"><img src="assets/techaicode_terminal.png" alt="택가이코드 터미널 화면"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>무엇이 다른가</h2><span class="tag">not a chatbot, real workspace agent</span></div>
+      <div class="grid two">
+        <div class="callout"><b>웹 챗봇이 아니라<br><span class="blue">코드베이스 안에서 실제로 작업</span>하는 도구</b><p>프로젝트를 읽고 파일·Shell·git 도구를 호출하며, 수정과 검증 루프까지 이어갑니다.</p></div>
+        <ul class="tight-list"><li>파일 검색·읽기·수정</li><li>Shell 명령과 git 흐름 지원</li><li>터미널 버전과 VS Code Extension이 같은 엔진 사용</li><li>API Key와 로그로 관리 가능</li></ul>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>택가이 플랫폼 구조</h2><span class="tag">gateway · web · client</span></div>
+      <div class="platform-img"><img src="assets/techai_platform_map_complete.png" alt="택가이 플랫폼 구조"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>택가이Web은 중앙 관리 통로</h2><span class="tag">SSO · usage · logging</span></div>
+      <div class="grid two">
+        <div class="platform-img"><img class="screen-img" src="assets/tweb_screen.png" alt="택가이 Web 화면"></div>
+        <div class="grid two">
+          <div class="card"><b>SSO 로그인</b><p>사내 스윙 SSO와 사번 기반 사용자 식별</p></div>
+          <div class="card"><b>사용량 측정</b><p>부서별·개인별·모델별 요청/토큰 집계</p></div>
+          <div class="card"><b>메시지·오류 로깅</b><p>요청/응답 메타데이터, 오류, 재시도 내역 확인</p></div>
+          <div class="card"><b>API Key 발급</b><p>개인별 모델 권한과 사용량 추적 관리</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-note"><span>신한은행 TECH혁신Unit 개발 AX Cell</span><span>Poster 1/3</span></div>
+  </section>
+
+  <section class="poster-page" id="poster-02">
+    <div class="page-mark">02</div>
+    <div class="eyebrow">PRODUCT · MODEL · USE CASE</div>
+    <h2>택가이코드는 개발자가 실제로 쓰는 제품입니다</h2>
+    <p class="lead">Terminal과 VS Code Extension, 두 제품 모두 같은 엔진을 씁니다.</p>
+    <div class="section product-strip">
+      <div class="device-shot"><img src="assets/techaicode_terminal.png" alt="터미널 제품 화면"></div>
+      <div class="grid two">
+        <div class="card"><b>Terminal Agent</b><p>프로젝트 루트에서 바로 실행. 파일·셸·git 작업과 자연스럽게 연결됩니다.</p></div>
+        <div class="card"><b>VS Code Extension</b><p>에디터 안에서 같은 엔진과 같은 도구 실행 루프를 사용합니다.</p></div>
+        <div class="card"><b>Same Engine</b><p>터미널/VS Code UI만 다르고 모델 권한, 로그, API Key 관리 체계는 동일합니다.</p></div>
+        <div class="card"><b>오픈소스 대비 경쟁력</b><p>외부 오픈소스 코드 어시스턴트에 절대 뒤지지 않는 내부망 최적화 경험.</p></div>
+      </div>
+    </div>
+    <div class="section grid two">
+      <div class="bar-card">
+        <div class="tag">after april demo · current model</div>
+        <h3 style="font-size:32px;margin:8px 0 12px">앞선 영상은 이미 4월 제품이고<br><span class="blue">지금은 2배 이상 더 좋아졌습니다</span></h3>
+        <div class="bar-row"><label>GPT-5.5 / Codex</label><div class="bar"><span style="width:100%"></span></div><em>100</em></div>
+        <div class="bar-row"><label>Claude Opus 4.8</label><div class="bar"><span style="width:97%"></span></div><em>97</em></div>
+        <div class="bar-row current"><label>코딩모델 35B</label><div class="bar"><span style="width:87%"></span></div><em>87</em></div>
+        <div class="bar-row"><label>코딩모델 30B</label><div class="bar"><span style="width:83%;background:#7b8797"></span></div><em>83</em></div>
+        <div class="bar-row"><label>범용모델 120B</label><div class="bar"><span style="width:80%;background:#7b8797"></span></div><em>80</em></div>
+        <p class="small" style="margin-top:10px">프론티어=100 상대지수. 모델 자체보다 Agent Loop, Tool Calling, Repository Reasoning, 한국어 요구사항 처리 차이가 실제 생산성에 크게 반영됩니다.</p>
+      </div>
+      <div class="platform-img"><img src="assets/techaicode_vscode.png" alt="택가이코드 VS Code Extension"></div>
+    </div>
+    <div class="section grid two">
+      <div class="platform-img"><img src="assets/techaicode_desktop_app.png" alt="택가이 데스크톱"></div>
+      <div class="callout"><b>현재 개발중인<br><span class="blue">“택가이 데스크톱”</span></b><p>업무망 사용 확대, 문서작성·스케줄관리, 사용자 개인화·내장 DB를 통해 일반 업무 환경으로 확장합니다.</p><div class="chips"><span class="chip">업무망 확대</span><span class="chip">문서작성</span><span class="chip">스케줄관리</span><span class="chip">개인화 DB</span></div></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>땡겨요 POC에서 확인한 가치</h2><span class="tag">video page excluded · case summary only</span></div>
+      <div class="poc-grid">
+        <div class="poc-card"><img src="assets/poc_screen.svg" alt="화면 파악"><h3>화면 파악</h3><p class="small">기존 화면과 요구사항 정리</p></div>
+        <div class="poc-card"><img src="assets/poc_structure.svg" alt="구조 분석"><h3>구조 분석</h3><p class="small">React 프로젝트 흐름 파악</p></div>
+        <div class="poc-card"><img src="assets/poc_code.svg" alt="코드 수정"><h3>코드 수정</h3><p class="small">회원가입·검색·주문 플로우 구현</p></div>
+      </div>
+      <div class="grid two" style="margin-top:14px">
+        <div class="quote-card"><b>“비숙련자 진입장벽 낮춤”</b><p>“복잡한 프로젝트 구조를 처음 보는 사람도 AI 도움으로 빠르게 화면과 흐름을 이해할 수 있음”</p></div>
+        <div class="quote-card"><b>“완벽히 동작하는 비즈니스 화면 코드”</b><p>“단순 목업이 아니라 실제 업무 플로우에 맞춰 동작하는 화면 코드까지 구현”</p></div>
+      </div>
+      <div class="hyemin" style="margin-top:14px"><h3>김혜민 프로 · 땡겨요사업단 플랫폼운영 Cell</h3><ul><li>기획/분석: 레거시 소스 기반 문서 최적화 및 비즈니스 로직 추출 속도 향상</li><li>개발 생산성: React 전환 시 화면당 개발 공수(MM)의 획기적인 절감 확인</li></ul><p>사내망 인프라의 한계를 극복하고 구축한 고성능 AI 테스트베드를 통해, React 개발 공수를 최대 87.5%까지 단축하는 압도적인 전환 생산성을 직접 증명했습니다.</p></div>
+    </div>
+    <div class="footer-note"><span>영상 재생 페이지 제외 · 핵심 내용 압축본</span><span>Poster 2/3</span></div>
+  </section>
+
+  <section class="poster-page" id="poster-03">
+    <div class="page-mark">03</div>
+    <div class="eyebrow">REAL FEEDBACK · ADOPTION · OPERATION METRICS</div>
+    <h2>실제 부서 후기와 운영 지표</h2>
+    <div class="section testimonial-grid">
+      <div class="review"><span class="dept">디지털서비스개발부 · React</span><h3>김지은 프로</h3><div class="role">VS Code Extension 활용</div><p>“내부망 AI임에도 똑똑한 택가이코드 덕분에 업무효율이 매우 늘었습니다. Vscode 택가이 최고!”</p></div>
+      <div class="review"><span class="dept">투자서비스개발부 · Proframe 5</span><h3>노태경 프로</h3><div class="role">대형 프로젝트 수행</div><p>“최신 택가이 버전에서 사이즈가 큰 프로젝트에서도 끊기지 않고 수행되어 너무 좋습니다.”</p></div>
+      <div class="review"><span class="dept">디지털서비스개발부 · SOL APP</span><h3>이승민 프로</h3><div class="role">업무 지원 및 개선 피드백</div><p>“업무 진행하면서 많은 도움이 되었습니다. 주기적인 업데이트 잘 부탁드립니다!”</p></div>
+      <div class="review long"><span class="dept">디지털서비스개발부 · SOL APP 뱅킹</span><h3>김예진 프로</h3><div class="role">설계 방향성 / 기존 코드 레퍼런스</div><p>“개발 방향성을 잡고 설계하는데 많은 도움이 되었습니다. AI와 함께 답변을 도출했을 때 개발속도와 결과물이 더 빨랐고, VS Code에서 기존 코드를 레퍼런스로 삼아 논의하니 편리했습니다.”</p></div>
+      <div class="review"><span class="dept">디지털서비스개발부 · SOL APP PB·공과금</span><h3>변은서 프로</h3><div class="role">정보 검색 시간 단축</div><p>“필요한 정보를 검색하는 데 많은 시간 단축이 되었습니다. 업무를 빨리 끝낼 수 있어 많은 도움이 되고 있습니다!”</p></div>
+      <div class="review long"><span class="dept">디지털서비스개발부 · 이벤트개발</span><h3>서문교 프로</h3><div class="role">반복 개발 자동화</div><p>“사내 보안 정책상 외부 클라우드 API 호출이 제한된 상황에서 온프레미스 Agent 시스템을 배포해주셨고, 도입 결과 단순 반복 개발건 70% 시간단축, 만족도 5점에 5점입니다.”</p></div>
+      <div class="review"><span class="dept">글로벌서비스개발부 · 1 Team 1 Agent</span><h3>김장원 팀장</h3><div class="role">은행 내부망 AI Coding Agent 활용</div><p>“은행 내부망 환경에서도 AI Coding Agent가 실제 활용될 수 있다는 점에 놀라웠습니다. 조직 전반 생산성 향상을 기대합니다.”</p></div>
+      <div class="review"><span class="dept">땡겨요사업단 · 플랫폼운영 Cell</span><h3>김혜민 프로</h3><div class="role">사내망 AI 개발 툴 테스트</div><p>“사내망이라는 엄격한 보안 환경 안에서도 최고 수준의 AI 개발 툴을 자체적으로 테스트해 보았다는 점에서 큰 의미가 있었습니다.”</p></div>
+      <div class="review long"><span class="dept">정보서비스개발부 · CXM Cell</span><h3>정다윤 프로</h3><div class="role">산출물 검증 / 운영 업무 지원</div><p>“IDE 내에서 파일을 불러와 오타, 로직 오류, 런타임 에러 등을 즉각 검증할 수 있게 되었고, 복잡한 쿼리나 쉘 스크립트 학습, 기술 내용 요약·정리에도 큰 도움이 되고 있습니다.”</p></div>
+    </div>
+    <div class="section grid three">
+      <div class="card"><b>외부개발자 온보딩</b><p>처음 보는 코드베이스를 혼자 파악하는 시간을 줄이고, 사내 규칙과 코드 패턴을 안내합니다.</p></div>
+      <div class="card"><b>추가 사용문의 부서</b><p>고객상담센터 · Data플랫폼Unit · 고객경험혁신센터</p></div>
+      <div class="card"><b>운영 가능 구조</b><p>API Key, 로그, 사용량, 오류 이력으로 사내 개발 조직이 통제 가능한 AI 동료입니다.</p></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>2026년 6월 기준 택가이 주간 운영지표</h2><span class="tag">weekly · 5 business days</span></div>
+      <div class="ops">
+        <div>
+          <div class="metric-grid">
+            <div class="metric"><span>전체 사용자</span><b>1,125명+</b><small>개발망 852명+ / 업무망 273명+</small></div>
+            <div class="metric"><span>주간 활성 사용자</span><b>510명+</b><small>개발망 429명+ / 업무망 81명+</small></div>
+            <div class="metric"><span>API Key 발급 개발자</span><b>236명+</b><small>개발망에서 개인 Key 발급 후 사용</small></div>
+            <div class="metric"><span>하루 평균 요청</span><b>4,500+</b><small>일 평균 요청 횟수</small></div>
+          </div>
+          <div class="token-box"><div class="ring"><b>90%</b></div><div><span>개발망 주간 토큰 / 택가이코드 비중</span><strong>8.09억+</strong><p>5영업일 기준 809,242,813 tokens · 총 토큰 사용량의 90%가 택가이코드에서 발생</p></div></div>
+        </div>
+        <div class="rank"><div class="tag">weekly department usage top 10</div><h3 style="font-size:28px;margin:8px 0 10px">부서별 주간 사용량 순위</h3>
+          <div class="dept-row"><i>1</i><div class="track"><span class="fill" style="width:100%">신한은행 외부개발팀</span></div><b>237.9M</b></div>
+          <div class="dept-row"><i>2</i><div class="track"><span class="fill" style="width:71%">글로벌서비스개발부</span></div><b>169.7M</b></div>
+          <div class="dept-row"><i>3</i><div class="track"><span class="fill" style="width:63%">ICT아웃소싱베트남</span></div><b>150.1M</b></div>
+          <div class="dept-row"><i>4</i><div class="track"><span class="fill" style="width:35%">디지털서비스개발부</span></div><b>82.8M</b></div>
+          <div class="dept-row"><i>5</i><div class="track"><span class="fill" style="width:20%">정보서비스개발부</span></div><b>47.8M</b></div>
+          <div class="dept-row"><i>6</i><div class="track"><span class="fill" style="width:19%">Data플랫폼Unit</span></div><b>44.7M</b></div>
+          <div class="dept-row"><i>7</i><div class="track"><span class="fill" style="width:18%">Tech운영부</span></div><b>42.5M</b></div>
+          <div class="dept-row"><i>8</i><div class="track"><span class="fill" style="width:8%">투자서비스개발부</span></div><b>17.2M</b></div>
+          <div class="dept-row"><i>9</i><div class="track"><span class="fill" style="width:6%">DS개발팀</span></div><b>13.9M</b></div>
+          <div class="dept-row"><i>10</i><div class="track"><span class="fill" style="width:4%">금융서비스개발부</span></div><b>8.3M</b></div>
+          <p class="small" style="margin-top:10px">그 외 Tech기획부·여신서비스개발부·AI개발부 등 사용 중 · 다음 순위 5.7M+ · 막대는 1위 대비</p>
+        </div>
+      </div>
+    </div>
+    <div class="closing"><h2>택가이코드는 오픈소스 모델만으로 사내 온프레미스 환경에서 이용 가능하며,<br><span class="blue">내부망 환경에서 외부솔루션과 오픈소스보다 오히려 뛰어난 AI 코드 어시스턴트</span>입니다.</h2><div class="download">techaicode.vercel.app · PDF / Poster</div></div>
+    <div class="footer-note"><span>신한은행 TECH혁신Unit 개발 AX Cell</span><span>Poster 3/3</span></div>
+  </section>
+</div>
+</body>
+</html>
