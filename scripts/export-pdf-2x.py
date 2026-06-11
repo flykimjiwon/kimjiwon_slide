@@ -170,6 +170,34 @@ def crop_for_zoom(png: Path, output: Path, target_zoom: float) -> tuple[Path, fl
         return output, effective_zoom
 
 
+def prepare_pdf_image(
+    source: Path,
+    output: Path,
+    image_format: str,
+    jpeg_quality: int,
+) -> Path:
+    """Prepare an image file for embedding in the PDF."""
+    if image_format == "png":
+        return source
+    if image_format != "jpeg":
+        raise ValueError(f"Unsupported image format: {image_format}")
+    if Image is None:
+        raise SystemExit("Pillow is required for JPEG PDF export")
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(source) as raw:
+        raw.convert("RGB").save(
+            output,
+            "JPEG",
+            quality=jpeg_quality,
+            optimize=True,
+            progressive=True,
+            # Keep 4:4:4 chroma sampling so small UI text stays crisp.
+            subsampling=0,
+        )
+    return output
+
+
 def build_pdf(
     pngs: list[Path],
     output: Path,
@@ -177,6 +205,8 @@ def build_pdf(
     height: int,
     zoom_after_first: float = 1.0,
     no_zoom_pages: set[int] | None = None,
+    pdf_image_format: str = "jpeg",
+    jpeg_quality: int = 95,
 ) -> None:
     doc = fitz.open()
     rect = fitz.Rect(0, 0, width, height)
@@ -194,8 +224,14 @@ def build_pdf(
                 crop_dir / f"slide-{index:02d}-zoom.png",
                 zoom_after_first,
             )
+        pdf_image = prepare_pdf_image(
+            pdf_png,
+            crop_dir / f"slide-{index:02d}.{ 'jpg' if pdf_image_format == 'jpeg' else 'png' }",
+            pdf_image_format,
+            jpeg_quality,
+        )
         effective_zooms.append(effective_zoom)
-        page.insert_image(rect, filename=str(pdf_png), keep_proportion=False)
+        page.insert_image(rect, filename=str(pdf_image), keep_proportion=False)
     output.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(output), deflate=True, garbage=4)
     doc.close()
@@ -213,6 +249,13 @@ def main() -> int:
     ap.add_argument('--width', type=int, default=1920)
     ap.add_argument('--height', type=int, default=1080)
     ap.add_argument('--scale', type=int, default=2)
+    ap.add_argument(
+        '--pdf-image-format',
+        choices=('png', 'jpeg'),
+        default='jpeg',
+        help='Image format embedded into the final PDF. JPEG q95 keeps the deck under 10MB with minimal visible quality loss.',
+    )
+    ap.add_argument('--jpeg-quality', type=int, default=95)
     ap.add_argument(
         '--zoom-after-first',
         type=float,
@@ -260,9 +303,14 @@ def main() -> int:
             args.height,
             args.zoom_after_first,
             no_zoom_pages=no_zoom_pages,
+            pdf_image_format=args.pdf_image_format,
+            jpeg_quality=args.jpeg_quality,
         )
         print(f'wrote {output_path.relative_to(ROOT)}', flush=True)
         print(f'pages {len(slides)}', flush=True)
+        print(f'pdf_image_format {args.pdf_image_format}', flush=True)
+        if args.pdf_image_format == 'jpeg':
+            print(f'jpeg_quality {args.jpeg_quality}', flush=True)
         print(f'zoom_after_first {args.zoom_after_first}', flush=True)
         if no_zoom_pages:
             print(f'no_zoom_pages {",".join(map(str, sorted(no_zoom_pages)))}', flush=True)
