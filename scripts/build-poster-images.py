@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets'
-W, H = 1080, 2160
+W, DEFAULT_H = 1080, 2160
 FONT = '/System/Library/Fonts/AppleSDGothicNeo.ttc'
 FONT_FALLBACK = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
 
@@ -23,11 +23,11 @@ def font(size:int, weight='regular'):
     except Exception:
         return ImageFont.truetype(FONT_FALLBACK, size=size)
 
-def canvas(dark=False):
-    img=Image.new('RGB',(W,H),(255,255,255))
+def canvas(dark=False, height=DEFAULT_H):
+    img=Image.new('RGB',(W,height),(255,255,255))
     px=img.load()
-    for y in range(H):
-        t=y/(H-1)
+    for y in range(height):
+        t=y/(height-1)
         if dark:
             c=tuple(int((20,26,36)[i]*(1-t)+(38,43,52)[i]*t) for i in range(3))
         else:
@@ -111,13 +111,14 @@ def card(img, xy, title, body, icon=None, dark=False, title_color=None, body_siz
     d.text((x,y), title, font=font(25), fill=title_color or TEXT)
     draw_text(d,(xy[0]+22,y+36),body,font(body_size),fill=MUTED,max_w=xy[2]-xy[0]-44,line_gap=5)
 
-def footer(d, page, dark=False):
+def footer(d, page, dark=False, height=DEFAULT_H):
     fill=(160,180,210) if dark else (112,129,151)
-    d.text((58,H-44),'신한은행 TECH혁신Unit 개발 AX Cell',font=font(15),fill=fill)
-    d.text((W-58,H-44),f'Poster {page}/3',font=font(15),fill=fill,anchor='ra')
+    d.text((58,height-44),'신한은행 TECH혁신Unit 개발 AX Cell',font=font(15),fill=fill)
+    d.text((W-58,height-44),f'Poster {page}/3',font=font(15),fill=fill,anchor='ra')
 
 def page1():
-    img=canvas(True).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
+    H1=2700
+    img=canvas(True,H1).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
     header(d,'택가이코드','TECHAI CODE · INTERNAL AI CODING AGENT',1,True)
     d.text((58,178),'터미널과 VS Code에서 쓰는\n사내 AI 개발 에이전트',font=font(36),fill=(218,230,255))
     paste_fit(img,ASSETS/'techai_tui_icon.png',(58,292,150,384),radius=24,bg=(15,23,42))
@@ -146,14 +147,16 @@ def page1():
     d.text((58,900),'택가이 플랫폼 구조',font=font(44),fill=WHITE)
     shadow_box(img,(58,962,1020,1320),24,(255,255,255,245),(207,224,247,255),shadow=(0,0,0,65)); paste_fit(img,ASSETS/'techai_platform_map_complete.png',(76,980,1002,1302),radius=16,bg=WHITE)
     d.text((58,1360),'택가이Web은 중앙 관리 통로',font=font(42),fill=WHITE)
-    shadow_box(img,(58,1418,480,1696),22,(255,255,255,245),(207,224,247,255),shadow=(0,0,0,40)); paste_fit(img,ASSETS/'tweb_screen.png',(76,1440,462,1674),radius=14,bg=WHITE)
+    d.text((58,1410),'사내 SSO, 사용자 포털, 관리자 페이지와 API Key 관리까지 이어지는 실제 운영 화면입니다.',font=font(21),fill=(207,222,242))
+    shadow_box(img,(58,1466,1020,2066),26,(255,255,255,245),(207,224,247,255),shadow=(0,0,0,54)); paste_fit(img,ASSETS/'tweb_screen.png',(84,1494,994,2038),radius=18,bg=WHITE)
     cards=[('SSO 로그인','사내 스윙 SSO와 사번 기반 사용자 식별'),('사용량 측정','부서별·개인별·모델별 요청/토큰 집계'),('메시지·오류 로깅','요청/응답 메타데이터, 오류, 재시도 내역 확인'),('API Key 발급','개인별 모델 권한과 사용량 추적 관리')]
-    positions=[(506,1418,750,1538),(776,1418,1020,1538),(506,1576,750,1696),(776,1576,1020,1696)]
-    for pos,(t,b) in zip(positions,cards): card(img,pos,t,b,dark=True,body_size=15)
-    footer(d,1,True); return img.convert('RGB')
+    positions=[(58,2118,504,2276),(532,2118,1020,2276),(58,2310,504,2468),(532,2310,1020,2468)]
+    for pos,(t,b) in zip(positions,cards): card(img,pos,t,b,dark=True,body_size=17)
+    footer(d,1,True,H1); return img.convert('RGB')
 
 def page2():
-    img=canvas(False).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
+    H2=3800
+    img=canvas(False,H2).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
     header(d,'제품 · 성능 · POC','PRODUCT · MODEL · USE CASE',2,False)
     d.text((58,176),'택가이코드는 개발자가 실제로 쓰는 제품입니다',font=font(42),fill=TEXT)
     d.text((58,226),'Terminal과 VS Code Extension, 두 제품 모두 같은 엔진을 씁니다.',font=font(25),fill=MUTED)
@@ -162,11 +165,12 @@ def page2():
     card(img,(804,286,1020,440),'VS Code Extension','에디터 안에서 같은 엔진과 도구 실행 루프를 사용합니다.',body_size=16)
     card(img,(538,466,780,626),'Same Engine','모델 권한, 로그, API Key 관리 체계는 동일합니다.',body_size=16)
     card(img,(804,466,1020,626),'오픈소스 대비 경쟁력','모델 성능뿐 아니라 코드 어시스턴트 도구 자체도 기존 오픈소스 도구보다 오히려 경량화되며 높은 성능을 보여줍니다.',body_size=14)
-    d.text((58,680),'앞선 영상은 이미 4월 제품이고, 지금은 2배 이상 더 좋아졌습니다',font=font(34),fill=TEXT)
-    shadow_box(img,(58,736,512,1160),24,WHITE,LINE,shadow=(15,23,42,22));
-    d.text((86,762),'코딩 Agent 생산성',font=font(28),fill=TEXT); d.text((86,800),'프론티어=100 상대지수 · 현재 적용 모델 하이라이트',font=font(16),fill=MUTED)
+
+    d.text((58,696),'앞선 영상은 이미 4월 제품이고, 지금은 2배 이상 더 좋아졌습니다',font=font(34),fill=TEXT)
+    shadow_box(img,(58,756,512,1158),24,WHITE,LINE,shadow=(15,23,42,22))
+    d.text((86,782),'코딩 Agent 생산성',font=font(28),fill=TEXT); d.text((86,820),'프론티어=100 상대지수 · 현재 적용 모델 하이라이트',font=font(16),fill=MUTED)
     bars=[('GPT-5.5 / Codex',100,BLUE2),('Claude Opus 4.8',97,CYAN),('코딩모델 35B',87,GREEN),('코딩모델 30B',83,(122,135,151)),('범용모델 120B',80,(122,135,151))]
-    y=850
+    y=870
     for name,val,col in bars:
         if name=='코딩모델 35B': rounded(d,(74,y-8,496,y+43),17,(255,241,242,255),RED,3)
         d.text((86,y),name,font=font(17),fill=(153,27,27) if name=='코딩모델 35B' else TEXT)
@@ -174,18 +178,37 @@ def page2():
         rounded(d,(230,y+3,230+int(210*val/100),y+25),11,col,None)
         d.text((456,y),str(val),font=font(18),fill=TEXT)
         y+=50
-    draw_text(d,(86,1106),'모델 자체보다 Agent Loop, Tool Calling, Repository Reasoning, 한국어 요구사항 처리 차이가 실제 생산성에 크게 반영됩니다.',font(14),fill=MUTED,max_w=386,line_gap=3)
-    shadow_box(img,(540,736,1020,1160),24,WHITE,LINE,shadow=(15,23,42,22)); paste_fit(img,ASSETS/'techaicode_vscode.png',(558,782,1002,1118),radius=16,bg=WHITE)
-    shadow_box(img,(58,1210,588,1516),24,WHITE,LINE,shadow=(15,23,42,22)); paste_fit(img,ASSETS/'techaicode_desktop_app.png',(76,1234,570,1494),radius=16,bg=WHITE)
-    shadow_box(img,(616,1210,1020,1516),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22)); d.text((644,1242),'현재 개발중인',font=font(20),fill=BLUE); d.text((644,1276),'“택가이 데스크톱”',font=font(34),fill=TEXT); draw_text(d,(644,1332),'업무망 사용 확대, 문서작성·스케줄관리, 사용자 개인화·내장 DB를 통해 일반 업무 환경으로 확장합니다.',font(20),fill=MUTED,max_w=330,line_gap=6)
-    d.text((58,1584),'땡겨요 POC에서 확인한 가치',font=font(38),fill=TEXT)
+    draw_text(d,(86,1110),'모델 자체보다 Agent Loop, Tool Calling, Repository Reasoning, 한국어 요구사항 처리 차이가 실제 생산성에 크게 반영됩니다.',font(14),fill=MUTED,max_w=386,line_gap=3)
+    shadow_box(img,(540,756,1020,1158),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22))
+    d.text((568,792),'도구 자체도 가볍고 빠르게',font=font(30),fill=TEXT)
+    draw_text(d,(568,846),'기존 오픈소스 도구보다 경량화된 구조로, 내부망에서도 높은 반응성과 안정적인 작업 루프를 목표로 합니다.',font(20),fill=MUTED,max_w=400,line_gap=7)
+    rounded(d,(568,1038,788,1084),23,(255,255,255,255),(191,219,254,255)); d.text((678,1050),'경량화',font=font(18),fill=BLUE2,anchor='ma')
+    rounded(d,(810,1038,994,1084),23,(255,255,255,255),(191,219,254,255)); d.text((902,1050),'고성능',font=font(18),fill=BLUE2,anchor='ma')
+
+    d.text((58,1236),'택가이코드 VS Code Extension',font=font(42),fill=TEXT)
+    d.text((58,1288),'에디터 안에서 프로젝트 맥락을 읽고, 같은 엔진으로 파일·검색·Shell 작업을 이어갑니다.',font=font(22),fill=MUTED)
+    shadow_box(img,(58,1342,1020,1868),26,WHITE,LINE,shadow=(15,23,42,28)); paste_fit(img,ASSETS/'techaicode_vscode.png',(84,1380,994,1828),radius=18,bg=WHITE)
+
+    d.text((58,1948),'현재 개발중인 “택가이 데스크톱”',font=font(42),fill=TEXT)
+    d.text((58,2000),'개발과 단순 AI 질문 기능을 넘어, 대부분의 개인화 에이전트를 대체할 방향입니다.',font=font(23),fill=BLUE)
+    shadow_box(img,(58,2058,1020,2628),26,WHITE,LINE,shadow=(15,23,42,28)); paste_fit(img,ASSETS/'techaicode_desktop_app.png',(84,2088,994,2598),radius=18,bg=WHITE)
+    shadow_box(img,(58,2678,1020,2868),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22))
+    d.text((86,2708),'택가이 데스크톱 확장 방향',font=font(30),fill=BLUE)
+    draw_text(d,(86,2754),'업무망 사용 확대, 문서작성·스케줄관리, 사용자 개인화·내장 DB를 통해 일반 업무 환경으로 확장합니다. 개발과 단순 AI 질문 기능을 넘어 대부분의 개인화 에이전트를 대체할 것입니다.',font(22),fill=TEXT,max_w=880,line_gap=8)
+    chips=[('업무망 확대',86),('문서작성',260),('스케줄관리',414),('개인화 DB',594),('개인화 에이전트 대체',760)]
+    for label,x in chips:
+        tw=d.textlength(label,font=font(16))
+        rounded(d,(x,2820,x+tw+30,2858),19,(255,255,255,255),(191,219,254,255))
+        d.text((x+15,2829),label,font=font(16),fill=BLUE2)
+
+    d.text((58,2948),'땡겨요 POC에서 확인한 가치',font=font(38),fill=TEXT)
     poc=[('화면 파악','기존 화면과 요구사항 정리'),('구조 분석','React 프로젝트 흐름 파악'),('코드 수정','회원가입·검색·주문 플로우 구현')]
     x=58
     for t,b in poc:
-        card(img,(x,1640,x+300,1770),t,b,body_size=15,title_color=BLUE); x+=326
-    shadow_box(img,(58,1800,512,1906),20,(239,246,255,255),(191,219,254,255)); d.text((84,1824),'“비숙련자 진입장벽 낮춤”',font=font(22),fill=BLUE); draw_text(d,(84,1858),'복잡한 프로젝트 구조도 AI 도움으로 빠르게 화면과 흐름을 이해',font(15),fill=MUTED,max_w=398)
-    shadow_box(img,(540,1800,1020,1906),20,(239,246,255,255),(191,219,254,255)); d.text((566,1824),'“완벽히 동작하는 비즈니스 화면 코드”',font=font(21),fill=BLUE); draw_text(d,(566,1858),'단순 목업이 아니라 실제 업무 플로우에 맞춰 동작하는 화면 코드까지 구현',font(15),fill=MUTED,max_w=424)
-    footer(d,2,False); return img.convert('RGB')
+        card(img,(x,3004,x+300,3134),t,b,body_size=15,title_color=BLUE); x+=326
+    shadow_box(img,(58,3168,512,3274),20,(239,246,255,255),(191,219,254,255)); d.text((84,3192),'“비숙련자 진입장벽 낮춤”',font=font(22),fill=BLUE); draw_text(d,(84,3226),'복잡한 프로젝트 구조도 AI 도움으로 빠르게 화면과 흐름을 이해',font(15),fill=MUTED,max_w=398)
+    shadow_box(img,(540,3168,1020,3274),20,(239,246,255,255),(191,219,254,255)); d.text((566,3192),'“완벽히 동작하는 비즈니스 화면 코드”',font=font(21),fill=BLUE); draw_text(d,(566,3226),'단순 목업이 아니라 실제 업무 플로우에 맞춰 동작하는 화면 코드까지 구현',font(15),fill=MUTED,max_w=424)
+    footer(d,2,False,H2); return img.convert('RGB')
 
 def page3():
     img=canvas(False).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
@@ -230,9 +253,11 @@ def main():
     try:
         import fitz
         doc=fitz.open()
-        rect=fitz.Rect(0,0,W,H)
         for out in outs:
-            page=doc.new_page(width=W,height=H)
+            with Image.open(out) as im:
+                iw, ih = im.size
+            rect=fitz.Rect(0,0,iw,ih)
+            page=doc.new_page(width=iw,height=ih)
             page.insert_image(rect,filename=str(out),keep_proportion=False)
         doc.save(pdf,deflate=True,garbage=4)
         doc.close()

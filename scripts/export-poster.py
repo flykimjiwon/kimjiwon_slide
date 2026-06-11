@@ -8,10 +8,12 @@ import tempfile
 from pathlib import Path
 
 import fitz
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 CHROME = Path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
 PAGE_RE = re.compile(r'<section class="poster-page[^"]*"[^>]*>.*?</section>', re.S)
+PAGE_HEIGHT_RE = re.compile(r'#poster-(\d+)\{height:(\d+)px\}')
 EXPORT_CSS = """
 <style id="poster-export-css">
   body{background:#fff!important;margin:0!important;overflow:hidden!important}
@@ -41,9 +43,12 @@ def chrome_capture(html_path: Path, png_path: Path, scale: int, width: int, heig
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-def build_pdf(pngs: list[Path], output: Path, width: int, height: int) -> None:
-    doc = fitz.open(); rect = fitz.Rect(0,0,width,height)
+def build_pdf(pngs: list[Path], output: Path) -> None:
+    doc = fitz.open()
     for png in pngs:
+        with Image.open(png) as im:
+            width, height = im.size
+        rect = fitz.Rect(0,0,width,height)
         page = doc.new_page(width=width, height=height)
         page.insert_image(rect, filename=str(png), keep_proportion=False)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -66,6 +71,7 @@ def main() -> int:
     pages = PAGE_RE.findall(source)
     if not pages:
         raise SystemExit('No poster pages found')
+    page_heights = {int(k): int(v) for k, v in PAGE_HEIGHT_RE.findall(source)}
     workdir = Path(tempfile.mkdtemp(prefix='techaicode-poster-'))
     exported: list[Path] = []
     try:
@@ -74,12 +80,13 @@ def main() -> int:
             tmp_png = workdir / f'poster-{i:02d}.png'
             final_png = ROOT / f'{args.output_prefix}_{i:02d}.png'
             html_path.write_text(make_page_html(source, i), encoding='utf-8')
-            chrome_capture(html_path, tmp_png, args.scale, args.width, args.height)
+            page_height = page_heights.get(i, args.height)
+            chrome_capture(html_path, tmp_png, args.scale, args.width, page_height)
             final_png.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(tmp_png, final_png)
             exported.append(final_png)
             print(f'captured {i:02d}/{len(pages)} {final_png.relative_to(ROOT)}', flush=True)
-        build_pdf(exported, ROOT / args.output_pdf, args.width, args.height)
+        build_pdf(exported, ROOT / args.output_pdf)
         print(f'wrote {args.output_pdf}', flush=True)
         print(f'pages {len(pages)}', flush=True)
         print(f'workdir {workdir}', flush=True)
