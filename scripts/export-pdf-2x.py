@@ -20,6 +20,12 @@ try:
 except Exception as exc:  # pragma: no cover
     raise SystemExit(f"PyMuPDF(fitz) is required: {exc}")
 
+try:
+    from PIL import Image, ImageFilter
+except Exception:  # pragma: no cover
+    Image = None
+    ImageFilter = None
+
 ROOT = Path(__file__).resolve().parents[1]
 CHROME = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 SLIDE_RE = re.compile(r'<section class="slide[^\"]*"[^>]*>.*?</section>', re.S)
@@ -82,15 +88,112 @@ def chrome_capture(html_path: Path, png_path: Path, scale: int, width: int, heig
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
-def build_pdf(pngs: list[Path], output: Path, width: int, height: int) -> None:
+def detail_bbox(png: Path) -> tuple[int, int, int, int] | None:
+    """Return a rough detail bounding box so zoom crops whitespace, not content."""
+    if Image is None or ImageFilter is None:
+        return None
+    with Image.open(png) as raw:
+        gray = raw.convert("L")
+        # FIND_EDGES ignores smooth slide backgrounds but catches text, cards,
+        # screenshots, video frames, and chart boundaries.
+        edges = gray.filter(ImageFilter.FIND_EDGES).filter(ImageFilter.MaxFilter(9))
+        mask = edges.point(lambda p: 255 if p > 70 else 0)
+        # Pillow's edge filter treats the outer image boundary as a strong edge.
+        # Zero a thin border so slide-canvas edges do not prevent whitespace crop.
+        border = 64
+        width, height = mask.size
+        pixels = mask.load()
+        for x in range(width):
+            for y in range(border):
+                pixels[x, y] = 0
+                pixels[x, height - 1 - y] = 0
+        for y in range(height):
+            for x in range(border):
+                pixels[x, y] = 0
+                pixels[width - 1 - x, y] = 0
+        return mask.getbbox()
+
+
+def crop_for_zoom(png: Path, output: Path, target_zoom: float) -> tuple[Path, float]:
+    """Crop around detected content with up to target_zoom, preserving 16:9."""
+    if target_zoom <= 1.0 or Image is None:
+        return png, 1.0
+
+    with Image.open(png) as raw:
+        image = raw.convert("RGB")
+        width, height = image.size
+        bbox = detail_bbox(png)
+        if not bbox:
+            bbox = (0, 0, width, height)
+
+        # Add a visual safety margin around detected details. Screenshots are 2x,
+        # so 140px here is about 70 CSS px in the slide.
+        margin = 140
+        x0 = max(0, bbox[0] - margin)
+        y0 = max(0, bbox[1] - margin)
+        x1 = min(width, bbox[2] + margin)
+        y1 = min(height, bbox[3] + margin)
+        bbox_w = max(1, x1 - x0)
+        bbox_h = max(1, y1 - y0)
+
+        aspect = width / height
+        target_w = width / target_zoom
+        target_h = height / target_zoom
+
+        crop_w = max(target_w, bbox_w)
+        crop_h = crop_w / aspect
+        if crop_h < bbox_h:
+            crop_h = bbox_h
+            crop_w = crop_h * aspect
+
+        crop_w = min(width, crop_w)
+        crop_h = min(height, crop_h)
+
+        cx = (x0 + x1) / 2
+        cy = (y0 + y1) / 2
+        left = min(max(0, cx - crop_w / 2), width - crop_w)
+        top = min(max(0, cy - crop_h / 2), height - crop_h)
+        right = left + crop_w
+        bottom = top + crop_h
+
+        crop = image.crop((round(left), round(top), round(right), round(bottom)))
+        crop.save(output)
+        effective_zoom = width / (right - left)
+        return output, effective_zoom
+
+
+def build_pdf(
+    pngs: list[Path],
+    output: Path,
+    width: int,
+    height: int,
+    zoom_after_first: float = 1.0,
+) -> None:
     doc = fitz.open()
     rect = fitz.Rect(0, 0, width, height)
-    for png in pngs:
+    crop_dir = output.parent / ".pdf-export-crops"
+    effective_zooms: list[float] = []
+    for index, png in enumerate(pngs, start=1):
         page = doc.new_page(width=width, height=height)
-        page.insert_image(rect, filename=str(png), keep_proportion=False)
+        pdf_png = png
+        effective_zoom = 1.0
+        if index > 1 and zoom_after_first > 1.0:
+            crop_dir.mkdir(parents=True, exist_ok=True)
+            pdf_png, effective_zoom = crop_for_zoom(
+                png,
+                crop_dir / f"slide-{index:02d}-zoom.png",
+                zoom_after_first,
+            )
+        effective_zooms.append(effective_zoom)
+        page.insert_image(rect, filename=str(pdf_png), keep_proportion=False)
     output.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(output), deflate=True, garbage=4)
     doc.close()
+    if crop_dir.exists():
+        shutil.rmtree(crop_dir, ignore_errors=True)
+    if zoom_after_first > 1.0:
+        zoom_text = ", ".join(f"{z:.2f}" for z in effective_zooms)
+        print(f"effective_zooms {zoom_text}", flush=True)
 
 
 def main() -> int:
@@ -100,6 +203,12 @@ def main() -> int:
     ap.add_argument('--width', type=int, default=1920)
     ap.add_argument('--height', type=int, default=1080)
     ap.add_argument('--scale', type=int, default=2)
+    ap.add_argument(
+        '--zoom-after-first',
+        type=float,
+        default=1.0,
+        help='Target content-safe zoom for PDF pages after page 1. Example: 1.3 keeps page 1 unchanged and crops whitespace on pages 2+ up to 30%% without cutting detected content.',
+    )
     ap.add_argument('--keep-workdir', action='store_true')
     args = ap.parse_args()
 
@@ -124,9 +233,10 @@ def main() -> int:
             chrome_capture(html_path, png_path, args.scale, args.width, args.height)
             pngs.append(png_path)
             print(f'captured {i:02d}/{len(slides)} {png_path.name}', flush=True)
-        build_pdf(pngs, output_path, args.width, args.height)
+        build_pdf(pngs, output_path, args.width, args.height, args.zoom_after_first)
         print(f'wrote {output_path.relative_to(ROOT)}', flush=True)
         print(f'pages {len(slides)}', flush=True)
+        print(f'zoom_after_first {args.zoom_after_first}', flush=True)
         print(f'workdir {workdir}', flush=True)
     finally:
         if not args.keep_workdir:
