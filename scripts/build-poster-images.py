@@ -117,7 +117,7 @@ def footer(d, page, dark=False, height=DEFAULT_H, left_text='신한은행 TECH�
     d.text((W-58,height-44),f'Poster {page}/3',font=font(15),fill=fill,anchor='ra')
 
 def page1():
-    H1=2700
+    H1=2820
     img=canvas(True,H1).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
     header(d,'택가이코드','TECHAI CODE · INTERNAL AI CODING AGENT',1,True)
     d.text((58,178),'터미널과 VS Code에서 쓰는\n사내 AI 개발 에이전트',font=font(36),fill=(218,230,255))
