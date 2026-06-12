@@ -123,7 +123,7 @@ def page1():
     d.text((58,178),'터미널과 VS Code에서 쓰는\n사내 AI 개발 에이전트',font=font(36),fill=(218,230,255))
     paste_fit(img,ASSETS/'techai_tui_icon.png',(58,292,150,384),radius=24,bg=(15,23,42))
     d.text((166,292),'TECHAI',font=font(54),fill=WHITE); d.text((166,342),'CODE',font=font(54),fill=(139,190,255))
-    chips=['Terminal','VS Code Extension','Same Engine','On-Premise']
+    chips=['Terminal','VS Code Extension','DESKTOP','100%자체개발','On-Premise']
     cx, cy = 58, 414
     chip_f = font(15)
     for ch in chips:
@@ -155,7 +155,7 @@ def page1():
     footer(d,1,True,H1); return img.convert('RGB')
 
 def page2():
-    H2=3800
+    H2=3640
     img=canvas(False,H2).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
     header(d,'제품 · 성능 · POC','PRODUCT · MODEL · USE CASE',2,False)
     d.text((58,176),'택가이코드는 개발자가 실제로 쓰는 제품입니다',font=font(42),fill=TEXT)
@@ -163,10 +163,10 @@ def page2():
     shadow_box(img,(58,286,510,626),26,(11,16,32,255),(51,65,85,255),shadow=(15,23,42,45)); paste_fit(img,ASSETS/'techaicode_terminal.png',(78,306,490,606),radius=16,bg=(11,16,32))
     card(img,(538,286,780,440),'Terminal Agent','프로젝트 루트에서 바로 실행. 파일·셸·git 작업과 연결됩니다.',body_size=16)
     card(img,(804,286,1020,440),'VS Code Extension','에디터 안에서 같은 엔진과 도구 실행 루프를 사용합니다.',body_size=16)
-    card(img,(538,466,780,626),'Same Engine','모델 권한, 로그, API Key 관리 체계는 동일합니다.',body_size=16)
+    card(img,(538,466,780,626),'100%자체개발','모델 권한, 로그, API Key 관리 체계는 동일합니다.',body_size=16)
     card(img,(804,466,1020,626),'오픈소스 대비 경쟁력','내부망에서 필요없는 기능은 걷어내고 핵심 작업 루프만 담았습니다.',body_size=14)
 
-    d.text((58,696),'4월 첫출시 이후 현재 2배 이상 더 좋아졌습니다',font=font(34),fill=TEXT)
+    d.text((58,696),'첫출시 이후 모델과 프로그램 개선으로 2배 이상 좋아졌습니다',font=font(28),fill=TEXT)
     shadow_box(img,(58,756,512,1158),24,WHITE,LINE,shadow=(15,23,42,22))
     d.text((86,782),'코딩 Agent 생산성',font=font(28),fill=TEXT); d.text((86,820),'프론티어=100 상대지수 · 현재 적용 모델 하이라이트',font=font(16),fill=MUTED)
     bars=[('GPT-5.5 / Codex',100,BLUE2,'97-100'),('Claude Opus 4.8',100,CYAN,'97-100'),('코딩모델 35B',87,GREEN,'87'),('코딩모델 30B',83,(122,135,151),'83'),('범용모델 120B',80,(122,135,151),'80')]
@@ -178,13 +178,25 @@ def page2():
         rounded(d,(230,y+3,230+int(200*val/100),y+25),11,col,None)
         d.text((446,y+2),display,font=font(14),fill=TEXT)
         y+=50
-    draw_text(d,(86,1110),'모델 자체보다 Agent Loop, Tool Calling, Repository Reasoning, 한국어 요구사항 처리 차이가 실제 생산성에 크게 반영됩니다.',font(14),fill=MUTED,max_w=386,line_gap=3)
+    draw_text(d,(86,1110),'2배 개선은 모델 교체만이 아니라 실제 프로그램의 Agent Loop, Tool Calling, 한국어 요구사항 처리 개선까지 포함한 체감 생산성 기준입니다.',font(13),fill=MUTED,max_w=386,line_gap=3)
     shadow_box(img,(540,756,1020,1158),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22))
     d.text((568,790),'내부망에서 필요없는 기능은',font=font(28),fill=TEXT)
     d.text((568,830),'걷어내고 핵심만 담았습니다',font=font(34),fill=BLUE)
-    draw_text(d,(568,892),'개발자가 실제로 쓰는 파일·검색·Shell·git·검증 루프에 집중해, 내부망에서도 빠르고 안정적으로 동작하도록 구성했습니다.',font(19),fill=MUTED,max_w=400,line_gap=7)
-    rounded(d,(568,1052,774,1100),24,(255,255,255,255),(191,219,254,255)); d.text((671,1065),'핵심 루프 집중',font=font(17),fill=BLUE2,anchor='ma')
-    rounded(d,(796,1052,994,1100),24,(255,255,255,255),(191,219,254,255)); d.text((895,1065),'내부망 최적화',font=font(17),fill=BLUE2,anchor='ma')
+    draw_text(d,(568,892),'개발자가 실제로 쓰는 파일·검색·Shell·git·검증 루프에 집중해, 내부망에서도 빠르고 안정적으로 동작하도록 구성했습니다.',font(17),fill=MUTED,max_w=400,line_gap=5)
+    # Compact comparison table: existing open-source extension/terminal tools vs TechAI Code.
+    tx, ty = 568, 1006
+    colw = [62, 162, 174]
+    rows=[('항목','기존 오픈소스','택가이코드'),('용량','확장·범용 기능 포함','최대 1/10'),('속도','범용 환경 기준','내부망 기준 더 빠름'),('구성','인터넷 필요 기능 다수 포함','직접 자체구현')]
+    for ri,row in enumerate(rows):
+        y0=ty+ri*33
+        x0=tx
+        for ci,txt in enumerate(row):
+            fill=(239,246,255,255) if ri==0 else (255,255,255,255)
+            outline=(191,219,254,255)
+            rounded(d,(x0,y0,x0+colw[ci],y0+33),8,fill,outline)
+            color=BLUE2 if ri==0 or (ci==2 and ri>0) else TEXT
+            d.text((x0+8,y0+9),txt,font=font(11),fill=color)
+            x0+=colw[ci]
 
 
     d.text((58,1236),'택가이코드 VS Code Extension',font=font(42),fill=TEXT)
@@ -196,12 +208,12 @@ def page2():
     shadow_box(img,(58,2058,1020,2628),26,WHITE,LINE,shadow=(15,23,42,28)); paste_fit(img,ASSETS/'techaicode_desktop_app.png',(84,2088,994,2598),radius=18,bg=WHITE)
     shadow_box(img,(58,2678,1020,2868),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22))
     d.text((86,2708),'택가이 데스크톱 확장 방향',font=font(30),fill=BLUE)
-    draw_text(d,(86,2754),'업무망 사용 확대, 문서작성·스케줄관리, 사용자 개인화·내장 DB를 통해 일반 업무 환경으로 확장합니다. 개발과 단순 AI 질문 기능을 넘어 대부분의 개인화 에이전트를 대체할 것입니다.',font(22),fill=TEXT,max_w=880,line_gap=8)
-    chips=[('업무망 확대',86),('문서작성',260),('스케줄관리',414),('개인화 DB',594),('개인화 에이전트 대체',760)]
+    draw_text(d,(86,2752),'업무망 사용 확대, 문서작성 및 분석, 스케줄관리, 사용자 개인화·내장 DB를 통해 일반 업무 환경으로 확장합니다. 이미지 생성·분석 기능과 시중 AI 기반 데스크톱 cowork 기능까지 포함해, 개발과 단순 AI 질문 기능을 넘어 대부분의 개인화 에이전트를 대체할 예정입니다.',font(16),fill=TEXT,max_w=880,line_gap=5)
+    chips=[('업무망 확대',86),('문서작성·분석',220),('스케줄관리',394),('이미지 생성·분석',538),('개인화 DB',748),('Desktop Cowork',884)]
     for label,x in chips:
-        tw=d.textlength(label,font=font(16))
-        rounded(d,(x,2820,x+tw+30,2858),19,(255,255,255,255),(191,219,254,255))
-        d.text((x+15,2829),label,font=font(16),fill=BLUE2)
+        tw=d.textlength(label,font=font(13))
+        rounded(d,(x,2820,x+tw+24,2858),19,(255,255,255,255),(191,219,254,255))
+        d.text((x+12,2829),label,font=font(13),fill=BLUE2)
 
     shadow_box(img,(58,2918,234,2988),16,WHITE,LINE,shadow=(255,91,32,24)); paste_fit(img,ASSETS/'ttaengyo_logo.png',(72,2932,220,2974),radius=8,bg=WHITE)
     d.text((254,2942),'땡겨요 POC에서 확인한 가치',font=font(38),fill=TEXT)
@@ -219,7 +231,8 @@ def page2():
     footer(d,2,False,H2); return img.convert('RGB')
 
 def page3():
-    img=canvas(False).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
+    H3=1900
+    img=canvas(False,H3).convert('RGBA'); d=ImageDraw.Draw(img,'RGBA')
     header(d,'실제 후기 · 확산 · 운영 지표','REAL FEEDBACK',3,False)
     reviews=[('김지은 프로','디지털서비스개발부 · React','내부망 AI임에도 똑똑한 택가이코드 덕분에 업무효율이 매우 늘었습니다.'),('노태경 프로','투자서비스개발부 · Proframe 5','사이즈가 큰 프로젝트에서도 끊기지 않고 수행되어 너무 좋습니다.'),('이승민 프로','디지털서비스개발부 · SOL APP','업무 진행하면서 많은 도움이 되었습니다. 주기적인 업데이트 부탁드립니다!'),('김예진 프로','디지털서비스개발부 · SOL APP 뱅킹','AI와 함께 답변을 도출했을 때 개발속도와 결과물이 더 빨랐습니다.'),('변은서 프로','디지털서비스개발부 · PB·공과금','정보 검색 시간이 단축되어 업무를 빨리 끝낼 수 있어 도움이 됩니다.'),('서문교 프로','디지털서비스개발부 · 이벤트개발','단순 반복 개발건 70% 시간단축, 만족도 5점에 5점입니다.'),('김장원 팀장','글로벌서비스개발부','내부망 환경에서도 AI Coding Agent가 실제 활용될 수 있다는 점에 놀라웠습니다.'),('김혜민 프로','땡겨요사업단 · 플랫폼운영 Cell','사내망 보안 환경에서도 최고 수준 AI 개발 툴을 자체 테스트한 큰 의미가 있었습니다.'),('정다윤 프로','정보서비스개발부 · CXM Cell','IDE 내 오류 검증, 복잡한 쿼리/쉘 학습, 기술 내용 요약에 큰 도움이 됩니다.')]
     x0,y0=58,166; cw,ch=302,158; gap=16
@@ -230,7 +243,7 @@ def page3():
     card(img,(58,y,360,y+126),'외부개발자 온보딩','처음 보는 코드베이스를 혼자 파악하는 시간을 줄입니다.',body_size=16)
     card(img,(388,y,690,y+126),'추가 사용문의 부서','고객상담센터 · Data플랫폼Unit · 고객경험혁신센터',body_size=16)
     card(img,(718,y,1020,y+126),'운영 가능 구조','API Key, 로그, 사용량, 오류 이력으로 통제 가능한 AI 동료.',body_size=16)
-    d.text((58,874),'2026년 6월 기준 택가이 주간 운영지표',font=font(42),fill=TEXT); d.text((58,928),'5영업일 기준 · 실제 운영 통계',font=font(20),fill=MUTED)
+    d.text((58,874),'2026년 6월 2주차 기준 택가이 주간 운영지표',font=font(42),fill=TEXT); d.text((58,928),'5영업일 기준 · 실제 운영 통계',font=font(20),fill=MUTED)
     metrics=[('전체 사용자','1,157명+','개발망 872명+ / 업무망 285명+'),('주간 활성 사용자','510명+','개발망 429명+ / 업무망 81명+'),('API Key 발급 개발자','245명+','개발망에서 개인 Key 발급 후 사용'),('하루 평균 요청','4,500+','일 평균 요청 횟수')]
     x=58
     for t,v,s in metrics:
@@ -250,17 +263,22 @@ def page3():
         x+=246
     shadow_box(img,(58,1170,430,1398),24,(9,35,92,255),(37,99,235,255),shadow=(15,23,42,32));
     d.pieslice((82,1212,202,1332),-90,234,fill=GREEN); d.pieslice((82,1212,202,1332),234,270,fill=(229,238,251)); d.ellipse((112,1242,172,1302),fill=WHITE); d.text((142,1260),'90%',font=font(22),fill=GREEN,anchor='mm')
-    d.text((228,1208),'개발망 주간 토큰 / 택가이코드 비중',font=font(15),fill=(210,226,255)); d.text((228,1232),'주간 5영업일 기준',font=font(15),fill=(147,197,253)); d.text((228,1264),'약 9억+',font=font(47),fill=WHITE); draw_text(d,(228,1324),'856,537,544 tokens · 총 토큰 사용량의 90%가 택가이코드에서 발생',font(14),fill=(219,234,254),max_w=170,line_gap=3)
+    d.text((228,1208),'개발망 주간 토큰 / 택가이코드 비중',font=font(15),fill=(210,226,255)); d.text((228,1232),'주간 5영업일 기준',font=font(15),fill=(147,197,253)); d.text((228,1264),'약 9억+',font=font(43),fill=WHITE); draw_text(d,(228,1324),'914,203,456 tokens · 총 토큰 사용량의 90%가 택가이코드에서 발생',font(14),fill=(219,234,254),max_w=170,line_gap=3)
     shadow_box(img,(458,1170,1020,1546),24,WHITE,LINE,shadow=(15,23,42,16)); d.text((486,1196),'부서별 주간 사용량 TOP 10',font=font(28),fill=TEXT)
     depts=[('신한은행 외부개발팀',237.9,100),('글로벌서비스개발부',169.7,71),('ICT아웃소싱베트남',150.1,63),('디지털서비스개발부',82.8,35),('정보서비스개발부',47.8,20),('Data플랫폼Unit',44.7,19),('Tech운영부',42.5,18),('투자서비스개발부',17.2,8),('DS개발팀',13.9,6),('금융서비스개발부',8.3,4)]
     yy=1244
     for i,(name,m,pct) in enumerate(depts,1):
-        d.text((486,yy+3),str(i),font=font(14),fill=MUTED); rounded(d,(516,yy,908,yy+22),11,(234,240,248),None); rounded(d,(516,yy,516+int(392*pct/100),yy+22),11,(253,186,116),None); d.text((526,yy+2),name,font=font(12),fill=TEXT); d.text((928,yy+1),f'{m:.1f}M',font=font(14),fill=TEXT); yy+=28
+        d.text((486,yy+3),str(i),font=font(14),fill=MUTED)
+        d.text((512,yy+2),name,font=font(12),fill=TEXT)
+        rounded(d,(706,yy,908,yy+22),11,(234,240,248),None)
+        rounded(d,(706,yy,706+int(202*pct/100),yy+22),11,(37,99,235),None)
+        d.text((928,yy+1),f'{m:.1f}M',font=font(14),fill=TEXT)
+        yy+=28
     draw_text(d,(486,1520),'그 외 Tech기획부·여신서비스개발부·AI개발부 등 사용 중 · 다음 순위 5.7M+ · 막대는 1위 대비',font(13),fill=MUTED,max_w=500,line_gap=2)
     shadow_box(img,(58,1594,1020,1814),28,(17,24,39,255),(51,65,85,255),shadow=(15,23,42,30));
-    draw_text(d,(104,1630),'택가이코드는 오픈소스 모델을 기반으로 구축되어 사내 내부망에서 이용가능하며, 내부망 환경에서 외부솔루션과 오픈소스보다 오히려 뛰어난 AI 코드 어시스턴트입니다.',font(30),fill=WHITE,max_w=872,line_gap=8,align='center')
+    draw_text(d,(104,1628),'택가이코드는 오픈소스 모델을 기반으로 구축되어 사내 내부망에서 이용가능하며, 내부망 환경에서 외부솔루션과 오픈소스보다 오히려 뛰어난 AI 코드 어시스턴트입니다. 외부업체 솔루션과 SI에 의존하지 않은 100% 자체개발 제품입니다.',font(18),fill=WHITE,max_w=872,line_gap=8,align='center')
     rounded(d,(350,1750,730,1798),24,WHITE,None); d.text((540,1762),'techaicode.vercel.app (택가이코드 LIVE 발표자료)',font=font(16),fill=TEXT,anchor='ma')
-    footer(d,3,False,left_text='신한은행 TECH혁신Unit 개발 AX Cell · 담당자: 김지원프로 · 이성렬프로'); return img.convert('RGB')
+    footer(d,3,False,H3,left_text='신한은행 TECH혁신Unit 개발 AX Cell · 담당자: 김지원프로 · 이성렬프로'); return img.convert('RGB')
 
 def main():
     pages=[page1(),page2(),page3()]
