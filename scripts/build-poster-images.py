@@ -164,7 +164,7 @@ def page2():
     card(img,(538,286,780,440),'Terminal Agent','프로젝트 루트에서 바로 실행. 파일·셸·git 작업과 연결됩니다.',body_size=16)
     card(img,(804,286,1020,440),'VS Code Extension','에디터 안에서 같은 엔진과 도구 실행 루프를 사용합니다.',body_size=16)
     card(img,(538,466,780,626),'Same Engine','모델 권한, 로그, API Key 관리 체계는 동일합니다.',body_size=16)
-    card(img,(804,466,1020,626),'오픈소스 대비 경쟁력','모델 성능뿐 아니라 코드 어시스턴트 도구 자체도 기존 오픈소스 도구보다 오히려 경량화되며 높은 성능을 보여줍니다.',body_size=14)
+    card(img,(804,466,1020,626),'오픈소스 대비 경쟁력','내부망에서 필요없는 기능은 걷어내고 핵심 작업 루프만 담았습니다.',body_size=14)
 
     d.text((58,696),'4월 첫출시 이후 현재 2배 이상 더 좋아졌습니다',font=font(34),fill=TEXT)
     shadow_box(img,(58,756,512,1158),24,WHITE,LINE,shadow=(15,23,42,22))
@@ -180,22 +180,12 @@ def page2():
         y+=50
     draw_text(d,(86,1110),'모델 자체보다 Agent Loop, Tool Calling, Repository Reasoning, 한국어 요구사항 처리 차이가 실제 생산성에 크게 반영됩니다.',font(14),fill=MUTED,max_w=386,line_gap=3)
     shadow_box(img,(540,756,1020,1158),24,(239,246,255,255),(191,219,254,255),shadow=(15,23,42,22))
-    d.text((568,792),'도구 자체도 가볍고 빠르게',font=font(30),fill=TEXT)
-    draw_text(d,(568,844),'기존 오픈소스 도구보다 경량화된 구조로, 내부망에서도 높은 반응성과 안정적인 작업 루프를 목표로 합니다.',font(18),fill=MUTED,max_w=400,line_gap=6)
-    # Tool comparison graph: TechAI tool size is much lighter while practical performance remains close.
-    graph_y=950
-    d.text((568,graph_y),'용량',font=font(16),fill=TEXT)
-    rounded(d,(660,graph_y+2,948,graph_y+24),11,(219,234,254,255),None)
-    rounded(d,(660,graph_y+2,660+29,graph_y+24),11,GREEN,None)
-    d.text((964,graph_y),'최대 1/10',font=font(15),fill=BLUE2,anchor='la')
-    graph_y += 40
-    d.text((568,graph_y),'성능',font=font(16),fill=TEXT)
-    rounded(d,(660,graph_y+2,948,graph_y+24),11,(219,234,254,255),None)
-    rounded(d,(660,graph_y+2,660+276,graph_y+24),11,BLUE2,None)
-    d.text((964,graph_y),'거의 동급',font=font(15),fill=BLUE2,anchor='la')
-    d.text((568,1040),'용량은 최대 1/10, 성능은 거의 동급',font=font(18),fill=TEXT)
-    rounded(d,(568,1080,788,1126),23,(255,255,255,255),(191,219,254,255)); d.text((678,1092),'경량화',font=font(18),fill=BLUE2,anchor='ma')
-    rounded(d,(810,1080,994,1126),23,(255,255,255,255),(191,219,254,255)); d.text((902,1092),'고성능',font=font(18),fill=BLUE2,anchor='ma')
+    d.text((568,790),'내부망에서 필요없는 기능은',font=font(28),fill=TEXT)
+    d.text((568,830),'걷어내고 핵심만 담았습니다',font=font(34),fill=BLUE)
+    draw_text(d,(568,892),'개발자가 실제로 쓰는 파일·검색·Shell·git·검증 루프에 집중해, 내부망에서도 빠르고 안정적으로 동작하도록 구성했습니다.',font(19),fill=MUTED,max_w=400,line_gap=7)
+    rounded(d,(568,1052,774,1100),24,(255,255,255,255),(191,219,254,255)); d.text((671,1065),'핵심 루프 집중',font=font(17),fill=BLUE2,anchor='ma')
+    rounded(d,(796,1052,994,1100),24,(255,255,255,255),(191,219,254,255)); d.text((895,1065),'내부망 최적화',font=font(17),fill=BLUE2,anchor='ma')
+
 
     d.text((58,1236),'택가이코드 VS Code Extension',font=font(42),fill=TEXT)
     d.text((58,1288),'에디터 안에서 프로젝트 맥락을 읽고, 같은 엔진으로 파일·검색·Shell 작업을 이어갑니다.',font=font(22),fill=MUTED)
@@ -221,12 +211,11 @@ def page2():
         card(img,(x,3004,x+300,3134),t,b,body_size=15,title_color=BLUE); x+=326
     shadow_box(img,(58,3168,512,3274),20,(239,246,255,255),(191,219,254,255)); d.text((84,3192),'“비숙련자 진입장벽 낮춤”',font=font(22),fill=BLUE); draw_text(d,(84,3226),'복잡한 프로젝트 구조도 AI 도움으로 빠르게 화면과 흐름을 이해',font(15),fill=MUTED,max_w=398)
     shadow_box(img,(540,3168,1020,3274),20,(239,246,255,255),(191,219,254,255)); d.text((566,3192),'“완벽히 동작하는 비즈니스 화면 코드”',font=font(21),fill=BLUE); draw_text(d,(566,3226),'단순 목업이 아니라 실제 업무 플로우에 맞춰 동작하는 화면 코드까지 구현',font(15),fill=MUTED,max_w=424)
-    rounded(d,(58,3308,310,3348),20,(17,24,39,255),(51,65,85,255)); d.text((78,3318),'김혜민프로의 의견입니다.',font=font(17),fill=(219,234,254))
-    shadow_box(img,(58,3368,1020,3592),24,(17,24,39,255),(51,65,85,255),shadow=(15,23,42,22))
-    d.text((86,3396),'김혜민 프로 · 땡겨요사업단 플랫폼운영 Cell',font=font(25),fill=(147,197,253))
-    d.text((86,3438),'기획/분석: 레거시 소스 기반 문서 최적화 및 비즈니스 로직 추출 속도 향상',font=font(18),fill=(219,234,254))
-    d.text((86,3470),'개발 생산성: React 전환 시 화면당 개발 공수(MM)의 획기적인 절감 확인',font=font(18),fill=(219,234,254))
-    draw_text(d,(86,3512),'사내망 인프라의 한계를 극복하고 구축한 고성능 AI 테스트베드를 통해, React 개발 공수를 최대 87.5%까지 단축하는 압도적인 전환 생산성을 직접 증명했습니다.',font(18),fill=(219,234,254),max_w=880,line_gap=5)
+    shadow_box(img,(58,3308,1020,3532),24,(17,24,39,255),(51,65,85,255),shadow=(15,23,42,22))
+    d.text((86,3336),'김혜민 프로 · 땡겨요사업단 플랫폼운영 Cell',font=font(25),fill=(147,197,253))
+    d.text((86,3378),'기획/분석: 레거시 소스 기반 문서 최적화 및 비즈니스 로직 추출 속도 향상',font=font(18),fill=(219,234,254))
+    d.text((86,3410),'개발 생산성: React 전환 시 화면당 개발 공수(MM)의 획기적인 절감 확인',font=font(18),fill=(219,234,254))
+    draw_text(d,(86,3452),'사내망 인프라의 한계를 극복하고 구축한 고성능 AI 테스트베드를 통해, React 개발 공수를 최대 87.5%까지 단축하는 압도적인 전환 생산성을 직접 증명했습니다.',font(18),fill=(219,234,254),max_w=880,line_gap=5)
     footer(d,2,False,H2); return img.convert('RGB')
 
 def page3():
