@@ -1,4 +1,4 @@
-# techi_code_final_slide
+# kimjiwon_slide
 
 택가이코드 발표자료 최종본입니다.
 
