@@ -23,6 +23,14 @@
   ],
   "rewrites": [
     {
+      "source": "/sbti2",
+      "destination": "/sbti2/index.html"
+    },
+    {
+      "source": "/sbti3",
+      "destination": "/sbti3/index.html"
+    },
+    {
       "source": "/sbti1",
       "destination": "/sbti1/index.html"
     },

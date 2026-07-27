@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TECHAI CODE">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="6" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.52" stop-color="#1d4ed8"/>
+      <stop offset="1" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="12" y1="14" x2="52" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <rect x="9" y="12" width="46" height="40" rx="10" fill="url(#panel)" stroke="rgba(255,255,255,.28)" stroke-width="1.4"/>
+  <circle cx="17" cy="20" r="2.2" fill="#ff5f57"/>
+  <circle cx="24" cy="20" r="2.2" fill="#ffbd2e"/>
+  <circle cx="31" cy="20" r="2.2" fill="#28c840"/>
+  <path d="M20 29.5 27 36 20 42.5" fill="none" stroke="#f8fbff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M34 42.5h12" fill="none" stroke="#7dd3fc" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M47 18.5l2 4.2 4.5.6-3.2 3.1.8 4.4-4.1-2.1-4.1 2.1.8-4.4-3.2-3.1 4.5-.6 2-4.2Z" fill="#bfdbfe" opacity=".95"/>
+</svg>
