@@ -23,8 +23,8 @@
   ],
   "rewrites": [
     {
-      "source": "/aitrend",
-      "destination": "/aitrend/index.html"
+      "source": "/sbti1",
+      "destination": "/sbti1/index.html"
     },
     {
       "source": "/original",
