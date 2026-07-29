@@ -21,6 +21,7 @@ Vercel에서 GitHub 저장소를 연결한 뒤 Framework Preset을 `Other` 또�
 
 ## SBTI 40명 강의 준비 문서
 
+- [에이전트 필수요소 강의 HTML](https://kimjiwon-slide.vercel.app/agentmake)
 - [강의 운영 준비 가이드](docs/SBTI_강의_운영준비_2026-07-29.md)
 - [강사 학습 노트와 예상 Q&A](docs/SBTI_강사_학습노트_2026-07-29.md)
 - [참가자 사전 안내 초안](docs/SBTI_참가자_사전안내_초안.md)

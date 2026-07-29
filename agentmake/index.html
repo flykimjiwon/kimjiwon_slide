@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="LLM 기반 에이전트의 필수요소를 Agent Core, Production Agent, Agent Product로 구분해 설명하는 SBTI 강의자료">
+  <meta name="theme-color" content="#0a1b30">
+  <link rel="icon" href="data:,">
+  <title>에이전트의 필수요소 | SBTI</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f6f9fd;
+      --surface: #ffffff;
+      --surface-soft: #edf4ff;
+      --ink: #10243e;
+      --ink-soft: #4d627a;
+      --line: #d8e4f2;
+      --blue: #0b6bdb;
+      --blue-deep: #084b9b;
+      --blue-pale: #dcecff;
+      --green: #13795b;
+      --green-pale: #dcf5ea;
+      --amber: #a45b08;
+      --amber-pale: #fff0d2;
+      --red: #b42318;
+      --red-pale: #fee4e2;
+      --navy: #0a1b30;
+      --navy-soft: #17365f;
+      --white-soft: #eaf2ff;
+      --focus: #2f80ed;
+      --backdrop: rgba(10, 27, 48, 0.72);
+      --shadow-rest: 0 16px 42px rgba(24, 74, 128, 0.08);
+      --shadow-high: 0 28px 80px rgba(12, 52, 96, 0.14);
+      --radius-panel: 20px;
+      --radius-control: 12px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard", "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --slide-max: 1280px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--font);
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 100;
+      width: 0;
+      height: 4px;
+      background: var(--blue);
+      transition: width 240ms ease-in-out;
+    }
+
+    .deck {
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      width: 100%;
+      height: 100%;
+      padding: clamp(2rem, 4.5vh, 4rem) clamp(2rem, 5vw, 5rem) clamp(5rem, 9vh, 6.5rem);
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 8%, var(--blue-pale) 0, transparent 25%),
+        linear-gradient(180deg, var(--surface), var(--canvas));
+      transform: translateY(12px);
+      transition: opacity 240ms ease-in-out, transform 460ms var(--ease);
+    }
+
+    .slide.active {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .slide-inner {
+      width: min(100%, var(--slide-max));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 clamp(0.65rem, 1.6vh, 1rem);
+      color: var(--blue);
+      font: 800 clamp(0.72rem, 0.9vw, 0.9rem)/1.4 var(--mono);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      word-break: keep-all;
+    }
+
+    h1,
+    h2 {
+      text-wrap: balance;
+    }
+
+    h1 {
+      max-width: 10ch;
+      margin: 0;
+      font-size: clamp(3rem, 6.2vw, 6.6rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    h2 {
+      max-width: 1120px;
+      margin: 0 0 clamp(1rem, 2.8vh, 2rem);
+      font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    h2 span {
+      color: var(--blue);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: clamp(1.2rem, 1.8vw, 1.75rem);
+      line-height: 1.18;
+      letter-spacing: -0.035em;
+    }
+
+    p {
+      margin: 0;
+      font-size: clamp(1rem, 1.25vw, 1.2rem);
+      font-weight: 560;
+      line-height: 1.52;
+    }
+
+    .lead {
+      max-width: 920px;
+      color: var(--ink-soft);
+      font-size: clamp(1.08rem, 1.65vw, 1.65rem);
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: clamp(1.2rem, 3vh, 2rem);
+      padding: 0;
+      list-style: none;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink-soft);
+      font: 800 clamp(0.75rem, 0.9vw, 0.9rem)/1.2 var(--mono);
+    }
+
+    .title-slide {
+      color: var(--surface);
+      background:
+        radial-gradient(circle at 76% 18%, var(--navy-soft), transparent 30%),
+        linear-gradient(135deg, var(--navy), var(--navy-soft));
+    }
+
+    .title-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(2rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .title-slide .eyebrow {
+      color: var(--white-soft);
+    }
+
+    .title-slide .lead {
+      max-width: 780px;
+      margin-top: 1.5rem;
+      color: var(--white-soft);
+    }
+
+    .title-slide .chip {
+      border-color: var(--navy-soft);
+      background: var(--navy-soft);
+      color: var(--white-soft);
+    }
+
+    .title-visual {
+      position: relative;
+      display: grid;
+      gap: 0.75rem;
+      margin: 0;
+      padding: clamp(1.2rem, 2.5vw, 2rem);
+      border: 1px solid var(--navy-soft);
+      border-radius: calc(var(--radius-panel) + 8px);
+      background: var(--navy);
+      box-shadow: var(--shadow-high);
+      list-style: none;
+    }
+
+    .title-visual::before {
+      position: absolute;
+      top: 1.4rem;
+      bottom: 1.4rem;
+      left: 50%;
+      width: 2px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .title-layer {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.8rem;
+      align-items: center;
+      min-height: 4rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--navy-soft);
+      border-radius: 14px;
+      background: var(--navy-soft);
+    }
+
+    .title-layer b {
+      color: var(--white-soft);
+      font: 800 0.72rem/1.3 var(--mono);
+      letter-spacing: 0.08em;
+    }
+
+    .title-layer span {
+      font-size: clamp(0.95rem, 1.25vw, 1.2rem);
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--surface);
+      box-shadow: var(--shadow-rest);
+    }
+
+    .panel-label {
+      display: block;
+      margin-bottom: 0.65rem;
+      color: var(--blue);
+      font: 800 clamp(0.68rem, 0.82vw, 0.82rem)/1.4 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .panel p {
+      margin-top: 0.65rem;
+      color: var(--ink-soft);
+    }
+
+    .four-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(0.75rem, 1.4vw, 1.25rem);
+    }
+
+    .four-grid .panel {
+      min-height: 15rem;
+      padding: clamp(1rem, 2vw, 1.6rem);
+    }
+
+    .number {
+      display: grid;
+      place-items: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      margin-bottom: 1.2rem;
+      border-radius: 50%;
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      font: 900 0.9rem/1 var(--mono);
+    }
+
+    .verdict {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      color: var(--green);
+      font: 850 0.82rem/1.4 var(--mono);
+    }
+
+    .verdict.caution {
+      color: var(--amber);
+    }
+
+    .tier-layout {
+      display: grid;
+      grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+      gap: clamp(1.4rem, 4vw, 3.6rem);
+      align-items: center;
+    }
+
+    .tier-copy .lead {
+      margin-top: 1.1rem;
+    }
+
+    .tier-stack {
+      display: grid;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tier {
+      display: grid;
+      grid-template-columns: 9.5rem 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding: clamp(1rem, 2vh, 1.35rem) clamp(1.1rem, 2vw, 1.6rem);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--surface);
+      box-shadow: var(--shadow-rest);
+    }
+
+    .tier:nth-child(1) {
+      margin-left: 4rem;
+      border-color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .tier:nth-child(2) {
+      margin-left: 2rem;
+      border-color: var(--amber);
+      background: var(--amber-pale);
+    }
+
+    .tier:nth-child(3) {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .tier b {
+      font: 900 clamp(0.8rem, 1vw, 1rem)/1.35 var(--mono);
+    }
+
+    .tier span {
+      font-size: clamp(1rem, 1.35vw, 1.35rem);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .formula {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: clamp(1rem, 3vh, 2rem);
+      padding: 0;
+      list-style: none;
+    }
+
+    .formula-item {
+      position: relative;
+      display: grid;
+      align-content: space-between;
+      min-height: 12.5rem;
+      padding: clamp(0.9rem, 1.6vw, 1.35rem);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--surface);
+      box-shadow: var(--shadow-rest);
+    }
+
+    .formula-item:not(:last-child)::after {
+      position: absolute;
+      top: 50%;
+      right: -0.62rem;
+      z-index: 2;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      background: var(--blue);
+      color: var(--surface);
+      content: "+";
+      font: 900 0.75rem/1.1rem var(--mono);
+      text-align: center;
+      transform: translateY(-50%);
+    }
+
+    .formula-item b {
+      display: block;
+      color: var(--blue);
+      font: 900 clamp(0.72rem, 0.92vw, 0.92rem)/1.3 var(--mono);
+    }
+
+    .formula-item strong {
+      font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+
+    .formula-item small {
+      color: var(--ink-soft);
+      font-size: clamp(0.78rem, 0.9vw, 0.92rem);
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .definition {
+      margin-top: 1.1rem;
+      padding-left: 1rem;
+      border-left: 5px solid var(--blue);
+      color: var(--ink-soft);
+      font-size: clamp(1rem, 1.45vw, 1.35rem);
+      font-weight: 700;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(0.7rem, 1.3vw, 1.1rem);
+    }
+
+    .question-card {
+      min-height: 9.2rem;
+      padding: clamp(0.9rem, 1.6vw, 1.3rem);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--surface);
+    }
+
+    .question-card b {
+      display: block;
+      margin-bottom: 0.6rem;
+      color: var(--blue);
+      font: 900 0.8rem/1.3 var(--mono);
+    }
+
+    .question-card strong {
+      display: block;
+      font-size: clamp(1.1rem, 1.55vw, 1.55rem);
+      letter-spacing: -0.035em;
+    }
+
+    .question-card p {
+      margin-top: 0.55rem;
+      color: var(--ink-soft);
+      font-size: clamp(0.82rem, 1vw, 1rem);
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 3.5rem 1fr;
+      gap: clamp(0.8rem, 2vw, 1.6rem);
+      align-items: stretch;
+    }
+
+    .compare-panel {
+      padding: clamp(1.1rem, 2.2vw, 1.8rem);
+    }
+
+    .compare-panel.bad {
+      border-color: var(--red);
+      background: var(--red-pale);
+    }
+
+    .compare-panel.good {
+      border-color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .compare-panel ul {
+      display: grid;
+      gap: 0.65rem;
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .compare-panel li {
+      position: relative;
+      padding-left: 1.3rem;
+      font-size: clamp(0.92rem, 1.18vw, 1.15rem);
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .compare-panel li::before {
+      position: absolute;
+      top: 0.08rem;
+      left: 0;
+      content: "•";
+      font-weight: 900;
+    }
+
+    .versus {
+      display: grid;
+      place-items: center;
+      color: var(--ink-soft);
+      font: 900 0.9rem/1 var(--mono);
+    }
+
+    .contract {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .contract div {
+      padding: 0.75rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+    }
+
+    .contract b {
+      display: block;
+      color: var(--blue);
+      font: 900 0.72rem/1.3 var(--mono);
+    }
+
+    .contract span {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: clamp(0.75rem, 0.82vw, 0.9rem);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .brain-body {
+      display: grid;
+      grid-template-columns: 1fr 4.5rem 1fr;
+      gap: clamp(0.8rem, 2vw, 1.8rem);
+      align-items: center;
+    }
+
+    .role-card {
+      min-height: 19rem;
+      padding: clamp(1.2rem, 2.4vw, 2rem);
+    }
+
+    .role-card.model {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .role-card.harness {
+      border-color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .role-card .role-title {
+      display: block;
+      margin: 0.45rem 0 1.25rem;
+      font-size: clamp(1.75rem, 3vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .role-card ul {
+      display: grid;
+      gap: 0.7rem;
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .role-card li {
+      font-size: clamp(0.92rem, 1.2vw, 1.18rem);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .role-arrow {
+      color: var(--blue);
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .data-layout {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(0.7rem, 1.2vw, 1rem);
+    }
+
+    .data-card {
+      grid-column: span 4;
+      min-height: 15rem;
+      padding: clamp(1rem, 2vw, 1.55rem);
+    }
+
+    .data-card:nth-child(1) {
+      border-top: 5px solid var(--blue);
+    }
+
+    .data-card:nth-child(2) {
+      border-top: 5px solid var(--green);
+    }
+
+    .data-card:nth-child(3) {
+      border-top: 5px solid var(--amber);
+    }
+
+    .data-card ul {
+      display: grid;
+      gap: 0.45rem;
+      margin: 1rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--ink-soft);
+    }
+
+    .data-card li {
+      font-size: clamp(0.82rem, 1vw, 1rem);
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .data-rule {
+      grid-column: 2 / span 10;
+      padding: 0.85rem 1.2rem;
+      border: 1px solid var(--blue);
+      border-radius: 14px;
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      font-size: clamp(0.9rem, 1.15vw, 1.1rem);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .mcp-layout {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: clamp(1.2rem, 3vw, 2.5rem);
+      align-items: center;
+    }
+
+    .tool-rail {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .tool-node {
+      display: grid;
+      place-items: center;
+      min-height: 9rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--surface);
+      font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .tool-link {
+      color: var(--blue);
+      font: 900 clamp(1.2rem, 2vw, 2rem)/1 var(--mono);
+    }
+
+    .protocol-panel {
+      padding: clamp(1.1rem, 2.3vw, 1.8rem);
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .protocol-panel .big {
+      display: block;
+      margin: 0.45rem 0 1rem;
+      color: var(--blue-deep);
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+    }
+
+    .primitive-row,
+    .alternative-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .primitive-row li,
+    .alternative-row li {
+      padding: 0.48rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      font: 800 clamp(0.72rem, 0.85vw, 0.85rem)/1.2 var(--mono);
+    }
+
+    .alternative-row li {
+      background: var(--surface-soft);
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 0.55rem;
+      align-items: center;
+      margin-top: 1.25rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .loop-step {
+      display: grid;
+      place-items: center;
+      min-height: 7rem;
+      padding: 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow-rest);
+      text-align: center;
+    }
+
+    .loop-step b {
+      color: var(--blue);
+      font: 900 0.72rem/1.3 var(--mono);
+    }
+
+    .loop-step span {
+      margin-top: 0.35rem;
+      font-size: clamp(0.9rem, 1.15vw, 1.15rem);
+      font-weight: 850;
+    }
+
+    .loop-step.verify {
+      border-color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .loop-step.stop {
+      border-color: var(--amber);
+      background: var(--amber-pale);
+    }
+
+    .loop-decisions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .loop-decisions div {
+      padding: 0.7rem 0.85rem;
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      background: var(--surface);
+    }
+
+    .loop-decisions b {
+      display: block;
+      font: 900 0.72rem/1.3 var(--mono);
+    }
+
+    .loop-decisions span {
+      display: block;
+      margin-top: 0.3rem;
+      color: var(--ink-soft);
+      font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+      font-weight: 650;
+    }
+
+    .safety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 2.5vw, 2rem);
+    }
+
+    .permission-panel,
+    .guardrail-panel {
+      padding: clamp(1.1rem, 2.2vw, 1.8rem);
+    }
+
+    .permission-row {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.8rem;
+      align-items: center;
+      margin-top: 0.7rem;
+      padding: 0.8rem;
+      border-radius: 12px;
+    }
+
+    .permission-row.allow {
+      background: var(--green-pale);
+      color: var(--green);
+    }
+
+    .permission-row.ask {
+      background: var(--amber-pale);
+      color: var(--amber);
+    }
+
+    .permission-row.deny {
+      background: var(--red-pale);
+      color: var(--red);
+    }
+
+    .permission-row b {
+      font: 900 0.78rem/1.2 var(--mono);
+    }
+
+    .permission-row span {
+      color: var(--ink);
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      font-weight: 700;
+    }
+
+    .guardrail-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .guardrail-list div {
+      min-height: 5.4rem;
+      padding: 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-soft);
+    }
+
+    .guardrail-list b {
+      display: block;
+      color: var(--blue);
+      font: 900 0.72rem/1.3 var(--mono);
+    }
+
+    .guardrail-list span {
+      display: block;
+      margin-top: 0.3rem;
+      color: var(--ink-soft);
+      font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+      font-weight: 650;
+    }
+
+    .ui-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(16rem, 0.7fr);
+      gap: clamp(1rem, 2.5vw, 2rem);
+      align-items: stretch;
+    }
+
+    .control-surface {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 24rem;
+      overflow: hidden;
+    }
+
+    .mock-header,
+    .mock-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .mock-footer {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .mock-header b,
+    .mock-footer b {
+      font: 800 0.72rem/1.3 var(--mono);
+    }
+
+    .status-live {
+      color: var(--green);
+    }
+
+    .mock-body {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .mock-plan {
+      display: grid;
+      gap: 0.55rem;
+      align-content: start;
+    }
+
+    .mock-plan div,
+    .mock-evidence div {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      font-size: clamp(0.76rem, 0.88vw, 0.88rem);
+      font-weight: 700;
+    }
+
+    .mock-plan .current {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+    }
+
+    .mock-evidence {
+      display: grid;
+      gap: 0.55rem;
+      align-content: start;
+    }
+
+    .mock-evidence div:first-child {
+      border-color: var(--green);
+      background: var(--green-pale);
+      color: var(--green);
+    }
+
+    .ui-checklist {
+      display: grid;
+      gap: 0.55rem;
+      align-content: start;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ui-checklist li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.7rem;
+      align-items: center;
+      padding: 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .ui-checklist b {
+      color: var(--blue);
+      font: 900 0.75rem/1 var(--mono);
+    }
+
+    .ui-checklist span {
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      font-weight: 750;
+    }
+
+    .final-slide {
+      color: var(--surface);
+      background:
+        radial-gradient(circle at 82% 22%, var(--navy-soft), transparent 30%),
+        linear-gradient(135deg, var(--navy), var(--navy-soft));
+    }
+
+    .final-slide .eyebrow {
+      color: var(--white-soft);
+    }
+
+    .final-slide h2 {
+      max-width: 12ch;
+    }
+
+    .final-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(1.5rem, 4vw, 4rem);
+      align-items: center;
+    }
+
+    .final-definition {
+      padding: clamp(1.2rem, 2.2vw, 1.8rem);
+      border: 1px solid var(--navy-soft);
+      border-radius: var(--radius-panel);
+      background: var(--navy);
+      color: var(--white-soft);
+      font-size: clamp(1.05rem, 1.55vw, 1.5rem);
+      font-weight: 730;
+      line-height: 1.55;
+    }
+
+    .final-definition strong {
+      color: var(--surface);
+    }
+
+    .final-side {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .final-check {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0;
+      padding: 1.2rem;
+      border: 1px solid var(--navy-soft);
+      border-radius: var(--radius-panel);
+      background: var(--navy);
+      list-style: none;
+    }
+
+    .final-check li {
+      color: var(--white-soft);
+      font-size: clamp(0.84rem, 1vw, 1rem);
+      font-weight: 700;
+    }
+
+    .sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .sources a {
+      padding: 0.42rem 0.62rem;
+      border: 1px solid var(--navy-soft);
+      border-radius: 999px;
+      color: var(--white-soft);
+      font: 750 clamp(0.67rem, 0.78vw, 0.78rem)/1.25 var(--mono);
+      text-decoration: none;
+    }
+
+    .sources a:hover {
+      border-color: var(--blue);
+      color: var(--surface);
+    }
+
+    .slide-mark {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.35rem;
+      z-index: 90;
+      color: var(--ink-soft);
+      font: 800 0.75rem/1 var(--mono);
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 1.5rem;
+      z-index: 90;
+      color: var(--ink-soft);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    body.dark-active .hint,
+    body.dark-active .slide-mark {
+      color: var(--white-soft);
+    }
+
+    .controls {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.5rem;
+      z-index: 120;
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .controls button {
+      min-height: 2.5rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-rest);
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 850;
+    }
+
+    .controls button:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .controls button:active {
+      transform: translateY(1px);
+    }
+
+    .controls button:disabled {
+      border-color: var(--line);
+      color: var(--ink-soft);
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    .notes {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 4rem;
+      left: 1.5rem;
+      z-index: 140;
+      display: none;
+      max-height: 38vh;
+      padding: 1rem 1.2rem;
+      overflow-y: auto;
+      border: 1px solid var(--navy-soft);
+      border-radius: 16px;
+      background: var(--navy);
+      color: var(--white-soft);
+      box-shadow: var(--shadow-high);
+      font-size: clamp(0.88rem, 1.1vw, 1.08rem);
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    .notes.show {
+      display: block;
+    }
+
+    .notes strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--surface);
+      font: 850 0.76rem/1.3 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .overview {
+      width: min(92vw, 1100px);
+      max-height: 86vh;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow-high);
+    }
+
+    .overview::backdrop {
+      background: var(--backdrop);
+    }
+
+    .overview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .overview-head h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+    }
+
+    .overview-head button {
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      max-height: 70vh;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .overview-grid button {
+      min-height: 7.2rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .overview-grid button:hover,
+    .overview-grid button.current {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .overview-grid b {
+      display: block;
+      margin-bottom: 0.55rem;
+      color: var(--blue);
+      font: 900 0.72rem/1.3 var(--mono);
+    }
+
+    .overview-grid span {
+      font-size: 0.92rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 1100px) {
+      .slide {
+        padding: 2.2rem 2.4rem 4.8rem;
+      }
+
+      h2 {
+        font-size: clamp(2rem, 4.1vw, 3.2rem);
+      }
+
+      .four-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .four-grid .panel {
+        min-height: 9.5rem;
+      }
+
+      .number {
+        margin-bottom: 0.65rem;
+      }
+
+      .formula {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .formula-item {
+        min-height: 8.5rem;
+      }
+
+      .formula-item:nth-child(3)::after {
+        display: none;
+      }
+
+      .loop {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .loop-step {
+        min-height: 5.7rem;
+      }
+
+      .loop-decisions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      html,
+      body {
+        overflow: hidden;
+      }
+
+      .slide {
+        align-content: start;
+        padding: 4.2rem 1rem 5.2rem;
+        overflow-y: auto;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 16vw, 4.5rem);
+      }
+
+      h2 {
+        font-size: clamp(2rem, 10.5vw, 3.1rem);
+      }
+
+      .lead {
+        font-size: 1.03rem;
+      }
+
+      .title-grid,
+      .tier-layout,
+      .mcp-layout,
+      .safety-grid,
+      .ui-layout,
+      .final-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .title-visual {
+        margin-top: 1rem;
+      }
+
+      .title-layer {
+        grid-template-columns: 4.6rem 1fr;
+      }
+
+      .four-grid,
+      .question-grid,
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .four-grid .panel,
+      .question-card {
+        min-height: 0;
+      }
+
+      .tier:nth-child(1),
+      .tier:nth-child(2) {
+        margin-left: 0;
+      }
+
+      .tier {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+
+      .formula {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .formula-item {
+        min-height: 8rem;
+      }
+
+      .formula-item:nth-child(2)::after,
+      .formula-item:nth-child(4)::after {
+        display: none;
+      }
+
+      .formula-item:nth-child(3)::after {
+        display: grid;
+      }
+
+      .compare,
+      .brain-body {
+        grid-template-columns: 1fr;
+      }
+
+      .versus,
+      .role-arrow {
+        min-height: 2rem;
+        transform: rotate(90deg);
+      }
+
+      .contract {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .role-card {
+        min-height: 0;
+      }
+
+      .data-card {
+        grid-column: span 12;
+        min-height: 0;
+      }
+
+      .data-rule {
+        grid-column: span 12;
+      }
+
+      .loop {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .loop-step {
+        min-height: 5rem;
+      }
+
+      .loop-decisions {
+        grid-template-columns: 1fr;
+      }
+
+      .guardrail-list {
+        grid-template-columns: 1fr;
+      }
+
+      .mock-body {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        top: 0.75rem;
+        right: 0.75rem;
+        left: 0.75rem;
+        justify-content: flex-end;
+      }
+
+      .controls button {
+        min-height: 2.25rem;
+        padding: 0.4rem 0.55rem;
+        font-size: 0.7rem;
+      }
+
+      .hint {
+        display: none;
+      }
+
+      .slide-mark {
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .notes {
+        right: 0.75rem;
+        bottom: 3.4rem;
+        left: 0.75rem;
+        max-height: 48vh;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media print {
+      html,
+      body {
+        width: auto;
+        height: auto;
+        overflow: visible;
+        background: var(--surface);
+      }
+
+      .deck {
+        height: auto;
+      }
+
+      .slide {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+        page-break-after: always;
+      }
+
+      .progress,
+      .controls,
+      .hint,
+      .slide-mark,
+      .notes,
+      .overview {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <main class="deck" aria-label="에이전트 필수요소 강의 슬라이드">
+    <section class="slide title-slide active" data-title="에이전트는 모델이 아니다" data-notes="도입 질문입니다. 에이전트가 무엇인지 묻기 전에, 모델 하나를 에이전트라고 부를 수 있는지 참가자에게 질문해 보세요. 핵심 메시지는 LLM이 판단을 담당할 뿐, 행동과 검증은 전체 시스템이 만든다는 것입니다.">
+      <div class="slide-inner title-grid">
+        <div>
+          <p class="eyebrow">SBTI · Agent Essentials</p>
+          <h1>에이전트는<br>모델이 아니다</h1>
+          <p class="lead">목표를 행동과 검증으로 연결하는 실행 시스템</p>
+          <ul class="meta" aria-label="강의 메타데이터">
+            <li class="chip">13 SLIDES</li>
+            <li class="chip">15 MIN</li>
+            <li class="chip">LLM-BASED AGENT</li>
+          </ul>
+        </div>
+        <ul class="title-visual" aria-label="에이전트 시스템을 구성하는 다섯 층">
+          <li class="title-layer"><b>GOAL</b><span>목표와 완료조건</span></li>
+          <li class="title-layer"><b>THINK</b><span>모델과 컨텍스트</span></li>
+          <li class="title-layer"><b>ACT</b><span>도구와 실행환경</span></li>
+          <li class="title-layer"><b>VERIFY</b><span>검증과 피드백</span></li>
+          <li class="title-layer"><b>CONTROL</b><span>권한과 중단</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-title="처음 제시한 네 가지" data-notes="사용자가 처음 제시한 네 가지는 제품 관점에서 거의 맞습니다. 단, UI와 MCP의 위치를 정확히 잡아야 합니다. UI는 인간이 사용하는 제품에서는 중요하지만 에이전트 자체의 본질은 아닙니다. MCP는 도구와 데이터를 연결하는 표준 중 하나입니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">01 · Starting Point</p>
+        <h2>처음 제시한 네 가지,<br><span>거의 맞습니다</span></h2>
+        <div class="four-grid">
+          <article class="panel">
+            <span class="number">1</span>
+            <h3>사용성 좋은 UI</h3>
+            <p>관찰, 승인, 중단, 복구를 가능하게 하는 제품 표면</p>
+            <span class="verdict caution">PRODUCT에 필수</span>
+          </article>
+          <article class="panel">
+            <span class="number">2</span>
+            <h3>LLM 모델</h3>
+            <p>요청을 해석하고 다음 행동을 선택하는 판단 엔진</p>
+            <span class="verdict">LLM AGENT에 필수</span>
+          </article>
+          <article class="panel">
+            <span class="number">3</span>
+            <h3>백엔드, 도구, 루프</h3>
+            <p>실제 행동을 수행하고 결과에 따라 다음 단계를 바꾸는 하네스</p>
+            <span class="verdict">CORE에 필수</span>
+          </article>
+          <article class="panel">
+            <span class="number">4</span>
+            <h3>데이터</h3>
+            <p>현재 작업상태와 지식의 근거. 별도 RAG가 항상 필요한 것은 아님</p>
+            <span class="verdict">CONTEXT는 필수</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Core, Production, Product" data-notes="용어 혼선을 해결하는 가장 중요한 장입니다. 에이전트 자체, 실무에서 운영 가능한 에이전트, 사람이 쓰는 에이전트 제품을 구분합니다. 이 구분을 하면 UI가 필수인지, RAG가 필수인지 같은 논쟁이 정리됩니다.">
+      <div class="slide-inner tier-layout">
+        <div class="tier-copy">
+          <p class="eyebrow">02 · Three Layers</p>
+          <h2>먼저 <span>세 층</span>을<br>구분합니다</h2>
+          <p class="lead">세 층을 한 문장에 섞으면<br>필수요소의 경계가 흐려집니다.</p>
+        </div>
+        <ul class="tier-stack" aria-label="에이전트의 세 층">
+          <li class="tier">
+            <b>AGENT PRODUCT</b>
+            <span>UI · 사내 데이터 · SSO · 조직 정책 · 운영체계</span>
+          </li>
+          <li class="tier">
+            <b>PRODUCTION AGENT</b>
+            <span>권한 · 샌드박스 · 평가 · 추적 · 승인 · 복구</span>
+          </li>
+          <li class="tier">
+            <b>AGENT CORE</b>
+            <span>목표 · 모델 · 상태 · 도구 · 판단과 실행 루프</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-title="에이전트 핵심 공식" data-notes="강의의 중심 공식입니다. 여섯 항목 중 하나라도 빠지면 어떤 문제가 생기는지 짧게 물어보세요. 예를 들어 검증이 없으면 에이전트가 완료했다고 말한 사실만 남고, 완료 증거는 남지 않습니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">03 · Core Formula</p>
+        <h2><span>에이전트</span>를 이루는<br>핵심 공식</h2>
+        <ul class="formula" aria-label="에이전트 핵심 공식">
+          <li class="formula-item"><b>01</b><strong>목표와<br>완료조건</strong><small>무엇을, 어디까지</small></li>
+          <li class="formula-item"><b>02</b><strong>모델</strong><small>해석과 다음 행동 선택</small></li>
+          <li class="formula-item"><b>03</b><strong>컨텍스트와<br>상태</strong><small>지금까지 무엇을 아는가</small></li>
+          <li class="formula-item"><b>04</b><strong>도구와<br>실행환경</strong><small>세상에 어떻게 작용하는가</small></li>
+          <li class="formula-item"><b>05</b><strong>관찰 기반<br>실행 루프</strong><small>결과로 다음 행동 변경</small></li>
+          <li class="formula-item"><b>06</b><strong>권한과<br>검증</strong><small>어디까지, 무엇으로 확인</small></li>
+        </ul>
+        <p class="definition">LLM 기반 에이전트의 본질은 모델 하나가 아니라, 목표를 향해 상태를 바꾸고 그 결과를 다시 판단하는 시스템입니다.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-title="여섯 질문으로 해부하기" data-notes="어떤 에이전트 제품을 보더라도 이 여섯 질문으로 해부할 수 있습니다. 팀 실습에서는 만들 제품을 정한 뒤 여섯 질문을 한 줄씩 적게 하면 요구사항이 빠르게 구체화됩니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">04 · Anatomy</p>
+        <h2>여섯 질문이면<br><span>에이전트가 보입니다</span></h2>
+        <div class="question-grid">
+          <article class="question-card"><b>WHO</b><strong>누구를 위한가?</strong><p>사용자, 이해관계자, 승인자</p></article>
+          <article class="question-card"><b>GOAL</b><strong>무엇이 끝인가?</strong><p>성공조건, 범위, 중단조건</p></article>
+          <article class="question-card"><b>CONTEXT</b><strong>무엇을 보고 있나?</strong><p>요청, 파일, DB, 이전 결과</p></article>
+          <article class="question-card"><b>DECIDE</b><strong>누가 판단하나?</strong><p>모델, 규칙, 라우터, 사람</p></article>
+          <article class="question-card"><b>ACT</b><strong>무엇을 바꾸나?</strong><p>도구, API, 브라우저, 코드</p></article>
+          <article class="question-card"><b>VERIFY &amp; STOP</b><strong>어떻게 확인하고 멈추나?</strong><p>테스트, 근거, 승인, 예산</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="목표와 완료조건" data-notes="같은 요청이라도 완료조건이 있느냐에 따라 챗봇 답변과 에이전트 작업이 갈립니다. 아래 예시는 강의자료 제작이라는 지금의 실제 작업을 축약한 것입니다. 목표, 산출물, 제약, 완료증거를 계약처럼 명시하세요.">
+      <div class="slide-inner">
+        <p class="eyebrow">05 · Goal Contract</p>
+        <h2>“잘 만들어줘”에서<br><span>완료 계약</span>으로</h2>
+        <div class="compare">
+          <article class="panel compare-panel bad">
+            <span class="panel-label">Vague Request</span>
+            <h3>에이전트 자료 만들어줘</h3>
+            <ul>
+              <li>성공 기준이 사람마다 다름</li>
+              <li>언제 끝내야 할지 알 수 없음</li>
+              <li>완료 주장만 있고 증거가 없음</li>
+            </ul>
+          </article>
+          <div class="versus">TO</div>
+          <article class="panel compare-panel good">
+            <span class="panel-label">Agent Task Contract</span>
+            <h3>13장 강의 HTML을 검수해 배포</h3>
+            <div class="contract">
+              <div><b>GOAL</b><span>15분 개념 전달</span></div>
+              <div><b>OUTPUT</b><span>정적 HTML</span></div>
+              <div><b>LIMIT</b><span>기존 SBTI 톤</span></div>
+              <div><b>EVIDENCE</b><span>전 화면 QA</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="모델과 하네스" data-notes="모델이 직접 파일을 수정하거나 API를 호출하는 것은 아닙니다. 모델은 어떤 도구를 어떤 인자로 쓸지 제안합니다. 실행기 또는 하네스가 스키마 검증, 권한 확인, 실행, 오류 반환, 로그 기록을 담당합니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">06 · Model vs Harness</p>
+        <h2>모델은 판단하고,<br><span>하네스가 행동합니다</span></h2>
+        <div class="brain-body">
+          <article class="panel role-card model">
+            <span class="panel-label">Decision Engine</span>
+            <span class="role-title">LLM 모델</span>
+            <ul>
+              <li>사용자 의도와 제약 해석</li>
+              <li>다음 행동과 도구 선택</li>
+              <li>도구 결과의 의미 해석</li>
+              <li>완료, 재시도, 질문 판단</li>
+            </ul>
+          </article>
+          <div class="role-arrow" aria-hidden="true">→</div>
+          <article class="panel role-card harness">
+            <span class="panel-label">Execution Engine</span>
+            <span class="role-title">하네스</span>
+            <ul>
+              <li>도구 스키마와 인자 검증</li>
+              <li>권한 확인과 샌드박스 실행</li>
+              <li>오류, 출력, 상태를 모델에 반환</li>
+              <li>로그, 비용, 시간, 중단 관리</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="컨텍스트, 상태, 데이터" data-notes="데이터라는 한 단어를 세 가지로 나눕니다. 작업 컨텍스트는 거의 모든 에이전트에 필수입니다. 지식 데이터는 업무에 따라 선택이고, 상태와 체크포인트는 긴 작업과 복구에 중요합니다. RAG나 벡터 DB가 없다고 에이전트가 아닌 것은 아닙니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">07 · Context and State</p>
+        <h2>데이터가 아니라<br><span>세 종류의 기억</span></h2>
+        <div class="data-layout">
+          <article class="panel data-card">
+            <span class="panel-label">Task Context</span>
+            <h3>작업 컨텍스트</h3>
+            <ul>
+              <li>사용자 요청과 제약</li>
+              <li>현재 파일과 화면</li>
+              <li>이전 도구 실행 결과</li>
+              <li>이미 실패한 시도</li>
+            </ul>
+          </article>
+          <article class="panel data-card">
+            <span class="panel-label">Knowledge Data</span>
+            <h3>지식 데이터</h3>
+            <ul>
+              <li>사내 문서와 위키</li>
+              <li>업무 DB와 API</li>
+              <li>RAG와 검색 인덱스</li>
+              <li>정책과 표준</li>
+            </ul>
+          </article>
+          <article class="panel data-card">
+            <span class="panel-label">Working State</span>
+            <h3>작업 상태</h3>
+            <ul>
+              <li>현재 단계와 진행률</li>
+              <li>계획과 체크포인트</li>
+              <li>남은 비용과 시간</li>
+              <li>재시작과 복구 정보</li>
+            </ul>
+          </article>
+          <div class="data-rule">필수는 별도 RAG가 아닙니다.<br>다음 행동에 필요한 상태를 정확히 보존하세요.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="도구와 MCP" data-notes="도구는 에이전트가 세상에 영향을 주는 수단입니다. MCP는 필수 구성요소가 아니라 표준화된 연결 방식입니다. 공식 MCP 문서도 MCP가 컨텍스트 교환 프로토콜에 집중하며, AI 앱이 LLM을 어떻게 쓰거나 컨텍스트를 어떻게 관리하는지는 규정하지 않는다고 설명합니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">08 · Tools and MCP</p>
+        <h2>도구는 필수,<br><span>MCP는 선택</span></h2>
+        <div class="mcp-layout">
+          <div>
+            <div class="tool-rail" role="img" aria-label="모델과 파일, 데이터베이스, API, 브라우저 도구의 양방향 연결">
+              <div class="tool-node">모델</div>
+              <div class="tool-link">↔</div>
+              <div class="tool-node">파일 · DB<br>API<br>브라우저</div>
+            </div>
+            <p class="definition">도구가 없으면 대화는 가능하지만, 환경의 상태를 바꾸는 agency는 제한됩니다.</p>
+          </div>
+          <article class="panel protocol-panel">
+            <span class="panel-label">Connection Standard</span>
+            <span class="big">MCP</span>
+            <p>도구와 컨텍스트를 발견하고 교환하는 client-server 프로토콜</p>
+            <ul class="primitive-row" aria-label="MCP 서버의 핵심 프리미티브">
+              <li>TOOLS</li><li>RESOURCES</li><li>PROMPTS</li>
+            </ul>
+            <ul class="alternative-row" aria-label="MCP 외 연결 방식">
+              <li>REST API</li><li>SDK</li><li>CLI</li><li>FUNCTION CALLING</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="제한된 적응형 루프" data-notes="고정 N회 반복은 데모 코드에는 편하지만 에이전트의 정의로는 부족합니다. 매 실행 결과를 관찰한 뒤 다음 행동을 바꾸어야 합니다. 동시에 무한 루프를 막기 위한 종료 조건, 재시도 한도, 비용 한도, 사람에게 넘기기가 있어야 합니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">09 · Bounded Adaptive Loop</p>
+        <h2>고정 N회가 아니라<br><span>결과에 따라 바뀌는 루프</span></h2>
+        <ol class="loop" aria-label="에이전트 실행 루프">
+          <li class="loop-step"><b>01</b><span>목표 확인</span></li>
+          <li class="loop-step"><b>02</b><span>상태 관찰</span></li>
+          <li class="loop-step"><b>03</b><span>행동 결정</span></li>
+          <li class="loop-step"><b>04</b><span>권한 확인</span></li>
+          <li class="loop-step"><b>05</b><span>도구 실행</span></li>
+          <li class="loop-step verify"><b>06</b><span>결과 검증</span></li>
+          <li class="loop-step stop"><b>07</b><span>완료 판단</span></li>
+        </ol>
+        <div class="loop-decisions">
+          <div><b>DONE</b><span>완료조건 충족, 증거와 함께 종료</span></div>
+          <div><b>RETRY</b><span>실패 원인을 반영해 다른 행동 선택</span></div>
+          <div><b>RECOVER</b><span>체크포인트로 되돌리고 상태 복구</span></div>
+          <div><b>HANDOFF</b><span>권한 또는 판단이 필요하면 사람에게 질문</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="권한과 안전 통제" data-notes="실무에서는 도구가 많을수록 능력과 공격면이 함께 커집니다. 읽기, 쓰기, 외부 전송, 삭제, 배포의 위험을 구분하고 허용, 승인 필요, 거절 정책을 도구 단위와 작업 단위로 설계해야 합니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">10 · Permission and Safety</p>
+        <h2>능력이 커질수록<br><span>통제도 제품이 됩니다</span></h2>
+        <div class="safety-grid">
+          <article class="panel permission-panel">
+            <span class="panel-label">Permission Modes</span>
+            <h3>행동별 권한</h3>
+            <div class="permission-row allow"><b>ALLOW</b><span>승인된 문서 읽기, 안전한 조회</span></div>
+            <div class="permission-row ask"><b>ASK</b><span>파일 수정, 외부 전송, 배포</span></div>
+            <div class="permission-row deny"><b>DENY</b><span>금지된 시스템, 고위험 작업</span></div>
+          </article>
+          <article class="panel guardrail-panel">
+            <span class="panel-label">System Guardrails</span>
+            <h3>시스템별 안전장치</h3>
+            <div class="guardrail-list">
+              <div><b>SANDBOX</b><span>파일·네트워크 범위</span></div>
+              <div><b>SECRET</b><span>자격증명 노출 차단</span></div>
+              <div><b>BUDGET</b><span>시간·비용·재귀 한도</span></div>
+              <div><b>RECOVERY</b><span>중단·롤백·체크포인트</span></div>
+              <div><b>POLICY</b><span>조직 규칙·데이터 경계</span></div>
+              <div><b>AUDIT</b><span>행동 기록·추적</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="UI는 에이전트의 제어면" data-notes="좋은 에이전트 UI는 채팅창보다 제어실에 가깝습니다. 현재 행동, 보고 있는 데이터, 호출하려는 도구, 변경사항, 승인 이유, 완료 증거를 노출해야 합니다. 40명이 동시에 실습할 때도 진행 단계와 복구 지점이 보여야 강사가 지원할 수 있습니다.">
+      <div class="slide-inner">
+        <p class="eyebrow">11 · Agent Product UI</p>
+        <h2>UI는 채팅창이 아니라<br><span>관찰과 통제의 표면</span></h2>
+        <div class="ui-layout">
+          <div class="panel control-surface" role="group" aria-label="에이전트 제어 UI 예시">
+            <div class="mock-header"><b>AGENT RUN · 04/07</b><b class="status-live">RUNNING</b></div>
+            <div class="mock-body">
+              <div class="mock-plan">
+                <div>1. 요구사항 해석</div>
+                <div>2. 자료 구조 설계</div>
+                <div>3. HTML 구현</div>
+                <div class="current">4. 전체 화면 검수</div>
+                <div>5. 증거 확인 후 완료</div>
+              </div>
+              <div class="mock-evidence">
+                <div>검증: 13 / 13 화면 캡처 완료</div>
+                <div>변경: agentmake/index.html</div>
+                <div>도구: Browser · Git · HTML validator</div>
+                <div>승인 필요: 외부 배포</div>
+              </div>
+            </div>
+            <div class="mock-footer"><b>중단 · 복구</b><b>DIFF · LOG · EVIDENCE</b></div>
+          </div>
+          <ul class="ui-checklist" aria-label="에이전트 UI가 보여줘야 할 정보">
+            <li><b>01</b><span>지금 무엇을 하는가</span></li>
+            <li><b>02</b><span>어떤 데이터를 보고 있는가</span></li>
+            <li><b>03</b><span>어떤 도구를 실행하는가</span></li>
+            <li><b>04</b><span>무엇이 변경되는가</span></li>
+            <li><b>05</b><span>왜 승인이 필요한가</span></li>
+            <li><b>06</b><span>어떻게 중단하고 복구하는가</span></li>
+            <li><b>07</b><span>완료 증거가 무엇인가</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide final-slide" data-title="최종 정의와 체크리스트" data-notes="마무리 정의를 천천히 읽고, 오른쪽 여섯 질문으로 참가자의 에이전트 아이디어를 점검하게 하세요. 하단 링크는 추가 학습용 공식 자료입니다. 이 자료는 다른 세션의 SBTI 준비 논의와 현재 강의자료의 용어를 함께 정리해 만들었습니다.">
+      <div class="slide-inner final-layout">
+        <div>
+          <p class="eyebrow">12 · Final Definition</p>
+          <h2>에이전트의<br>필수요소</h2>
+          <p class="final-definition"><strong>에이전트는 목표와 완료조건을 받아</strong>, 현재&nbsp;컨텍스트와 상태를 관찰하고, 모델이 다음&nbsp;행동을 선택하며, 권한이 부여된 도구를 실행하고, 그 결과를 검증하면서 <strong>완료, 복구, 중단까지 반복하는 시스템</strong>입니다.</p>
+        </div>
+        <div class="final-side">
+          <ul class="final-check" aria-label="에이전트 설계 체크리스트">
+            <li>01 · 누가 무엇을 위해 쓰는가?</li>
+            <li>02 · 완료를 무엇으로 증명하는가?</li>
+            <li>03 · 어떤 상태를 보고 판단하는가?</li>
+            <li>04 · 어떤 도구로 무엇을 바꾸는가?</li>
+            <li>05 · 어디까지 허용하고 언제 묻는가?</li>
+            <li>06 · 실패하면 어떻게 복구하고 멈추는가?</li>
+          </ul>
+          <nav class="sources" aria-label="추가 학습 자료">
+            <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic · Effective Agents</a>
+            <a href="https://modelcontextprotocol.io/docs/learn/architecture" target="_blank" rel="noopener">MCP · Architecture</a>
+            <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST · AI RMF</a>
+            <a href="https://cdn.openai.com/business-guides-and-resources/a-business-leaders-guide-to-working-with-agents.pdf" target="_blank" rel="noopener">OpenAI · Agent Guide</a>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="hint" aria-hidden="true">← → 이동 · N 노트 · O 개요 · F 전체화면</div>
+  <div class="slide-mark" aria-live="polite" aria-atomic="true"></div>
+  <nav class="controls" aria-label="슬라이드 제어">
+    <button type="button" id="prev" aria-label="이전 슬라이드">이전</button>
+    <button type="button" id="toggle-notes" aria-expanded="false" aria-controls="speaker-notes">노트</button>
+    <button type="button" id="open-overview" aria-haspopup="dialog">개요</button>
+    <button type="button" id="next" aria-label="다음 슬라이드">다음</button>
+  </nav>
+  <aside class="notes" id="speaker-notes" aria-live="polite" aria-label="발표자 노트">
+    <strong id="speaker-notes-heading"></strong>
+    <span id="speaker-notes-text"></span>
+  </aside>
+  <dialog class="overview" id="overview" aria-labelledby="overview-title">
+    <div class="overview-head">
+      <h2 id="overview-title">슬라이드 개요</h2>
+      <button type="button" id="close-overview">닫기</button>
+    </div>
+    <div class="overview-grid" id="overview-grid"></div>
+  </dialog>
+
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll(".slide")];
+      const progress = document.querySelector(".progress");
+      const mark = document.querySelector(".slide-mark");
+      const notes = document.querySelector(".notes");
+      const notesButton = document.querySelector("#toggle-notes");
+      const notesHeading = document.querySelector("#speaker-notes-heading");
+      const notesText = document.querySelector("#speaker-notes-text");
+      const overview = document.querySelector("#overview");
+      const overviewGrid = document.querySelector("#overview-grid");
+      const prevButton = document.querySelector("#prev");
+      const nextButton = document.querySelector("#next");
+      let current = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      const clamp = (value) => Math.max(0, Math.min(slides.length - 1, value));
+
+      const indexFromHash = () => {
+        const match = window.location.hash.match(/^#\/(\d+)$/);
+        return match ? clamp(Number(match[1]) - 1) : 0;
+      };
+
+      const syncNotes = () => {
+        notesHeading.textContent = `Speaker Note · ${current + 1}`;
+        notesText.textContent = slides[current].dataset.notes || "등록된 발표자 노트가 없습니다.";
+      };
+
+      const syncOverview = () => {
+        overviewGrid.querySelectorAll("button").forEach((button, index) => {
+          button.classList.toggle("current", index === current);
+          button.setAttribute("aria-current", index === current ? "true" : "false");
+        });
+      };
+
+      const show = (target, updateHash = true) => {
+        current = clamp(target);
+        slides.forEach((slide, index) => {
+          const active = index === current;
+          slide.classList.toggle("active", active);
+          slide.setAttribute("aria-hidden", String(!active));
+          slide.toggleAttribute("inert", !active);
+          if (active) slide.scrollTop = 0;
+        });
+        progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        mark.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === slides.length - 1;
+        document.body.classList.toggle("dark-active", slides[current].classList.contains("title-slide") || slides[current].classList.contains("final-slide"));
+        document.title = `${slides[current].dataset.title} | 에이전트의 필수요소`;
+        syncNotes();
+        syncOverview();
+        if (updateHash) history.replaceState(null, "", `#/${current + 1}`);
+      };
+
+      const move = (delta) => show(current + delta);
+
+      slides.forEach((slide, index) => {
+        const button = document.createElement("button");
+        const number = document.createElement("b");
+        const title = document.createElement("span");
+        button.type = "button";
+        number.textContent = String(index + 1).padStart(2, "0");
+        title.textContent = slide.dataset.title;
+        button.append(number, title);
+        button.addEventListener("click", () => {
+          show(index);
+          overview.close();
+        });
+        overviewGrid.append(button);
+      });
+
+      prevButton.addEventListener("click", () => move(-1));
+      nextButton.addEventListener("click", () => move(1));
+
+      notesButton.addEventListener("click", () => {
+        const open = notes.classList.toggle("show");
+        notesButton.setAttribute("aria-expanded", String(open));
+      });
+
+      document.querySelector("#open-overview").addEventListener("click", () => overview.showModal());
+      document.querySelector("#close-overview").addEventListener("click", () => overview.close());
+
+      overview.addEventListener("click", (event) => {
+        if (event.target === overview) overview.close();
+      });
+
+      window.addEventListener("hashchange", () => show(indexFromHash(), false));
+
+      window.addEventListener("keydown", (event) => {
+        if (overview.open && event.key !== "Escape") return;
+        const key = event.key;
+        if (["ArrowRight", "PageDown", " "].includes(key)) {
+          event.preventDefault();
+          move(1);
+        } else if (["ArrowLeft", "PageUp"].includes(key)) {
+          event.preventDefault();
+          move(-1);
+        } else if (key === "Home") {
+          event.preventDefault();
+          show(0);
+        } else if (key === "End") {
+          event.preventDefault();
+          show(slides.length - 1);
+        } else if (key.toLowerCase() === "n") {
+          event.preventDefault();
+          notesButton.click();
+        } else if (key.toLowerCase() === "o") {
+          event.preventDefault();
+          overview.showModal();
+        } else if (key.toLowerCase() === "f") {
+          event.preventDefault();
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.();
+          } else {
+            document.exitFullscreen?.();
+          }
+        } else if (key === "Escape" && notes.classList.contains("show")) {
+          notes.classList.remove("show");
+          notesButton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      window.addEventListener("touchstart", (event) => {
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }, { passive: true });
+
+      window.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+          move(deltaX < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+
+      show(indexFromHash(), false);
+    })();
+  </script>
+</body>
+</html>
