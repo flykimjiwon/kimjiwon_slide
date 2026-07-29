@@ -1,0 +1,7 @@
+{
+  "extraPaths": ["scripts"],
+  "include": [
+    "scripts/export-pdf-2x.py",
+    "scripts/pdf_image_processing.py"
+  ]
+}
