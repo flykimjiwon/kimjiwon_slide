@@ -117,20 +117,28 @@ def main() -> int:
     output_path = ROOT / args.output
     source = source_path.read_text(encoding='utf-8')
     slides = SLIDE_RE.findall(source)
-    if not slides:
+    pdf_slide_indices = [
+        index
+        for index, slide in enumerate(slides, start=1)
+        if 'appendix-slide' not in slide.partition('>')[0]
+    ]
+    if not pdf_slide_indices:
         raise SystemExit('No slides found')
 
     workdir = Path(tempfile.mkdtemp(prefix='techaicode-pdf-2x-'))
     pngs: list[Path] = []
     try:
-        for i in range(1, len(slides) + 1):
-            html = make_export_html(source, i, source_path.parent)
-            html_path = workdir / f'slide-{i:02d}.html'
-            png_path = workdir / f'slide-{i:02d}.png'
+        for page_number, slide_index in enumerate(pdf_slide_indices, start=1):
+            html = make_export_html(source, slide_index, source_path.parent)
+            html_path = workdir / f'slide-{page_number:02d}.html'
+            png_path = workdir / f'slide-{page_number:02d}.png'
             html_path.write_text(html, encoding='utf-8')
             chrome_capture(html_path, png_path, args.scale, args.width, args.height)
             pngs.append(png_path)
-            print(f'captured {i:02d}/{len(slides)} {png_path.name}', flush=True)
+            print(
+                f'captured {page_number:02d}/{len(pdf_slide_indices)} {png_path.name}',
+                flush=True,
+            )
         build_pdf(
             pngs,
             output_path,
@@ -142,7 +150,7 @@ def main() -> int:
             jpeg_quality=args.jpeg_quality,
         )
         print(f'wrote {output_path.relative_to(ROOT)}', flush=True)
-        print(f'pages {len(slides)}', flush=True)
+        print(f'pages {len(pdf_slide_indices)}', flush=True)
         print(f'pdf_image_format {args.pdf_image_format}', flush=True)
         if args.pdf_image_format == 'jpeg':
             print(f'jpeg_quality {args.jpeg_quality}', flush=True)
