@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 코딩 용어사전</title>
+<style>
+:root{--bg:#fafafa;--surface:#fff;--soft:#f4f7fb;--line:#e2e7ee;--text:#1a1a1a;--dark:#111827;--muted:#5f6672;--blue:#0066cc;--cyan:#0ea5e9;--green:#16a34a;--orange:#ea580c;--purple:#7c3aed;--red:#dc2626;--terminal:#232832;--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;font-size:16px}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+/* ── 상단 내비 ── */
+nav{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;align-items:center;overflow-x:auto;padding:10px 24px;scrollbar-width:none}
+nav .wrap::-webkit-scrollbar{display:none}
+nav .brand{font-weight:800;font-size:14px;color:var(--dark);white-space:nowrap;margin-right:8px}
+nav a{white-space:nowrap;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 11px;border-radius:99px;border:1px solid transparent}
+nav a:hover{color:var(--blue);border-color:var(--line);background:var(--surface)}
+
+/* ── 표지 ── */
+.cover{background:var(--terminal);color:#e8ecf3;padding:88px 0 72px;position:relative;overflow:hidden}
+.cover .kicker{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:.14em;margin-bottom:18px}
+.cover h1{font-size:clamp(34px,6vw,58px);font-weight:800;line-height:1.18;letter-spacing:-.02em}
+.cover h1 em{font-style:normal;color:var(--cyan)}
+.cover .sub{margin-top:20px;font-size:17px;color:#aab4c4;max-width:560px}
+.cover .badges{margin-top:30px;display:flex;gap:8px;flex-wrap:wrap}
+.cover .badges span{font-size:12.5px;font-family:var(--mono);border:1px solid #3a4356;border-radius:99px;padding:5px 13px;color:#c6cfdd}
+.cover-term{position:absolute;font-family:var(--mono);color:#39435a;font-size:13px;user-select:none}
+
+/* ── 읽는 법 ── */
+.howto{background:var(--surface);border-bottom:1px solid var(--line);padding:34px 0}
+.howto .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.how-card{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:14px}
+.how-card b{display:block;margin-bottom:6px;font-size:14.5px;color:var(--dark)}
+.how-card .lv{font-family:var(--mono);font-size:12.5px}
+
+/* ── 장(챕터) ── */
+.chapter{padding:64px 0 26px}
+.ch-head{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--dark);padding-bottom:14px;margin-bottom:10px}
+.ch-num{font-family:var(--mono);font-weight:800;font-size:44px;color:var(--blue);line-height:1}
+.ch-head h2{font-size:clamp(22px,3.4vw,30px);font-weight:800;letter-spacing:-.01em}
+.ch-lead{color:var(--muted);font-size:15.5px;margin:14px 0 8px;max-width:720px}
+
+/* ── 용어 카드 ── */
+.term{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+.term-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:8px}
+.term-head h3{font-size:19px;font-weight:800;color:var(--dark)}
+.term-head .en{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.term-head .lv{margin-left:auto;font-size:13px}
+.term p{font-size:15.5px;margin:6px 0}
+.term .easy{background:var(--soft);border-left:4px solid var(--cyan);border-radius:0 10px 10px 0;padding:11px 15px;margin:12px 0;font-size:15px}
+.term .easy b{color:var(--blue)}
+.term ul{padding-left:20px;font-size:15px;margin:8px 0}
+.term li{margin:4px 0}
+code{font-family:var(--mono);font-size:.86em;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.term .src{font-size:12.5px;color:var(--muted);margin-top:10px}
+.term .src a{color:var(--muted)}
+
+/* 오해/사실 카드 */
+.myth{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:14px 0;font-size:15px}
+.myth .m-no{background:#fef2f2;padding:11px 16px;border-bottom:1px solid var(--line)}
+.myth .m-yes{background:#f0fdf4;padding:11px 16px}
+.myth b{font-weight:800}
+.myth .m-no b{color:var(--red)}.myth .m-yes b{color:var(--green)}
+
+/* 인용(강의에서 쓰는 문장) */
+.quote{background:var(--terminal);color:#dfe6f0;border-radius:14px;padding:18px 22px;margin:16px 0;font-size:15.5px}
+.quote .q-tag{font-family:var(--mono);font-size:11.5px;color:var(--cyan);letter-spacing:.1em;display:block;margin-bottom:8px}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;background:var(--surface)}
+th{background:var(--soft);text-align:left;font-weight:700;color:var(--dark)}
+th,td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+.tbl-scroll{overflow-x:auto}
+
+/* 그림 */
+figure{margin:20px 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 16px 12px;text-align:center}
+figure svg{max-width:100%;height:auto}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* 부록 사전 */
+.dict{columns:2;column-gap:34px;font-size:14.3px}
+.dict p{break-inside:avoid;margin:0 0 9px;padding-left:2px}
+.dict b{color:var(--dark)}
+@media(max-width:640px){.dict{columns:1}}
+
+/* 신뢰도 점 */
+.g,.y{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:1px;margin-left:4px}
+.g{background:var(--green)}.y{background:#eab308}
+
+footer{border-top:1px solid var(--line);margin-top:70px;padding:36px 0 60px;font-size:13.5px;color:var(--muted)}
+footer h4{font-size:14px;color:var(--dark);margin-bottom:10px}
+footer li{margin:3px 0}
+@media print{nav{display:none}.cover{padding:60px 0}.chapter{page-break-before:always;padding-top:30px}.term{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+<span class="brand">SBTI4 · 용어사전</span>
+<a href="#ch1">1 기본기</a><a href="#ch2">2 코드 어시스턴트</a><a href="#ch3">3 하네스</a><a href="#ch4">4 멀티에이전트</a><a href="#ch5">5 RAG·검색</a><a href="#ch6">6 메모리·위키</a><a href="#dict">부록 사전</a>
+</div></nav>
+
+<!-- ═══════════ 표지 ═══════════ -->
+<header class="cover">
+<span class="cover-term" style="top:14%;left:6%">harness</span>
+<span class="cover-term" style="top:26%;right:9%">context rot</span>
+<span class="cover-term" style="bottom:30%;left:10%">subagent</span>
+<span class="cover-term" style="bottom:16%;right:14%">agentic search</span>
+<span class="cover-term" style="top:52%;right:30%">RAG</span>
+<div class="wrap">
+<div class="kicker">SBTI 4 — GLOSSARY EDITION</div>
+<h1>AI 코딩 <em>용어사전</em></h1>
+<p class="sub">하네스부터 멀티에이전트, RAG, LLM 위키까지 — 강의 1·2·3편에 나온 모든 단어를, 비유 하나와 그림 하나로 끝내는 책자.</p>
+<div class="badges"><span>6개 장</span><span>그림 7점</span><span>부록 한줄사전 80+</span><span>2026-08 기준</span></div>
+</div>
+</header>
+
+<!-- ═══════════ 읽는 법 ═══════════ -->
+<section class="howto"><div class="wrap">
+<div class="how-card"><b>🧭 읽는 법</b>모든 용어는 <b>정의 → ☕ 쉽게 말하면 → 예시</b> 순서. 사전처럼 아무 데나 펴도 됩니다.</div>
+<div class="how-card"><b>🌶️ 난이도</b><span class="lv">☕ = 커피 마시며 읽기 &nbsp;/&nbsp; 🌶️ = 개발자용 매운맛</span></div>
+<div class="how-card"><b>신뢰도 표기</b><span class="g"></span> 1차 출처(공식·논문) 확인 &nbsp; <span class="y"></span> 2차 보도 다수 일치. 숫자는 강의 3일 사이에도 바뀔 수 있음 — <b>구조만 외우세요.</b></div>
+</div></section>
+
+<div class="wrap">
+
+<!-- ═══════════ 1장 기본기 ═══════════ -->
+<section class="chapter" id="ch1">
+<div class="ch-head"><span class="ch-num">1</span><h2>기본기 — LLM이라는 엔진</h2></div>
+<p class="ch-lead">모든 용어의 출발점. 여기 6개만 잡으면 나머지 장이 전부 쉬워집니다.</p>
+
+<div class="term"><div class="term-head"><h3>LLM</h3><span class="en">Large Language Model</span><span class="lv">☕</span></div>
+<p>다음에 올 말을 확률로 예측하도록 거대한 텍스트로 학습된 모델. 코드도 "말"이라서 코딩을 합니다.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 세상의 글을 엄청나게 읽고 "다음 단어 맞히기"의 신이 된 존재. 정답을 아는 게 아니라 <b>가장 그럴듯한 걸</b> 말합니다. 이 한 줄이 환각(4번째 용어)의 복선입니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>토큰 · 컨텍스트 윈도우</h3><span class="en">token · context window</span><span class="lv">☕</span></div>
+<p>토큰 = 모델이 글을 세는 단위(한글 1자 ≈ 1~2토큰). 컨텍스트 윈도우 = 모델이 <b>한 번에 볼 수 있는</b> 토큰 한도.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 컨텍스트 윈도우는 <b>책상 크기</b>입니다. 책상이 아무리 커도, 서류를 산처럼 쌓으면 정작 필요한 종이를 못 찾죠. 그게 다음 용어입니다.</div>
+<div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — "1M 토큰 모델이니까 1M을 다 넣으면 되지."</div><div class="m-yes"><b>✅ 사실</b> — 광고 창(1M)과 <b>실효 컨텍스트</b>(정확도가 유지되는 구간, 대략 200~400K<span class="y"></span>)는 다릅니다. 200K 모델이 5만 토큰에서 이미 정확도를 잃는 연구도 있습니다(Chroma, 18개 모델<span class="g"></span>).</div></div></div>
+
+<div class="term"><div class="term-head"><h3>추론 모델 · 생각 토큰</h3><span class="en">reasoning model · thinking budget</span><span class="lv">☕</span></div>
+<p>답하기 전에 "생각 토큰"을 태우며 문제를 풀어보는 모델. 수학·코드·계획에 강하지만 느리고 비쌉니다. 생각의 양을 조절하는 손잡이가 thinking budget(effort).</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 일반 모델은 즉답하는 사람, 추론 모델은 <b>연습장에 풀어보고 답하는 사람</b>. 연습장 쓰는 시간만큼 느리고, 연습장 종이값(토큰)이 듭니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>환각 · 그라운딩</h3><span class="en">hallucination · grounding</span><span class="lv">☕</span></div>
+<p>환각 = 근거 없는 내용을 그럴듯하게 생성하는 것. 그라운딩 = 답을 실제 근거(문서·코드·검색결과)에 묶는 것.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — LLM은 "모른다"보다 "그럴듯한 오답"을 잘 만듭니다. 그래서 5장(RAG·검색)과 3장(하네스의 검증 루프)이 존재합니다. <b>이 책 절반은 사실 환각 대책입니다.</b></div></div>
+
+<div class="term"><div class="term-head"><h3>오픈웨이트 vs 폐쇄형</h3><span class="en">open-weight vs closed</span><span class="lv">☕</span></div>
+<p>가중치 파일을 내려받아 <b>내 서버에서</b> 돌릴 수 있으면 오픈웨이트, API로만 쓸 수 있으면 폐쇄형. 오픈웨이트 ≠ 오픈소스(학습 데이터·코드 공개와는 다른 얘기).</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — <b>온프렘(내부망) 가능 여부</b>가 여기서 갈립니다. 금융권처럼 데이터가 밖으로 못 나가는 곳에서 이 축이 모델 선택의 1번 기준.</div></div>
+
+<div class="term"><div class="term-head"><h3>파인튜닝 vs RAG vs 지식화</h3><span class="en">fine-tuning vs RAG</span><span class="lv">☕</span></div>
+<p>파인튜닝 = 가중치 일부를 다시 학습(모델 자체가 변함). RAG·지식화 = 모델은 그대로 두고 <b>필요할 때 자료를 찾아 옆에 놓아주는 것</b>.</p>
+<div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — "문서를 지식화하면 모델이 학습되나요?"</div><div class="m-yes"><b>✅ 사실</b> — 아니요. 가중치는 1도 안 바뀝니다. 문서를 파싱해 검색 가능한 형태로 저장했다가, 필요할 때 대화 맥락에 넣어주는 겁니다. 파인튜닝과 완전히 다릅니다.<span class="g"></span></div></div></div>
+</section>
+
+<!-- ═══════════ 2장 코드 어시스턴트 ═══════════ -->
+<section class="chapter" id="ch2">
+<div class="ch-head"><span class="ch-num">2</span><h2>코드 어시스턴트 — 에이전트의 탄생</h2></div>
+<p class="ch-lead">"채팅으로 물어보기"에서 "일을 맡기기"로. 1편(트렌드)에서 본 도구들이 여기 다 들어옵니다.</p>
+
+<div class="term"><div class="term-head"><h3>4가지 표면</h3><span class="en">surfaces: Web · CLI · IDE · Desktop</span><span class="lv">☕</span></div>
+<p>같은 모델이라도 만나는 창구가 다릅니다. 웹 UI(ChatGPT·Claude 웹) → CLI 에이전트(Claude Code·Codex) → IDE 통합(Cursor 등) → 데스크탑 앱. 모델 회사들은 거의 같은 순서로 이 표면들을 만듭니다.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 같은 요리사(모델)가 홀 서빙(웹), 출장 요리(CLI), 주방 상주(IDE)로 일하는 차이. <b>일을 맡기려면</b> 파일을 읽고 명령을 실행할 수 있는 CLI/IDE 쪽으로 와야 합니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>에이전트 · 에이전틱 루프</h3><span class="en">agent · agentic loop</span><span class="lv">☕</span></div>
+<p>에이전트 = 모델이 도구·순서·분기·중단을 <b>스스로 결정</b>하며 목표를 향해 반복 실행하는 시스템. 그 반복이 에이전틱 루프: <b>계획 → 도구 → 관찰 → 판단 → (반복)</b>.</p>
+<figure>
+<svg viewBox="0 0 560 300" role="img" aria-label="에이전틱 루프 순환도">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5f6672"/></marker></defs>
+<circle cx="280" cy="150" r="118" fill="none" stroke="#e2e7ee" stroke-width="2" stroke-dasharray="4 5"/>
+<g font-family="var(--font)" font-size="14" font-weight="700" text-anchor="middle">
+<g><rect x="215" y="8" width="130" height="40" rx="20" fill="#0066cc"/><text x="280" y="33" fill="#fff">1 계획</text></g>
+<g><rect x="428" y="130" width="130" height="40" rx="20" fill="#0ea5e9"/><text x="493" y="155" fill="#fff">2 도구 실행</text></g>
+<g><rect x="215" y="252" width="130" height="40" rx="20" fill="#16a34a"/><text x="280" y="277" fill="#fff">3 결과 관찰</text></g>
+<g><rect x="2" y="130" width="130" height="40" rx="20" fill="#7c3aed"/><text x="67" y="155" fill="#fff">4 판단</text></g>
+</g>
+<g stroke="#5f6672" stroke-width="2" fill="none">
+<path d="M355 45 Q 430 70 470 125" marker-end="url(#ar)"/>
+<path d="M470 175 Q 430 235 352 262" marker-end="url(#ar)"/>
+<path d="M210 262 Q 130 235 90 175" marker-end="url(#ar)"/>
+<path d="M90 125 Q 130 70 208 45" marker-end="url(#ar)"/>
+</g>
+<text x="280" y="143" font-size="13" fill="#5f6672" text-anchor="middle">끝났으면 보고,</text>
+<text x="280" y="163" font-size="13" fill="#5f6672" text-anchor="middle">아니면 한 바퀴 더</text>
+</svg>
+<figcaption>그림 1 · 에이전틱 루프 — 이 원 하나가 2~4장 전체의 뼈대</figcaption>
+</figure>
+<div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"모델은 '무엇을 하고 싶다'고 <b>말할 뿐</b>이고, 실제로 할지 말지는 하네스가 결정합니다. 그래서 보안은 모델이 아니라 하네스에 겁니다."</div></div>
+
+<div class="term"><div class="term-head"><h3>Workflow vs Agent</h3><span class="en"></span><span class="lv">☕</span></div>
+<p>워크플로는 사람이 단계를 미리 고정, 에이전트는 모델이 단계를 동적으로 결정.</p>
+<div class="tbl-scroll"><table>
+<tr><th></th><th>Workflow</th><th>Agent</th></tr>
+<tr><td>단계</td><td>사람이 미리 고정</td><td>모델이 동적으로 결정</td></tr>
+<tr><td>예측가능성</td><td>높음</td><td>낮음</td></tr>
+<tr><td>감사·규제 적합</td><td>좋음</td><td>어려움</td></tr>
+<tr><td>맞는 일</td><td>정형·반복·규정준수</td><td>탐색·분해·낯선 코드베이스</td></tr>
+</table></div>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 규정이 걸린 곳은 워크플로, 탐색이 필요한 곳은 에이전트. <b>"전부 에이전트로!"는 오답</b>입니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>AGENTS.md · CLAUDE.md</h3><span class="en">프로젝트 지침 파일</span><span class="lv">☕</span></div>
+<p>저장소에 두는 "에이전트용 사용설명서". 코딩 규칙, 금지사항, 빌드 방법을 적어두면 에이전트가 매 세션 읽고 시작합니다. AGENTS.md는 크로스툴 표준<span class="g"></span>, CLAUDE.md는 Claude Code용, <code>.techai.md</code>·<code>rules.md</code>는 같은 개념의 변형.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 신입사원 첫날 주는 <b>온보딩 문서</b>. 에이전트는 매일 첫날이라서, 이 문서가 좋을수록 매일이 좋아집니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>바이브 코딩 → 에이전틱 엔지니어링</h3><span class="en">vibe coding → agentic engineering</span><span class="lv">☕</span></div>
+<p>바이브 코딩 = 결과만 보고 코드는 안 읽으며 "느낌으로" 만들기. 프로토타입엔 좋지만 운영엔 위험. 2026년의 방향은 <b>에이전틱 엔지니어링</b> — 에이전트에게 맡기되 스펙·검증·리뷰의 공학 규율을 유지하는 것<span class="g"></span>.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 바이브 코딩이 "맛만 보고 합격"이라면, 에이전틱 엔지니어링은 <b>위생검사까지 통과</b>시키는 것. 관련 규율: Plan mode(계획만 세우는 읽기전용), TDD with agents(테스트 먼저 주고 통과까지 반복), SDD(스펙 먼저 쓰는 Spec-Driven Development).</div></div>
+</section>
+
+<!-- ═══════════ 3장 하네스 ═══════════ -->
+<section class="chapter" id="ch3">
+<div class="ch-head"><span class="ch-num">3</span><h2>하네스 — 이 책의 심장</h2></div>
+<p class="ch-lead">2026년 업계에서 가장 뜨거운 단어. 2편(택가이 코드)의 킬러 슬라이드가 바로 여기 서 있습니다.</p>
+
+<div class="term"><div class="term-head"><h3>하네스</h3><span class="en">harness — Agent = Model + Harness</span><span class="lv">☕</span></div>
+<p>모델의 추론을 제외한 <b>전부</b>. 도구 실행, 상태 관리, 메모리, 권한, 검증, 재시도, 관측. Terraform을 만든 Mitchell Hashimoto가 <b>"Agent = Model + Harness"</b> 공식으로 정리했고 2026년 초 업계 표준어가 됐습니다<span class="g"></span>.</p>
+<div class="quote"><span class="q-tag">2026년의 명언</span>"Agents aren't hard; <b>the Harness is hard.</b>" — Ryan Lopopolo, OpenAI</div>
+<figure>
+<svg viewBox="0 0 560 250" role="img" aria-label="모델-하네스-스캐폴드 3층 구조">
+<g font-family="var(--font)" text-anchor="middle">
+<rect x="30" y="30" width="500" height="190" rx="18" fill="#f4f7fb" stroke="#7c3aed" stroke-width="2"/>
+<text x="280" y="58" font-size="14" font-weight="800" fill="#7c3aed">스캐폴드 — 무엇을 보여주고 어떻게 일하게 할지</text>
+<text x="280" y="78" font-size="12" fill="#5f6672">CLAUDE.md/AGENTS.md · 훅 · 스킬 · 서브에이전트 정의 (OMC·가재코드·우로보로스…)</text>
+<rect x="80" y="95" width="400" height="105" rx="14" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+<text x="280" y="120" font-size="14" font-weight="800" fill="#0066cc">하네스 — 루프를 실제로 돌리는 실행 계층</text>
+<text x="280" y="139" font-size="12" fill="#5f6672">Claude Code CLI · Codex CLI (툴콜 실행 · 권한 · 종료 판단)</text>
+<rect x="170" y="150" width="220" height="40" rx="20" fill="#232832"/>
+<text x="280" y="175" font-size="14" font-weight="800" fill="#0ea5e9">모델 (추론 그 자체)</text>
+</g>
+</svg>
+<figcaption>그림 2 · 3층 구조 — 넓은 의미의 "하네스"는 모델 빼고 전부(보라+파랑)</figcaption>
+</figure>
+<p>층을 나누면: <b>하네스(좁은 의미)</b> = 루프를 실행하는 계층(Claude Code·Codex CLI), <b>스캐폴드</b> = 모델이 보는 세계를 정의하는 층(지침 파일·훅·서브에이전트). 커뮤니티 하네스 번들(oh-my-claudecode, 가재코드, LazyCodex, Ouroboros 등)은 스캐폴드 층의 제품들입니다.</p></div>
+
+<div class="term"><div class="term-head"><h3>하네스 엔지니어링</h3><span class="en">harness engineering</span><span class="lv">☕</span></div>
+<p>에이전트가 올바른 절차로 끝까지 일하도록 <b>작업환경·제약조건·피드백 루프를 설계</b>하는 규율. 프롬프트를 다듬는 게 아니라 시스템을 깝니다.</p>
+<figure>
+<svg viewBox="0 0 560 150" role="img" aria-label="3단계 성숙도 타임라인">
+<g font-family="var(--font)" text-anchor="middle" font-size="13">
+<line x1="40" y1="75" x2="520" y2="75" stroke="#e2e7ee" stroke-width="3"/>
+<circle cx="110" cy="75" r="9" fill="#0ea5e9"/><circle cx="280" cy="75" r="9" fill="#0066cc"/><circle cx="450" cy="75" r="11" fill="#7c3aed"/>
+<text x="110" y="45" font-weight="800" fill="#0ea5e9">프롬프트 엔지니어링</text><text x="110" y="108" fill="#5f6672">2022–23 · "무엇을 시킬지"</text>
+<text x="280" y="45" font-weight="800" fill="#0066cc">컨텍스트 엔지니어링</text><text x="280" y="108" fill="#5f6672">2024–25 · "무엇을 보여줄지"</text>
+<text x="450" y="45" font-weight="800" fill="#7c3aed">하네스 엔지니어링</text><text x="450" y="108" fill="#5f6672">2026– · "어떻게 일하게 할지"</text>
+</g>
+</svg>
+<figcaption>그림 3 · AI 엔지니어링 성숙도 3단계 <span class="g"></span></figcaption>
+</figure>
+<div class="easy"><b>☕ 쉽게 말하면 (운전 비유)</b> — "모델은 운전 실력이고, 하네스는 <b>차선, 가드레일, 속도계, 블랙박스, 그리고 브레이크</b>입니다. 운전 실력이 최고여도 밤에 차선 없는 산길에서는 사고가 납니다."</div>
+<p><b>실증 카드 두 장:</b></p>
+<ul>
+<li>LangChain 팀은 모델을 <b>전혀 바꾸지 않고</b> 하네스만 최적화해 Terminal-Bench 30위 → 5위<span class="y"></span></li>
+<li>OpenAI 엔지니어 3명이 손으로 코드 한 줄 안 쓰고 <b>약 100만 줄 / PR 1,500건</b>을 완성. 비결은 AGENTS.md를 100줄 목차로 유지, 규칙을 린터로 기계적 강제, 저장소를 단일 진실 원천으로<span class="g"></span></li>
+</ul>
+<div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — "좋은 프롬프트를 쓰면 에이전트가 규칙을 지킨다."</div><div class="m-yes"><b>✅ 사실</b> — 프롬프트 지시는 <b>확률적 순종</b>, 린터·게이트는 <b>결정적 강제</b>. "규칙을 지켜라"라고 말하는 것과 규칙 위반 시 PR을 막는 것은 다른 차원입니다. 하네스 엔지니어링은 후자를 설계합니다.</div></div></div>
+
+<div class="term"><div class="term-head"><h3>하네스 5대 구성요소</h3><span class="en"></span><span class="lv">🌶️</span></div>
+<div class="tbl-scroll"><table>
+<tr><th>#</th><th>구성요소</th><th>하는 일</th></tr>
+<tr><td>1</td><td><b>도구 오케스트레이션</b></td><td>도구 선택·연쇄·에러 처리</td></tr>
+<tr><td>2</td><td><b>검증 루프</b></td><td>테스트·린트·진단 결과를 다시 모델에 주입</td></tr>
+<tr><td>3</td><td><b>컨텍스트 & 메모리</b></td><td>규칙·지식·세션 상태 관리</td></tr>
+<tr><td>4</td><td><b>가드레일</b></td><td>샌드박스, 예산 상한, 승인 게이트</td></tr>
+<tr><td>5</td><td><b>관측성</b></td><td>트레이스·감사 로그 — 규제 산업에선 이 칸이 도입 가능성 그 자체</td></tr>
+</table></div>
+<p>사용자 쪽 하네스 엔지니어링은 <b>Guides(피드포워드: 지침·스킬·부트스트랩)</b>와 <b>Sensors(피드백: 린터·리뷰 에이전트·검증 게이트)</b>로 나눠 설계합니다. 그리고 커뮤니티 하네스들이 전부 하는 일은 결국 같습니다 — ① 역할 분리 ② 단계 강제 ③ 검증 게이트 ④ 재사용 절차.</p></div>
+</section>
+
+<!-- ═══════════ 4장 멀티에이전트 ═══════════ -->
+<section class="chapter" id="ch4">
+<div class="ch-head"><span class="ch-num">4</span><h2>멀티에이전트 — 혼자보다 팀, 단 공짜는 아님</h2></div>
+<p class="ch-lead">2026년 오케스트레이션의 표준 문법. 그리고 반드시 함께 알아야 할 비용.</p>
+
+<div class="term"><div class="term-head"><h3>오케스트레이터 · 서브에이전트 · 에이전트 팀</h3><span class="en">3단계 진화</span><span class="lv">☕</span></div>
+<figure>
+<svg viewBox="0 0 560 210" role="img" aria-label="멀티에이전트 3단계 진화">
+<g font-family="var(--font)" font-size="12.5" text-anchor="middle">
+<rect x="15" y="20" width="160" height="160" rx="14" fill="#f4f7fb" stroke="#e2e7ee"/>
+<text x="95" y="45" font-weight="800" font-size="13.5" fill="#111827">1단계 멀티세션</text>
+<circle cx="60" cy="90" r="17" fill="#0ea5e9"/><circle cx="130" cy="90" r="17" fill="#0ea5e9"/>
+<circle cx="95" cy="140" r="13" fill="#ea580c"/><text x="95" y="144" fill="#fff" font-size="10" font-weight="700">사람</text>
+<line x1="70" y1="103" x2="88" y2="130" stroke="#ea580c" stroke-width="2"/><line x1="120" y1="103" x2="102" y2="130" stroke="#ea580c" stroke-width="2"/>
+<text x="95" y="172" fill="#5f6672">창 여러 개, 사람이 조율</text>
+<rect x="200" y="20" width="160" height="160" rx="14" fill="#f4f7fb" stroke="#e2e7ee"/>
+<text x="280" y="45" font-weight="800" font-size="13.5" fill="#111827">2단계 서브에이전트</text>
+<circle cx="280" cy="80" r="17" fill="#0066cc"/><text x="280" y="84" fill="#fff" font-size="10" font-weight="700">팀장</text>
+<circle cx="235" cy="140" r="14" fill="#0ea5e9"/><circle cx="280" cy="147" r="14" fill="#0ea5e9"/><circle cx="325" cy="140" r="14" fill="#0ea5e9"/>
+<line x1="268" y1="93" x2="242" y2="128" stroke="#5f6672" stroke-width="2"/><line x1="280" y1="97" x2="280" y2="133" stroke="#5f6672" stroke-width="2"/><line x1="292" y1="93" x2="318" y2="128" stroke="#5f6672" stroke-width="2"/>
+<text x="280" y="172" fill="#5f6672">팀장만 통신·위임</text>
+<rect x="385" y="20" width="160" height="160" rx="14" fill="#f4f7fb" stroke="#7c3aed"/>
+<text x="465" y="45" font-weight="800" font-size="13.5" fill="#7c3aed">3단계 에이전트 팀</text>
+<circle cx="425" cy="95" r="15" fill="#7c3aed"/><circle cx="505" cy="95" r="15" fill="#7c3aed"/><circle cx="465" cy="150" r="15" fill="#7c3aed"/>
+<line x1="440" y1="95" x2="490" y2="95" stroke="#7c3aed" stroke-width="2"/><line x1="433" y1="108" x2="457" y2="138" stroke="#7c3aed" stroke-width="2"/><line x1="497" y1="108" x2="473" y2="138" stroke="#7c3aed" stroke-width="2"/>
+<text x="465" y="180" fill="#5f6672">서로 직접 통신·자율 조율</text>
+</g>
+</svg>
+<figcaption>그림 4 · 멀티세션 → 서브에이전트 → 에이전트 팀 <span class="y"></span></figcaption>
+</figure>
+<p><b>오케스트레이터</b> = 과업을 분해해 하위 에이전트에 위임하고 결과를 통합하는 상위 에이전트. <b>서브에이전트</b> = 독립 컨텍스트와 도구 집합을 가진 하위 에이전트. <b>에이전트 팀</b> = 팀원끼리 직접 통신하고 작업 목록을 공유하는 2026년의 최신 형태<span class="y"></span>. 2026년 업계 합의는 "오케스트레이터 + <b>격리된</b> 서브에이전트 + 요약만 반환"<span class="y"></span>.</p></div>
+
+<div class="term"><div class="term-head"><h3>4가지 표준 패턴</h3><span class="en">sequential · concurrent · hierarchical · handoff</span><span class="lv">🌶️</span></div>
+<div class="tbl-scroll"><table>
+<tr><th>패턴</th><th>구조</th><th>언제</th></tr>
+<tr><td><b>Sequential</b> 파이프라인</td><td>A→B→C 순차 전달</td><td>단계가 명확할 때 (작성→검토)</td></tr>
+<tr><td><b>Concurrent</b> 병렬</td><td>동시에 실행 후 취합</td><td>탐색·검색·비교</td></tr>
+<tr><td><b>Hierarchical</b> 오케스트레이터-워커</td><td>매니저가 분해→위임→통합</td><td>큰 과업 분해</td></tr>
+<tr><td><b>Handoff</b></td><td>제어권 자체를 넘김</td><td>도메인 라우팅</td></tr>
+</table></div>
+<p>여기에 <b>Debate(토론·교차평가)</b>를 더해 5패턴으로 세기도 합니다 — 여러 에이전트가 독립 답을 내고 서로 반박·채점(LLM-as-judge)하게 하는 방식. 단, 심판 모델은 채점 기준이 슬금슬금 변하는 <b>캘리브레이션 드리프트</b>가 있어 주기적 인간 검증이 필수입니다.</p></div>
+
+<div class="term"><div class="term-head"><h3>멀티는 공짜가 아니다</h3><span class="en">the cost table</span><span class="lv">☕</span></div>
+<div class="tbl-scroll"><table>
+<tr><th>이득</th><th>비용</th></tr>
+<tr><td>독립 탐색 병렬화</td><td>토큰·지연이 에이전트 수만큼 곱셈</td></tr>
+<tr><td>다른 관점의 리뷰</td><td>같은 조사를 중복</td></tr>
+<tr><td>도메인 전문화</td><td>지시·완료기준 유실</td></tr>
+<tr><td>작업 격리</td><td>같은 파일 충돌 · 권한/공격면 증가</td></tr>
+</table></div>
+<div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"멀티에이전트는 '많을수록 좋다'가 아닙니다. 하나의 에이전트나 워크플로보다 <b>측정 가능한 이점이 있을 때만</b> 켭니다."</div>
+<p>파일 충돌의 정답 한 줄: <code>git worktree add</code> — 같은 저장소의 별도 작업 디렉터리를 파서 에이전트마다 격리된 사본에서 일하게 하는 것.</p></div>
+
+<div class="term"><div class="term-head"><h3>MCP · A2A</h3><span class="en">연결 규격들</span><span class="lv">🌶️</span></div>
+<p><b>MCP</b>(Model Context Protocol) = 에이전트 ↔ 도구/데이터를 연결하는 표준 규격(host/client/server, tools/resources/prompts). <b>A2A</b> = 에이전트 ↔ 에이전트 통신 규격(Linux Foundation)<span class="g"></span>.</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — MCP는 <b>USB-C 포트</b>입니다. 도구마다 전용 케이블을 만들지 않고, 규격에 맞춰 꽂으면 어떤 에이전트든 그 도구를 씁니다. 단, 아무 USB나 꽂으면 안 되듯 MCP 도구 설명에 명령을 심는 공격(tool poisoning)도 존재 — 신뢰할 수 있는 서버만.</div></div>
+</section>
+
+<!-- ═══════════ 5장 RAG·검색 ═══════════ -->
+<section class="chapter" id="ch5">
+<div class="ch-head"><span class="ch-num">5</span><h2>RAG와 검색 — 그리고 대전환</h2></div>
+<p class="ch-lead">대부분의 청중이 "AI 코딩 = RAG"로 알고 있습니다. 절반만 맞고, 절반은 2025년에 뒤집혔습니다.</p>
+
+<div class="term"><div class="term-head"><h3>RAG</h3><span class="en">Retrieval-Augmented Generation</span><span class="lv">☕</span></div>
+<p>질문이 오면 ① 관련 자료를 검색해서 ② 컨텍스트에 붙이고 ③ 모델이 그걸 근거로 답하게 하는 방식. 부품: <b>임베딩</b>(글→숫자 벡터), <b>벡터 DB</b>(비슷한 벡터 찾기), <b>청킹</b>(문서 자르기), <b>리랭킹</b>(후보 재정렬).</p>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 오픈북 시험입니다. 모델의 머리(가중치)를 바꾸는 게 아니라, <b>시험장에 책을 갖고 들어가게</b> 해주는 것. 환각(1장)의 1차 백신.</div></div>
+
+<div class="term"><div class="term-head"><h3>대전환: 벡터 → 에이전틱 검색</h3><span class="en">agentic search</span><span class="lv">☕</span></div>
+<p>2025년 5월, Claude Code는 벡터 검색을 걷어내고 <b>grep</b>(정확한 문자열 검색)으로 갈아탔고 결과는 "압도적으로 더 좋았다"<span class="g"></span>. 이후 Cursor·Cline 등이 유사한 방향으로 이동<span class="y"></span>. 에이전트가 검색 도구를 스스로 반복 사용하며 능동 탐색하는 방식이 <b>에이전틱 검색</b>입니다.</p>
+<figure>
+<svg viewBox="0 0 560 220" role="img" aria-label="전통 RAG와 에이전틱 검색 비교">
+<g font-family="var(--font)" font-size="12.5" text-anchor="middle">
+<text x="140" y="28" font-weight="800" font-size="14" fill="#111827">전통 RAG (전처리형)</text>
+<rect x="30" y="45" width="90" height="34" rx="8" fill="#0ea5e9"/><text x="75" y="66" fill="#fff">임베딩</text>
+<rect x="30" y="95" width="90" height="34" rx="8" fill="#0ea5e9"/><text x="75" y="116" fill="#fff">벡터 DB</text>
+<rect x="30" y="145" width="90" height="34" rx="8" fill="#0ea5e9"/><text x="75" y="166" fill="#fff">유사도 검색</text>
+<rect x="160" y="95" width="90" height="34" rx="8" fill="#0066cc"/><text x="205" y="116" fill="#fff">모델 답변</text>
+<path d="M75 79 L75 95 M75 129 L75 145 M120 162 Q150 150 160 118" stroke="#5f6672" stroke-width="2" fill="none"/>
+<text x="140" y="205" fill="#5f6672">인덱스 동기화 필요 · 문서에 강함</text>
+<line x1="285" y1="40" x2="285" y2="190" stroke="#e2e7ee" stroke-width="2" stroke-dasharray="5 5"/>
+<text x="425" y="28" font-weight="800" font-size="14" fill="#7c3aed">에이전틱 검색 (능동형)</text>
+<circle cx="425" cy="70" r="22" fill="#7c3aed"/><text x="425" y="75" fill="#fff" font-weight="700">모델</text>
+<rect x="315" y="130" width="66" height="30" rx="8" fill="#16a34a"/><text x="348" y="149" fill="#fff">grep</text>
+<rect x="392" y="130" width="66" height="30" rx="8" fill="#16a34a"/><text x="425" y="149" fill="#fff">glob</text>
+<rect x="469" y="130" width="66" height="30" rx="8" fill="#16a34a"/><text x="502" y="149" fill="#fff">read</text>
+<path d="M408 85 L355 128 M425 92 L425 128 M442 85 L495 128" stroke="#5f6672" stroke-width="2" fill="none"/>
+<text x="425" y="185" fill="#5f6672">도구를 반복 사용하며 스스로 탐색</text>
+<text x="425" y="205" fill="#5f6672">항상 현재 파일 상태 · 코드에 강함</text>
+</g>
+</svg>
+<figcaption>그림 5 · 코드는 grep, 문서는 검색형 지식 — 용도가 다릅니다</figcaption>
+</figure>
+<div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — "그럼 RAG는 죽었네?"</div><div class="m-yes"><b>✅ 사실</b> — 코드 검색에서 퇴조했을 뿐, <b>문서·가이드·사내 지식은 여전히 검색형(RAG·지식화)이 정답</b>입니다. 논문 "Is Grep All You Need?"(arXiv 2605.15184<span class="g"></span>)도 노이즈가 커지면 교차점이 생긴다고 답합니다. 요지는 "retrieval is really retrieval-plus-orchestration" — 검색은 하네스와 한 몸.</div></div>
+<p><b>에이전틱 RAG</b> = 언제, 무엇을, 다시 검색할지 에이전트가 동적으로 결정하고 중간 결과에 따라 전략을 바꾸는 진화형. <b>GraphRAG</b> = 문서를 지식 그래프로 엮어 관계 질문("A와 B의 연결고리는?")에 강해진 변형.</p></div>
+</section>
+
+<!-- ═══════════ 6장 메모리·LLM 위키 ═══════════ -->
+<section class="chapter" id="ch6">
+<div class="ch-head"><span class="ch-num">6</span><h2>메모리와 LLM 위키 — 잊지 않는 에이전트</h2></div>
+<p class="ch-lead">에이전트는 세션이 끝나면 전부 잊습니다. 이 망각과 싸우는 4가지 무기.</p>
+
+<div class="term"><div class="term-head"><h3>지식 · 메모리 · 스킬 · 규칙</h3><span class="en">4구분 — 헷갈리면 여기로</span><span class="lv">☕</span></div>
+<div class="tbl-scroll"><table>
+<tr><th>개념</th><th>정의</th><th>수명</th><th>예</th></tr>
+<tr><td><b>Knowledge</b></td><td>지금 과업에 검색·참조할 사실</td><td>과업 단위</td><td>지식화된 .md, 검색 결과</td></tr>
+<tr><td><b>Memory</b></td><td>과업을 넘어 지속되는 정보</td><td>세션 넘김</td><td>개인화 메모리, 사용자 선호</td></tr>
+<tr><td><b>Skill</b></td><td>반복 가능한 작업 절차</td><td>영구·이식 가능</td><td>SKILL.md</td></tr>
+<tr><td><b>Rule</b></td><td>허용/금지/승인 같은 행동 제약</td><td>영구·강제</td><td>rules.md, 권한 설정</td></tr>
+</table></div>
+<div class="easy"><b>☕ 쉽게 말하면</b> — 지식은 <b>책상 위 자료</b>, 메모리는 <b>수첩</b>, 스킬은 <b>몸에 밴 레시피</b>, 규칙은 <b>사규</b>. 넣는 서랍이 다르면 꺼내는 방법도 다릅니다.</div></div>
+
+<div class="term"><div class="term-head"><h3>컨텍스트 부패 · 압축</h3><span class="en">context rot · compaction</span><span class="lv">☕</span></div>
+<p><b>Context rot</b> = 무관한 도구 출력과 낡은 중간상태가 쌓이며 모델이 <b>조용히</b> 정확도를 잃는 현상. 무서운 점: 에러가 안 납니다<span class="g"></span>. <b>Compaction</b> = 창이 차기 전에 대화를 요약해 새 창으로 이어붙이기 — 단, 무손실이 아니라서 압축 직후 "아까 정한 규칙"을 잊는 일이 흔합니다.</p>
+<div class="quote"><span class="q-tag">실무 결론 한 줄</span>"중요한 결정은 대화가 아니라 <b>파일(저장소)에</b> 적어라." — OpenAI가 "repo가 단일 진실 원천"이라 말한 이유이자, 다음 용어(LLM 위키)의 존재 이유.</div></div>
+
+<div class="term"><div class="term-head"><h3>LLM 위키</h3><span class="en">LLM wiki — 세션을 넘는 복리 지식</span><span class="lv">☕</span></div>
+<p>에이전트가 작업하며 알게 된 사실·결정·구조를 <b>마크다운 위키 페이지</b>로 축적하고, 다음 세션이 그걸 읽고 시작하게 하는 지식베이스. Karpathy가 제안한 모델로, "모든 세션이 첫날"인 에이전트에게 <b>어제가 생기게</b> 합니다.</p>
+<figure>
+<svg viewBox="0 0 560 190" role="img" aria-label="RAG, 메모리, LLM 위키 비교">
+<g font-family="var(--font)" font-size="12.5" text-anchor="middle">
+<rect x="20" y="25" width="160" height="130" rx="14" fill="#f4f7fb" stroke="#e2e7ee"/>
+<text x="100" y="52" font-weight="800" font-size="14" fill="#0ea5e9">RAG</text>
+<text x="100" y="78" fill="#5f6672">외부 문서를</text><text x="100" y="96" fill="#5f6672">그때그때 검색</text>
+<text x="100" y="130" font-weight="700" fill="#111827">"찾아 읽는다"</text>
+<rect x="200" y="25" width="160" height="130" rx="14" fill="#f4f7fb" stroke="#e2e7ee"/>
+<text x="280" y="52" font-weight="800" font-size="14" fill="#16a34a">에이전트 메모리</text>
+<text x="280" y="78" fill="#5f6672">대화·경험에서</text><text x="280" y="96" fill="#5f6672">자동 추출·저장</text>
+<text x="280" y="130" font-weight="700" fill="#111827">"겪으며 기억한다"</text>
+<rect x="380" y="25" width="160" height="130" rx="14" fill="#f4f7fb" stroke="#7c3aed"/>
+<text x="460" y="52" font-weight="800" font-size="14" fill="#7c3aed">LLM 위키</text>
+<text x="460" y="78" fill="#5f6672">사람이 읽을 수 있는</text><text x="460" y="96" fill="#5f6672">md 페이지로 정제·누적</text>
+<text x="460" y="130" font-weight="700" fill="#111827">"기록하며 복리로 쌓는다"</text>
+<text x="280" y="180" fill="#5f6672" font-size="12">셋은 경쟁이 아니라 조합 — 코드는 grep, 문서는 RAG, 결정은 위키, 선호는 메모리</text>
+</g>
+</svg>
+<figcaption>그림 6 · 망각과 싸우는 세 무기의 역할 분담</figcaption>
+</figure>
+<p>학계 쪽 흐름: <b>A-MEM</b>(스스로 메모리를 연결·진화시키는 에이전틱 메모리), <b>Letta(구 MemGPT)</b>의 3계층(core=RAM / archival=디스크 / recall=대화이력). 다만 코딩 실무의 정직한 결론은 여전히 — <b>파일/저장소가 최고의 메모리</b>입니다.</p></div>
+</section>
+
+<!-- ═══════════ 부록 사전 ═══════════ -->
+<section class="chapter" id="dict">
+<div class="ch-head"><span class="ch-num">A</span><h2>부록 — 한 줄 사전</h2></div>
+<p class="ch-lead">청중이 던지는 단어를 즉시 받아치기 위한 압축 사전. 굵은 글씨는 실제로 나올 확률이 높은 것.</p>
+
+<h3 style="margin:22px 0 8px;font-size:16px">에이전트 기본</h3>
+<div class="dict">
+<p><b>Agent</b> — 모델이 도구·순서·분기·중단을 동적으로 결정하며 목표를 향해 반복 실행하는 시스템</p>
+<p><b>Agentic loop</b> — 계획→도구→관찰→판단의 반복</p>
+<p><b>Tool calling</b> — 모델이 "이 도구를 이 인자로"라는 구조화 출력을 내는 것. 실행은 하네스가 함</p>
+<p>ReAct — Reasoning+Acting을 번갈아 하는 고전 패턴</p>
+<p><b>Harness</b> — 모델을 제외한 전부(도구·상태·메모리·권한·검증·관측)</p>
+<p>Scaffolding — 모델 주위의 코드. 지침·훅·서브에이전트 등 "모델이 보는 세계"를 정의하는 층</p>
+<p><b>Orchestrator</b> — 과업을 분해해 하위 에이전트에 위임하고 결과를 통합하는 상위 에이전트</p>
+<p><b>Subagent</b> — 독립 컨텍스트와 도구 집합을 가진 하위 에이전트</p>
+<p><b>Agent Teams</b> — 팀원 에이전트끼리 직접 통신·작업목록 공유·자율 조율하는 최신 형태</p>
+<p>Handoff — 제어권 자체를 다른 에이전트에 넘기는 방식</p>
+<p>HITL — 사람 승인 지점을 루프에 넣는 것(Human-in-the-loop)</p>
+<p>Task horizon — 에이전트가 자율로 감당하는 과업의 시간 길이</p>
+<p>Background agent — 비동기로 돌다가 완료 시 알림/PR로 회수</p>
+<p>Cloud agent — 원격 격리 샌드박스에서 저장소를 클론해 작업</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">컨텍스트·검색</h3>
+<div class="dict">
+<p><b>Context window</b> — 한 번에 모델이 볼 수 있는 토큰 한도</p>
+<p><b>Effective context</b> — 실제로 정확도가 유지되는 구간. 광고값보다 훨씬 작다</p>
+<p><b>Context engineering</b> — 창에 무엇을 넣을지 설계하는 규율</p>
+<p><b>Context rot</b> — 무관한 내용이 쌓여 조용히 정확도가 떨어지는 현상</p>
+<p><b>Compaction</b> — 대화를 요약해 새 창으로 이어붙이기</p>
+<p>Progressive disclosure — 이름·설명만 먼저, 본문은 필요할 때 로드</p>
+<p><b>Prompt caching</b> — 반복되는 앞부분을 캐시해 최대 90% 절감</p>
+<p><b>RAG</b> — 검색해서 컨텍스트에 붙이는 전처리형 방식</p>
+<p><b>Agentic search</b> — 에이전트가 grep·읽기·목록을 도구로 써서 능동 탐색</p>
+<p>Embedding/Vector DB/Chunking/Reranking — 전통 RAG 부품들. 코드 검색에서는 퇴조 중</p>
+<p>GraphRAG — 지식 그래프 기반 RAG. 관계 질문에 강함</p>
+<p><b>AGENTS.md / CLAUDE.md</b> — 에이전트에게 주는 프로젝트 지침 파일</p>
+<p>SKILL.md — Agent Skills 표준의 스킬 정의 파일</p>
+<p>Memory(core/archival/recall) — Letta식 3계층 메모리</p>
+<p><b>LLM wiki</b> — 세션을 넘어 md 페이지로 복리 축적하는 지식베이스</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">모델</h3>
+<div class="dict">
+<p>LLM/SLM — 대형/소형 언어모델</p>
+<p><b>MoE</b> — 토큰마다 일부 전문가만 활성화. 큰 총파라미터, 작은 활성 파라미터</p>
+<p><b>Open-weight vs Open-source</b> — 가중치 공개 ≠ 학습데이터·코드 공개. 온프렘 가능 여부는 open-weight로 결정</p>
+<p><b>Quantization</b> — 정밀도를 낮춰 메모리·속도 확보(FP8/INT4/GGUF…)</p>
+<p>Distillation — 큰 모델의 행동을 작은 모델에 옮김</p>
+<p><b>Fine-tuning/LoRA</b> — 부분 가중치 조정. 지식화와 혼동 금지</p>
+<p>RLVR — 검증 가능한 보상으로 강화학습. 코드·수학 성능의 주 동력</p>
+<p><b>Reasoning model</b> — 답하기 전 생각 토큰을 태우는 모델</p>
+<p>Test-time compute — 추론 시점에 계산을 더 써서 성능을 올림</p>
+<p>Structured output — JSON 스키마 등으로 출력 형식을 강제</p>
+<p><b>Hallucination/Grounding</b> — 근거 없는 생성 / 근거에 묶기</p>
+<p>Knowledge cutoff — 학습 데이터의 시점 한계</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">규격·실행 환경</h3>
+<div class="dict">
+<p><b>MCP</b> — 에이전트↔도구/데이터 연결 규격. host/client/server</p>
+<p>A2A — 에이전트↔에이전트 통신 규격(Linux Foundation)</p>
+<p>Agent Skills — 스킬 개방 표준(agentskills.io)</p>
+<p>OpenAI-compatible API — 사실상의 추론 API 표준. 온프렘 서빙에서 중요</p>
+<p><b>git worktree</b> — 같은 저장소의 별도 작업 디렉터리. 병렬 에이전트 충돌 방지</p>
+<p><b>Sandbox</b> — 격리 실행 환경(Seatbelt, gVisor, Firecracker…)</p>
+<p><b>Permission modes</b> — allow/ask/deny, plan(읽기전용), bypass(격리 CI 전용)</p>
+<p><b>Hooks</b> — 도구 호출 전후에 스크립트를 끼워 자동 승인·차단</p>
+<p>ADE — Agent Development Environment. 에이전트 관제 환경</p>
+<p>devcontainer — 재현 가능한 개발 컨테이너</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">품질·평가</h3>
+<div class="dict">
+<p><b>SWE-bench</b> — 실제 GitHub 이슈 해결 벤치마크</p>
+<p><b>Terminal-Bench</b> — 터미널 end-to-end 과제. 하네스 품질이 드러남</p>
+<p>METR time horizon — 50% 성공 기준 과업 소요시간. 에이전트 능력 성장 지표</p>
+<p>pass@k — k번 시도 중 1번이라도 성공</p>
+<p><b>LLM-as-judge</b> — 모델이 채점자. 캘리브레이션 드리프트 주의, 주기적 인간 검증 필수</p>
+<p><b>Eval harness</b> — 평가 실행 프레임워크. 여기가 다르면 점수가 다르다</p>
+<p>Regression suite — 회귀 방지 테스트 묶음</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">보안</h3>
+<div class="dict">
+<p><b>Prompt injection</b> — 데이터에 숨긴 지시로 에이전트를 조종(직접/간접)</p>
+<p><b>Lethal trifecta</b> — 비공개데이터 + 신뢰불가토큰 + 유출경로. 셋이 모이면 사고</p>
+<p>Tool poisoning — MCP 도구 설명에 명령을 심는 공격</p>
+<p>Rug pull — 승인 후 도구 정의 변경</p>
+<p><b>Slopsquatting</b> — 환각 패키지명을 선점하는 공급망 공격</p>
+<p>Secret scanning — 자격증명 유출 탐지</p>
+<p>OWASP Top 10 for LLM — LLM 앱 대표 위험 목록</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">방법론</h3>
+<div class="dict">
+<p><b>SDD</b> — 스펙 먼저 쓰고 에이전트가 생성(Specify→Plan→Tasks→Implement)</p>
+<p><b>Plan mode</b> — 수정 없이 계획만 세우는 읽기전용 모드</p>
+<p><b>TDD with agents</b> — 테스트 먼저 주고 통과까지 반복. 에이전트에게 가장 잘 먹히는 검증 루프</p>
+<p><b>Vibe coding</b> — 코드를 안 읽고 느낌으로 만들기. 프로토타입용</p>
+<p>Agentic engineering — 에이전트에게 맡기되 공학 규율 유지</p>
+<p><b>하네스 엔지니어링</b> — 환경·제약·피드백 루프를 설계하는 규율. 2026년의 단어</p>
+<p>PR review agent — PR을 자동 리뷰하는 에이전트(CodeRabbit 등)</p>
+<p>Onboarding collapse — 신규 코드베이스 적응이 주→시간으로 붕괴하는 현상</p>
+</div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer><div class="wrap">
+<h4>출처 · 더 읽을거리</h4>
+<ul>
+<li><a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users — martinfowler.com</a></li>
+<li><a href="https://huggingface.co/blog/agent-glossary">Harness, Scaffold, and the AI Agent Terms Worth Getting Right — HuggingFace</a></li>
+<li><a href="https://www.databricks.com/blog/ai-harness">What is an AI Agent Harness? — Databricks</a></li>
+<li><a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">Anthropic 2026 Agentic Coding Trends Report</a></li>
+<li><a href="https://addyosmani.com/blog/code-agent-orchestra/">The Code Agent Orchestra — Addy Osmani</a></li>
+<li><a href="https://www.digitalapplied.com/blog/multi-agent-orchestration-5-patterns-that-work">Multi-Agent Orchestration: 5 Patterns — Digital Applied</a></li>
+<li><a href="https://arxiv.org/pdf/2502.12110">A-MEM: Agentic Memory for LLM Agents — arXiv</a></li>
+<li><a href="https://dev.to/vishalmysore/rag-vs-agent-memory-vs-llm-wiki-a-practical-comparison-1oo6">RAG vs Agent Memory vs LLM Wiki — dev.to</a></li>
+<li>내부: <code>docs/SBTI_트렌드_지식브리핑_2026-07-29.md</code> (13장 130+ 용어 사전의 확장판이 이 책자)</li>
+</ul>
+<p style="margin-top:18px">SBTI 4 — AI 코딩 용어사전 · 2026-08-02 · sbti1(트렌드)·sbti2(택가이 코드)·sbti3(활용 사례)의 동반 책자</p>
+</div></footer>
+
+</body>
+</html>
