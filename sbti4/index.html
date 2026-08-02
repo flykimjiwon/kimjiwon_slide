@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 코딩 용어사전</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
 :root{--bg:#fafafa;--surface:#fff;--soft:#f4f7fb;--line:#e2e7ee;--text:#1a1a1a;--dark:#111827;--muted:#5f6672;--blue:#0066cc;--cyan:#0ea5e9;--green:#16a34a;--orange:#ea580c;--purple:#7c3aed;--red:#dc2626;--terminal:#232832;--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -93,6 +94,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:8px}
 footer{border-top:1px solid var(--line);margin-top:70px;padding:36px 0 60px;font-size:13.5px;color:var(--muted)}
 footer h4{font-size:14px;color:var(--dark);margin-bottom:10px}
 footer li{margin:3px 0}
+@media(max-width:640px){figure{overflow-x:auto;text-align:left}figure svg{min-width:540px}figcaption{text-align:center}}
 @media print{nav{display:none}.cover{padding:60px 0}.chapter{page-break-before:always;padding-top:30px}.term{break-inside:avoid}}
 </style>
 </head>
@@ -113,8 +115,8 @@ footer li{margin:3px 0}
 <div class="wrap">
 <div class="kicker">SBTI 4 — GLOSSARY EDITION</div>
 <h1>AI 코딩 <em>용어사전</em></h1>
-<p class="sub">하네스부터 멀티에이전트, RAG, LLM 위키까지 — 강의 1·2·3편에 나온 모든 단어를, 비유 하나와 그림 하나로 끝내는 책자.</p>
-<div class="badges"><span>6개 장</span><span>그림 7점</span><span>부록 한줄사전 80+</span><span>2026-08 기준</span></div>
+<p class="sub">하네스부터 멀티에이전트, RAG, LLM 위키까지 — 강의 1·2·3편의 핵심 용어를 선별해, 비유 하나와 그림 하나로 끝내는 책자.</p>
+<div class="badges"><span>6개 장</span><span>그림 6점</span><span>부록 한줄사전 90+</span><span>2026-08 기준</span></div>
 </div>
 </header>
 
@@ -163,8 +165,8 @@ footer li{margin:3px 0}
 <div class="ch-head"><span class="ch-num">2</span><h2>코드 어시스턴트 — 에이전트의 탄생</h2></div>
 <p class="ch-lead">"채팅으로 물어보기"에서 "일을 맡기기"로. 1편(트렌드)에서 본 도구들이 여기 다 들어옵니다.</p>
 
-<div class="term"><div class="term-head"><h3>4가지 표면</h3><span class="en">surfaces: Web · CLI · IDE · Desktop</span><span class="lv">☕</span></div>
-<p>같은 모델이라도 만나는 창구가 다릅니다. 웹 UI(ChatGPT·Claude 웹) → CLI 에이전트(Claude Code·Codex) → IDE 통합(Cursor 등) → 데스크탑 앱. 모델 회사들은 거의 같은 순서로 이 표면들을 만듭니다.</p>
+<div class="term"><div class="term-head"><h3>6가지 표면</h3><span class="en">surfaces</span><span class="lv">☕</span></div>
+<p>같은 모델이라도 만나는 창구가 다릅니다. ① 웹 UI(ChatGPT·Claude 웹) ② CLI 에이전트(Claude Code·Codex) ③ IDE 통합(Cursor 등) ④ 데스크탑 앱 — 모델 회사들은 거의 같은 순서로 이 표면들을 만듭니다. 여기에 ⑤ <b>클라우드/백그라운드 에이전트</b>(원격 샌드박스에서 돌다가 PR로 회수)와 ⑥ <b>PR 리뷰 봇</b>(저장소에 상주)을 더하면 여섯 표면이 됩니다.</p>
 <div class="easy"><b>☕ 쉽게 말하면</b> — 같은 요리사(모델)가 홀 서빙(웹), 출장 요리(CLI), 주방 상주(IDE)로 일하는 차이. <b>일을 맡기려면</b> 파일을 읽고 명령을 실행할 수 있는 CLI/IDE 쪽으로 와야 합니다.</div></div>
 
 <div class="term"><div class="term-head"><h3>에이전트 · 에이전틱 루프</h3><span class="en">agent · agentic loop</span><span class="lv">☕</span></div>
@@ -218,8 +220,8 @@ footer li{margin:3px 0}
 <p class="ch-lead">2026년 업계에서 가장 뜨거운 단어. 2편(택가이 코드)의 킬러 슬라이드가 바로 여기 서 있습니다.</p>
 
 <div class="term"><div class="term-head"><h3>하네스</h3><span class="en">harness — Agent = Model + Harness</span><span class="lv">☕</span></div>
-<p>모델의 추론을 제외한 <b>전부</b>. 도구 실행, 상태 관리, 메모리, 권한, 검증, 재시도, 관측. Terraform을 만든 Mitchell Hashimoto가 <b>"Agent = Model + Harness"</b> 공식으로 정리했고 2026년 초 업계 표준어가 됐습니다<span class="g"></span>.</p>
-<div class="quote"><span class="q-tag">2026년의 명언</span>"Agents aren't hard; <b>the Harness is hard.</b>" — Ryan Lopopolo, OpenAI</div>
+<p>모델의 추론을 제외한 <b>전부</b>. 도구 실행, 상태 관리, 메모리, 권한, 검증, 재시도, 관측. 이름은 Terraform을 만든 Mitchell Hashimoto가 붙였고(2026-02, 본인도 "업계 합의 용어인지는 모르겠다"고 적음<span class="g"></span>), <b>"Agent = Model + Harness"</b> 공식은 LangChain이 명문화했습니다(2026-03<span class="g"></span>). 2026년 들어 빠르게 정착 중이지만, 아직 보편 합의된 단일 정의는 없는 단어입니다<span class="y"></span>.</p>
+<div class="quote"><span class="q-tag">2026년의 명언</span>"Agents aren't hard; <b>the Harness is hard.</b>" — Ryan Lopopolo, OpenAI (Latent Space 인터뷰)</div>
 <figure>
 <svg viewBox="0 0 560 250" role="img" aria-label="모델-하네스-스캐폴드 3층 구조">
 <g font-family="var(--font)" text-anchor="middle">
@@ -235,10 +237,20 @@ footer li{margin:3px 0}
 </svg>
 <figcaption>그림 2 · 3층 구조 — 넓은 의미의 "하네스"는 모델 빼고 전부(보라+파랑)</figcaption>
 </figure>
-<p>층을 나누면: <b>하네스(좁은 의미)</b> = 루프를 실행하는 계층(Claude Code·Codex CLI), <b>스캐폴드</b> = 모델이 보는 세계를 정의하는 층(지침 파일·훅·서브에이전트). 커뮤니티 하네스 번들(oh-my-claudecode, 가재코드, LazyCodex, Ouroboros 등)은 스캐폴드 층의 제품들입니다.</p></div>
+<p>층을 나누면: <b>하네스(좁은 의미)</b> = 루프를 실행하는 계층(Claude Code·Codex CLI), <b>스캐폴드</b> = 모델이 보는 세계를 정의하는 층(지침 파일·훅·서브에이전트). 커뮤니티 하네스 번들(oh-my-claudecode, 가재코드, LazyCodex, Ouroboros 등)은 스캐폴드 층의 제품들입니다.</p>
+<p><b>겹겹의 하네스</b> — 벤더 하네스(Claude Code·Codex 자체) 바깥에 <b>프로젝트 하네스</b>(AGENTS.md·아키텍처 규칙·테스트·빌드 스크립트), 그 바깥에 <b>조직 하네스</b>(보안정책·권한승인·감사로그)가 쌓입니다. "하네스 안에 또 하네스"가 정상 구조입니다.</p></div>
 
 <div class="term"><div class="term-head"><h3>하네스 엔지니어링</h3><span class="en">harness engineering</span><span class="lv">☕</span></div>
 <p>에이전트가 올바른 절차로 끝까지 일하도록 <b>작업환경·제약조건·피드백 루프를 설계</b>하는 규율. 프롬프트를 다듬는 게 아니라 시스템을 깝니다.</p>
+<div class="quote"><span class="q-tag">Hashimoto의 실천 원칙 (원문 확인<span class="g" style="margin-left:6px"></span>)</span>"에이전트가 실수를 하면, <b>같은 실수를 다시는 못 하도록</b> 해결책을 시스템에 심는다." — My AI Adoption Journey, 2026-02</div>
+<p><b>용어의 연혁</b> — 6개월 만에 자리 잡은 과정<span class="g"></span>:</p>
+<ul>
+<li><b>2025-11</b> Anthropic, 장기 실행 에이전트용 하네스 설계 글 공개(진행 파일·Git 이력·기능 목록으로 세션 연결)</li>
+<li><b>2026-02-05</b> Hashimoto, 자신의 방식에 "Harness Engineering"이라 이름 붙임</li>
+<li><b>2026-02-11</b> OpenAI, 동명의 대규모 Codex 사례 공개 → 용어 급속 확산</li>
+<li><b>2026-03-10</b> LangChain, "Agent = Model + Harness"로 구성요소 체계화</li>
+<li><b>2026-04</b> martinfowler.com, 가이드(예방)×센서(교정) 프레임으로 사용자 측 정리</li>
+</ul>
 <figure>
 <svg viewBox="0 0 560 150" role="img" aria-label="3단계 성숙도 타임라인">
 <g font-family="var(--font)" text-anchor="middle" font-size="13">
@@ -254,8 +266,8 @@ footer li{margin:3px 0}
 <div class="easy"><b>☕ 쉽게 말하면 (운전 비유)</b> — "모델은 운전 실력이고, 하네스는 <b>차선, 가드레일, 속도계, 블랙박스, 그리고 브레이크</b>입니다. 운전 실력이 최고여도 밤에 차선 없는 산길에서는 사고가 납니다."</div>
 <p><b>실증 카드 두 장:</b></p>
 <ul>
-<li>LangChain 팀은 모델을 <b>전혀 바꾸지 않고</b> 하네스만 최적화해 Terminal-Bench 30위 → 5위<span class="y"></span></li>
-<li>OpenAI 엔지니어 3명이 손으로 코드 한 줄 안 쓰고 <b>약 100만 줄 / PR 1,500건</b>을 완성. 비결은 AGENTS.md를 100줄 목차로 유지, 규칙을 린터로 기계적 강제, 저장소를 단일 진실 원천으로<span class="g"></span></li>
+<li>LangChain 팀은 모델(gpt-5.2-codex)을 <b>전혀 바꾸지 않고</b> 하네스만 고쳐 Terminal-Bench 2.0에서 <b>Top 30 밖 → Top 5</b> (52.8→66.5점)<span class="g"></span></li>
+<li>OpenAI는 엔지니어 3명으로 시작(최종 7명), <b>5개월간 손으로 코드 한 줄 안 쓰고 약 100만 줄 / PR 1,500건</b>(테스트·CI·문서·관측 포함)을 완성. 비결은 AGENTS.md를 100줄 목차로 유지, 규칙을 린터로 기계적 강제, 저장소를 단일 진실 원천으로<span class="g"></span></li>
 </ul>
 <div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — "좋은 프롬프트를 쓰면 에이전트가 규칙을 지킨다."</div><div class="m-yes"><b>✅ 사실</b> — 프롬프트 지시는 <b>확률적 순종</b>, 린터·게이트는 <b>결정적 강제</b>. "규칙을 지켜라"라고 말하는 것과 규칙 위반 시 PR을 막는 것은 다른 차원입니다. 하네스 엔지니어링은 후자를 설계합니다.</div></div></div>
 
@@ -268,7 +280,19 @@ footer li{margin:3px 0}
 <tr><td>4</td><td><b>가드레일</b></td><td>샌드박스, 예산 상한, 승인 게이트</td></tr>
 <tr><td>5</td><td><b>관측성</b></td><td>트레이스·감사 로그 — 규제 산업에선 이 칸이 도입 가능성 그 자체</td></tr>
 </table></div>
-<p>사용자 쪽 하네스 엔지니어링은 <b>Guides(피드포워드: 지침·스킬·부트스트랩)</b>와 <b>Sensors(피드백: 린터·리뷰 에이전트·검증 게이트)</b>로 나눠 설계합니다. 그리고 커뮤니티 하네스들이 전부 하는 일은 결국 같습니다 — ① 역할 분리 ② 단계 강제 ③ 검증 게이트 ④ 재사용 절차.</p></div>
+<p>사용자 쪽 하네스 엔지니어링은 <b>Guides(피드포워드: 지침·스킬·부트스트랩)</b>와 <b>Sensors(피드백: 린터·리뷰 에이전트·검증 게이트)</b>로 나눠 설계합니다. 그리고 커뮤니티 하네스들이 전부 하는 일은 결국 같습니다 — ① 역할 분리 ② 단계 강제 ③ 검증 게이트 ④ 재사용 절차.</p>
+<div class="myth"><div class="m-no"><b>❌ 흔한 오해</b> — 에이전트가 "구현했습니다, 테스트해 보니 정상입니다"라고 하면 끝난 것이다.</div><div class="m-yes"><b>✅ 사실</b> — 모델의 완료 선언과 실제 완료는 다릅니다. "예약 완료"라는 말과 DB에 예약이 존재하는 것은 별개입니다. 완료 판정은 지정 테스트·빌드·린트 통과, 실제 화면/DB 상태 확인처럼 <b>모델이 무시할 수 없는 조건</b>으로만 합니다. 검증 루프(2번 구성요소)가 존재하는 이유.</div></div></div>
+
+<div class="term"><div class="term-head"><h3>하네스의 최소 조건 4가지</h3><span class="en">T1–T4 · arXiv 2606.10106 (프리프린트)</span><span class="lv">🌶️</span></div>
+<p>"이건 하네스인가, 그냥 래퍼인가"를 판별하는 엄격한 기준 제안. 넷 다 <b>실행 중에</b> 존재해야 진짜 하네스입니다<span class="y"></span>:</p>
+<div class="tbl-scroll"><table>
+<tr><th>조건</th><th>의미</th></tr>
+<tr><td><b>T1 에이전트 루프</b></td><td>추론→행동→관찰이 반복된다</td></tr>
+<tr><td><b>T2 도구 인터페이스</b></td><td>파일 수정·명령 실행처럼 외부 환경을 <b>실제로 변경</b>할 수 있다</td></tr>
+<tr><td><b>T3 능동 컨텍스트 관리</b></td><td>지금 작업에 따라 무엇을 넣고 뺄지 능동적으로 결정한다</td></tr>
+<tr><td><b>T4 모델 독립 통제</b></td><td>모델이 협조하지 않아도 작동하는 제한·검증·결정론 처리</td></tr>
+</table></div>
+<div class="easy"><b>☕ 판별 팁</b> — 오래된 메시지를 길이 기준으로 잘라내는 건 T3가 아닙니다. "중요 파일 삭제하지 마"라는 프롬프트는 T4가 아닙니다. 도구 호출 상한·승인 게이트·샌드박스·테스트 통과 조건처럼 <b>모델이 무시할 수 없는 것</b>만 통제입니다.</div></div>
 </section>
 
 <!-- ═══════════ 4장 멀티에이전트 ═══════════ -->
@@ -339,7 +363,7 @@ footer li{margin:3px 0}
 <div class="easy"><b>☕ 쉽게 말하면</b> — 오픈북 시험입니다. 모델의 머리(가중치)를 바꾸는 게 아니라, <b>시험장에 책을 갖고 들어가게</b> 해주는 것. 환각(1장)의 1차 백신.</div></div>
 
 <div class="term"><div class="term-head"><h3>대전환: 벡터 → 에이전틱 검색</h3><span class="en">agentic search</span><span class="lv">☕</span></div>
-<p>2025년 5월, Claude Code는 벡터 검색을 걷어내고 <b>grep</b>(정확한 문자열 검색)으로 갈아탔고 결과는 "압도적으로 더 좋았다"<span class="g"></span>. 이후 Cursor·Cline 등이 유사한 방향으로 이동<span class="y"></span>. 에이전트가 검색 도구를 스스로 반복 사용하며 능동 탐색하는 방식이 <b>에이전틱 검색</b>입니다.</p>
+<p>Claude Code는 초기에 벡터 RAG를 시험한 뒤 <b>grep</b>(정확한 문자열 검색) 기반 탐색을 선택했습니다 — 창업자 인터뷰 기준이며, 비교 근거는 "주로 체감 + 일부 내부 벤치"라고 직접 밝혔습니다<span class="y"></span>. 이후 Cursor·Cline 등이 유사한 방향으로 이동<span class="y"></span>. 에이전트가 검색 도구를 스스로 반복 사용하며 능동 탐색하는 방식이 <b>에이전틱 검색</b>입니다.</p>
 <figure>
 <svg viewBox="0 0 560 220" role="img" aria-label="전통 RAG와 에이전틱 검색 비교">
 <g font-family="var(--font)" font-size="12.5" text-anchor="middle">
@@ -443,6 +467,8 @@ footer li{margin:3px 0}
 <p><b>Compaction</b> — 대화를 요약해 새 창으로 이어붙이기</p>
 <p>Progressive disclosure — 이름·설명만 먼저, 본문은 필요할 때 로드</p>
 <p><b>Prompt caching</b> — 반복되는 앞부분을 캐시해 최대 90% 절감</p>
+<p>KV cache — 어텐션 키/값 재사용. 추론 속도의 핵심</p>
+<p>Prefix caching/RadixAttention — 공유 프리픽스 재사용(SGLang). 에이전트 워크로드에 특히 유효</p>
 <p><b>RAG</b> — 검색해서 컨텍스트에 붙이는 전처리형 방식</p>
 <p><b>Agentic search</b> — 에이전트가 grep·읽기·목록을 도구로 써서 능동 탐색</p>
 <p>Embedding/Vector DB/Chunking/Reranking — 전통 RAG 부품들. 코드 검색에서는 퇴조 중</p>
@@ -464,6 +490,12 @@ footer li{margin:3px 0}
 <p>RLVR — 검증 가능한 보상으로 강화학습. 코드·수학 성능의 주 동력</p>
 <p><b>Reasoning model</b> — 답하기 전 생각 토큰을 태우는 모델</p>
 <p>Test-time compute — 추론 시점에 계산을 더 써서 성능을 올림</p>
+<p>Thinking budget — 생각 토큰 상한 파라미터</p>
+<p>Interleaved thinking — 도구 호출 사이사이에 생각을 끼워 넣기</p>
+<p>Speculative decoding — 작은 모델이 초안, 큰 모델이 검증 → 속도 향상</p>
+<p>Dense — 전 파라미터를 매번 사용(↔MoE)</p>
+<p>Temperature/top-p — 샘플링 무작위성 조절</p>
+<p>Multimodal — 텍스트+이미지+오디오 입출력</p>
 <p>Structured output — JSON 스키마 등으로 출력 형식을 강제</p>
 <p><b>Hallucination/Grounding</b> — 근거 없는 생성 / 근거에 묶기</p>
 <p>Knowledge cutoff — 학습 데이터의 시점 한계</p>
@@ -474,6 +506,9 @@ footer li{margin:3px 0}
 <p><b>MCP</b> — 에이전트↔도구/데이터 연결 규격. host/client/server</p>
 <p>A2A — 에이전트↔에이전트 통신 규격(Linux Foundation)</p>
 <p>Agent Skills — 스킬 개방 표준(agentskills.io)</p>
+<p>MCP Apps — 도구가 상호작용 UI를 반환하는 첫 공식 확장</p>
+<p>MRTR — 도구 실행 중간에 사용자 입력을 요구하는 2026-07 신규 MCP 기능</p>
+<p>OTel GenAI conventions — LLM/에이전트 관측 표준 스키마</p>
 <p>OpenAI-compatible API — 사실상의 추론 API 표준. 온프렘 서빙에서 중요</p>
 <p><b>git worktree</b> — 같은 저장소의 별도 작업 디렉터리. 병렬 에이전트 충돌 방지</p>
 <p><b>Sandbox</b> — 격리 실행 환경(Seatbelt, gVisor, Firecracker…)</p>
@@ -481,6 +516,19 @@ footer li{margin:3px 0}
 <p><b>Hooks</b> — 도구 호출 전후에 스크립트를 끼워 자동 승인·차단</p>
 <p>ADE — Agent Development Environment. 에이전트 관제 환경</p>
 <p>devcontainer — 재현 가능한 개발 컨테이너</p>
+<p>Plugin/Marketplace — 하네스 확장 배포 단위</p>
+<p>cmux/tmux — 다중 터미널 다중 세션</p>
+</div>
+
+<h3 style="margin:22px 0 8px;font-size:16px">서빙·인프라 (온프렘 질문 대비)</h3>
+<div class="dict">
+<p><b>vLLM</b> — 대배치 처리량 우위, 모델 지원 폭 최대</p>
+<p><b>SGLang</b> — 지연·프리픽스 재사용 우위. 공유 시스템 프롬프트가 많은 에이전트 워크로드에 유리</p>
+<p>TensorRT-LLM/NIM — NVIDIA 최적화 서빙</p>
+<p>Ollama/llama.cpp/LM Studio — 로컬·소규모 실행</p>
+<p><b>Throughput vs Latency</b> — 배치 처리량 vs 응답 지연. 동시 다수 실습이면 latency 설계가 중요</p>
+<p>VRAM sizing — 최상위 오픈웨이트 MoE는 80GB급 멀티 GPU 또는 대용량 통합메모리 필요</p>
+<p><b>Air-gap</b> — 물리적 망 분리 환경</p>
 </div>
 
 <h3 style="margin:22px 0 8px;font-size:16px">품질·평가</h3>
@@ -523,6 +571,13 @@ footer li{margin:3px 0}
 <footer><div class="wrap">
 <h4>출처 · 더 읽을거리</h4>
 <ul>
+<li><a href="https://openai.com/index/harness-engineering/">Harness engineering: leveraging Codex in an agent-first world — OpenAI</a></li>
+<li><a href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness">The Anatomy of an Agent Harness (Agent = Model + Harness) — LangChain</a></li>
+<li><a href="https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering">Improving Deep Agents with Harness Engineering (Top 30→Top 5) — LangChain</a></li>
+<li><a href="https://mitchellh.com/writing/my-ai-adoption-journey">My AI Adoption Journey — Mitchell Hashimoto</a></li>
+<li><a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Effective harnesses for long-running agents — Anthropic</a></li>
+<li><a href="https://www.latent.space/p/harness-eng">Extreme Harness Engineering — Ryan Lopopolo 인터뷰, Latent Space</a></li>
+<li><a href="https://arxiv.org/html/2606.10106">What makes a harness a harness (T1–T4) — arXiv 프리프린트</a></li>
 <li><a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users — martinfowler.com</a></li>
 <li><a href="https://huggingface.co/blog/agent-glossary">Harness, Scaffold, and the AI Agent Terms Worth Getting Right — HuggingFace</a></li>
 <li><a href="https://www.databricks.com/blog/ai-harness">What is an AI Agent Harness? — Databricks</a></li>
