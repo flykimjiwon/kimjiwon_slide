@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SBTI4 유령 그림 선택실</title>
+  <style>
+    :root{--navy:#07101f;--navy2:#0d1930;--ink:#eef6ff;--muted:#8fa5c2;--cyan:#18d7f2;--blue:#1677ff;--line:#19345d;--yellow:#ffd84a;--green:#4ce58a;--pink:#ff6f91}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--navy);color:var(--ink);font-family:Pretendard,"Noto Sans KR",sans-serif;line-height:1.55}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;background-image:radial-gradient(#16427c 1.2px,transparent 1.2px);background-size:28px 28px}
+    a{color:inherit}.wrap{width:min(1180px,calc(100% - 40px));margin:auto;position:relative}.hero{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+    .eyebrow{margin:0 0 12px;color:var(--cyan);font:700 13px/1.2 "JetBrains Mono",monospace;letter-spacing:.18em}.hero h1{margin:0;font-size:clamp(38px,7vw,82px);line-height:1;letter-spacing:-.055em}.hero h1 span{color:var(--cyan)}
+    .hero p{max-width:760px;margin:22px 0 0;color:#b9c8dc;font-size:18px}.hero .count{display:inline-flex;margin-top:24px;padding:8px 13px;border:1px solid #2f5d89;border-radius:999px;color:var(--cyan);font:700 12px "JetBrains Mono",monospace}
+    .picker{position:sticky;top:0;z-index:10;background:rgba(7,16,31,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.picker .wrap{display:flex;gap:10px;align-items:center;min-height:64px;overflow:auto}.picker strong{white-space:nowrap;color:var(--yellow);font-size:13px}.pick-chip{white-space:nowrap;padding:7px 10px;border:1px solid #274a73;border-radius:999px;color:#a9bdd5;font-size:12px}.pick-chip b{color:white}
+    main{padding:30px 0 100px}.group{scroll-margin-top:80px;margin:0 0 56px}.group-head{display:flex;gap:18px;align-items:end;margin-bottom:18px}.group-no{font:800 46px/1 "JetBrains Mono",monospace;color:var(--cyan)}.group h2{margin:0;font-size:clamp(25px,4vw,40px);letter-spacing:-.04em}.group-head p{margin:4px 0 0;color:var(--muted)}
+    fieldset{border:0;padding:0;margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.option{display:block;position:relative;border:1px solid #1a3b65;border-radius:18px;overflow:hidden;background:#0b172a;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.option:hover{transform:translateY(-3px);border-color:#2f78ae}.option input{position:absolute;opacity:0;pointer-events:none}.option:has(input:checked){border-color:var(--cyan);box-shadow:0 0 0 2px rgba(24,215,242,.18),0 18px 50px rgba(0,0,0,.28)}
+    .visual{aspect-ratio:16/9;background:#050c18;overflow:hidden}.visual img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:auto}.meta{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:15px 16px}.key{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#142b4b;color:var(--cyan);font:800 14px "JetBrains Mono",monospace}.option:has(input:checked) .key{background:var(--cyan);color:#04101b}.meta h3{margin:0;font-size:16px}.meta p{margin:2px 0 0;color:var(--muted);font-size:13px}.status{color:#506984;font:700 11px "JetBrains Mono",monospace}.option:has(input:checked) .status{color:var(--green)}
+    .current{position:absolute;top:12px;left:12px;z-index:2;padding:6px 9px;border-radius:999px;background:#eef6ff;color:#07101f;font:800 11px "JetBrains Mono",monospace;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    footer{padding:26px 0 48px;border-top:1px solid var(--line);color:#7288a5;font-size:13px}.tip{padding:16px 18px;border-radius:14px;background:#0d1d34;border-left:3px solid var(--cyan);color:#a9bdd5;margin-top:22px}.tip b{color:white}
+    @media(max-width:720px){.wrap{width:min(100% - 24px,1180px)}.hero{padding:46px 0 30px}.hero p{font-size:15px}.picker .wrap{min-height:58px}.grid{grid-template-columns:1fr;gap:14px}.group{margin-bottom:44px}.group-head{align-items:start}.group-no{font-size:34px}.meta{padding:13px}.visual{aspect-ratio:16/10}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.option{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <p class="eyebrow">SBTI 4 · GHOST ART SELECTOR</p>
+    <h1>유령 그림 <span>선택실</span></h1>
+    <p>현재안 1점에 새 시안 3점씩. 그림을 누르면 선택 표시가 남습니다. 본문은 아직 바꾸지 않았습니다.</p>
+    <span class="count">4개 장면 · 총 16안</span>
+  </div></header>
+
+  <aside class="picker"><div class="wrap">
+    <strong>내 선택</strong>
+    <span class="pick-chip" data-summary="cover">표지 <b>현재안</b></span>
+    <span class="pick-chip" data-summary="harness">하네스 <b>현재안</b></span>
+    <span class="pick-chip" data-summary="multi">멀티 <b>현재안</b></span>
+    <span class="pick-chip" data-summary="memory">메모리 <b>현재안</b></span>
+  </div></aside>
+
+  <main class="wrap">
+    <section class="group" id="cover"><div class="group-head"><span class="group-no">01</span><div><h2>표지</h2><p>팀의 성격을 첫눈에 보여주는 장면</p></div></div><fieldset class="grid">
+      <label class="option"><input type="radio" name="cover" value="현재안" checked><span class="current">CURRENT</span><div class="visual"><img src="../assets/ghost-crew-hero.svg" alt="현재 표지 유령 팀 구조도"></div><div class="meta"><span class="key">현</span><div><h3>역할 구조</h3><p>리더와 세 역할이 한눈에 보임</p></div><span class="status">SELECTED</span></div></label>
+      <label class="option"><input type="radio" name="cover" value="A 관제실"><div class="visual"><img loading="lazy" src="cover-a-control.png" alt="관제실에서 세 역할을 출동시키는 유령 팀"></div><div class="meta"><span class="key">A</span><div><h3>관제실</h3><p>리더가 세 작업을 나눠 출동</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="cover" value="B 설계 테이블"><div class="visual"><img loading="lazy" src="cover-b-blueprint.png" alt="설계 테이블을 둘러싼 유령 팀"></div><div class="meta"><span class="key">B</span><div><h3>설계 테이블</h3><p>한 도면을 함께 완성하는 팀</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="cover" value="C 세 갈래 출동"><div class="visual"><img loading="lazy" src="cover-c-launch.png" alt="포털을 지나 세 갈래로 출동하는 유령 팀"></div><div class="meta"><span class="key">C</span><div><h3>세 갈래 출동</h3><p>속도감 있고 발표 표지에 강함</p></div><span class="status">PICK</span></div></label>
+    </fieldset></section>
+
+    <section class="group" id="harness"><div class="group-head"><span class="group-no">02</span><div><h2>하네스</h2><p>자율성은 살리고 실패 공간은 줄이는 장면</p></div></div><fieldset class="grid">
+      <label class="option"><input type="radio" name="harness" value="현재안" checked><span class="current">CURRENT</span><div class="visual"><img loading="lazy" src="../assets/ghost-harness-guardrails.svg" alt="가드레일 안에서 자전거를 타는 유령"></div><div class="meta"><span class="key">현</span><div><h3>가드레일 운전</h3><p>기존 운전 비유와 바로 연결</p></div><span class="status">SELECTED</span></div></label>
+      <label class="option"><input type="radio" name="harness" value="A 3단 검문"><div class="visual"><img loading="lazy" src="harness-a-gates.png" alt="세 검증 게이트를 지나는 유령 차량"></div><div class="meta"><span class="key">A</span><div><h3>3단 검문</h3><p>도구·보안·검증의 순서가 명확</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="harness" value="B 샌드박스"><div class="visual"><img loading="lazy" src="harness-b-sandbox.png" alt="안전한 샌드박스 안에서 작업하는 유령"></div><div class="meta"><span class="key">B</span><div><h3>샌드박스 작업장</h3><p>위험을 경계 밖에서 차단</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="harness" value="C 안전줄"><div class="visual"><img loading="lazy" src="harness-c-rope.png" alt="안전줄을 매고 과제 산을 오르는 유령"></div><div class="meta"><span class="key">C</span><div><h3>안전줄 등반</h3><p>하네스의 원뜻까지 살린 비유</p></div><span class="status">PICK</span></div></label>
+    </fieldset></section>
+
+    <section class="group" id="multi"><div class="group-head"><span class="group-no">03</span><div><h2>멀티에이전트</h2><p>에이전트 수보다 역할과 연결 방식을 보여주는 장면</p></div></div><fieldset class="grid">
+      <label class="option"><input type="radio" name="multi" value="현재안" checked><span class="current">CURRENT</span><div class="visual"><img loading="lazy" src="../assets/ghost-multiagent-hub.svg" alt="중앙 허브로 소통하는 유령들"></div><div class="meta"><span class="key">현</span><div><h3>메시지 허브</h3><p>단순하고 귀여운 현재 구조</p></div><span class="status">SELECTED</span></div></label>
+      <label class="option"><input type="radio" name="multi" value="A 중앙 관제"><div class="visual"><img loading="lazy" src="multi-a-command.png" alt="중앙 관제 유령과 세 전문가 유령"></div><div class="meta"><span class="key">A</span><div><h3>중앙 관제</h3><p>오케스트레이터의 역할이 선명</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="multi" value="B 릴레이"><div class="visual"><img loading="lazy" src="multi-b-relay.png" alt="문서부터 승인까지 릴레이하는 유령들"></div><div class="meta"><span class="key">B</span><div><h3>릴레이</h3><p>탐색→구현→검토→완료</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="multi" value="C 피드백 순환"><div class="visual"><img loading="lazy" src="multi-c-loop.png" alt="작성 검토 평가를 순환하는 유령들"></div><div class="meta"><span class="key">C</span><div><h3>피드백 순환</h3><p>역할 분리와 재작업 루프</p></div><span class="status">PICK</span></div></label>
+    </fieldset></section>
+
+    <section class="group" id="memory"><div class="group-head"><span class="group-no">04</span><div><h2>메모리·LLM 위키</h2><p>찾고, 고르고, 다음 세션에 남기는 장면</p></div></div><fieldset class="grid">
+      <label class="option"><input type="radio" name="memory" value="현재안" checked><span class="current">CURRENT</span><div class="visual"><img loading="lazy" src="../assets/ghost-search-to-memory.jpg" alt="검색한 파일을 검증해 저장하는 유령들"></div><div class="meta"><span class="key">현</span><div><h3>검색→선별→저장</h3><p>세 단계가 균형 있게 보임</p></div><span class="status">SELECTED</span></div></label>
+      <label class="option"><input type="radio" name="memory" value="A 위키 선반"><div class="visual"><img loading="lazy" src="memory-a-library.png" alt="검증한 문서를 위키 선반에 쌓는 유령들"></div><div class="meta"><span class="key">A</span><div><h3>위키 선반</h3><p>지식이 차곡차곡 쌓이는 느낌</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="memory" value="B 선별 컨베이어"><div class="visual"><img loading="lazy" src="memory-b-filter.png" alt="문서를 선별해 보관함에 넣는 유령들"></div><div class="meta"><span class="key">B</span><div><h3>선별 컨베이어</h3><p>잡음 제거와 컨텍스트 압축 강조</p></div><span class="status">PICK</span></div></label>
+      <label class="option"><input type="radio" name="memory" value="C 세션 인수인계"><div class="visual"><img loading="lazy" src="memory-c-handoff.png" alt="노트를 다음 세션과 위키로 넘기는 유령들"></div><div class="meta"><span class="key">C</span><div><h3>세션 인수인계</h3><p>잊지 않고 다음 작업으로 연결</p></div><span class="status">PICK</span></div></label>
+    </fieldset><div class="tip"><b>선택 방법</b> 각 장면에서 한 장씩 누르세요. 상단의 ‘내 선택’이 자동으로 바뀌며, 새로 열어도 선택이 유지됩니다.</div></section>
+  </main>
+
+  <footer><div class="wrap">SBTI4 · Ghost visual options · 본문 미반영 선택용</div></footer>
+  <script>
+    const groups=["cover","harness","multi","memory"];
+    const refresh=()=>groups.forEach(name=>{const picked=document.querySelector(`input[name="${name}"]:checked`);const chip=document.querySelector(`[data-summary="${name}"] b`);if(picked&&chip)chip.textContent=picked.value;document.querySelectorAll(`input[name="${name}"]`).forEach(input=>{const status=input.closest(".option").querySelector(".status");status.textContent=input.checked?"SELECTED":"PICK"})});
+    groups.forEach(name=>{const saved=localStorage.getItem(`sbti4-${name}`);if(saved){const input=document.querySelector(`input[name="${name}"][value="${CSS.escape(saved)}"]`);if(input)input.checked=true}document.querySelectorAll(`input[name="${name}"]`).forEach(input=>input.addEventListener("change",()=>{localStorage.setItem(`sbti4-${name}`,input.value);refresh()}))});
+    refresh();
+  </script>
+</body>
+</html>
