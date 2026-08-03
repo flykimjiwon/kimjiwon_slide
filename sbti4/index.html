@@ -459,9 +459,12 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 </figure>
 <div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "가중치를 받아서 사내 서버에서 돌릴 수 있으니 오픈소스네요."</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아닙니다. Llama·Qwen은 <b>가중치 공개·자체 서버 실행까지는 가능</b>하지만 학습 데이터 전체와 학습 코드·파이프라인은 공개하지 않습니다. 그래서 오픈웨이트라고 부릅니다. 반대로 코드만 공개하고 모델 파일을 주지 않으면 실제로 쓸 수 없기 때문에, <b>오픈소스 AI는 대부분 오픈웨이트를 겸합니다.</b><span class="y" data-tip="공식 문서·논문 출처가 아니라 여러 매체와 커뮤니티에서 오간 이야기 수준입니다. 숫자는 자주 바뀌니 구조만 기억하세요"></span></div></div></div>
 
-<div class="term"><div class="term-head"><h3>파인튜닝 vs RAG vs 지식화</h3><span class="en">fine-tuning vs RAG</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
-<p>파인튜닝 = 가중치 일부를 다시 학습(모델 자체가 변함). RAG·지식화 = 모델은 그대로 두고 <b>필요할 때 자료를 찾아 옆에 놓아주는 것</b>.</p>
-<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "문서를 지식화하면 모델이 학습되나요?"</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아니요. 가중치는 1도 안 바뀝니다. 문서를 파싱해 검색 가능한 형태로 저장했다가, 필요할 때 대화 맥락에 넣어주는 겁니다. 파인튜닝과 완전히 다릅니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div><div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — RAG의 본질은 <b>"검색해서 프롬프트에 붙여 넣는 것"</b>입니다. <b>컨텍스트 윈도우</b>가 모델의 작업 책상 전체라면, <b>프롬프트</b>는 그 책상 위에 실제로 올려놓은 종이입니다. 시스템 지침, 검색해 온 문서, 도구 실행 결과, 이전 대화, 사용자가 친 문장이 <b>전부 합쳐져 하나의 프롬프트</b>가 되고, 모델은 그 묶음을 한 번에 읽고 답합니다.</div>
+<div class="term" style="break-before:page;page-break-before:always"><div class="term-head"><h3>파인튜닝 vs RAG vs 지식화</h3><span class="en">fine-tuning vs RAG · knowledgeization</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
+<p><b>파인튜닝(Fine-tuning)</b>은 모델의 가중치(weights)를 다시 학습해 모델 자체를 바꾸는 방법입니다. 반면 <b>RAG</b>는 가중치를 건드리지 않고 검색한 자료를 이번 요청의 <b>컨텍스트</b>에 함께 넣어 읽게 합니다. <b>지식화</b>는 문서를 파싱·구조화해 검색 가능한 형태로 준비하는 과정입니다.</p>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "문서를 지식화하면 모델이 학습되나요?"</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아닙니다. 지식화와 RAG에서는 <b>가중치가 전혀 바뀌지 않습니다.</b> 질문이 들어올 때마다 필요한 문서를 검색해 현재 요청의 컨텍스트에 일시적으로 추가할 뿐입니다. 파인튜닝처럼 모델을 다시 학습하는 과정이 아닙니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 가중치(Weights)란?</b> — LLM이 학습으로 얻은 수많은 숫자(파라미터)입니다. 문법·프로그래밍·언어 패턴 같은 능력을 이루는 모델 내부의 장기 기억에 해당합니다. 파인튜닝은 이 숫자를 조금 바꾸지만, RAG·지식화는 끝까지 그대로 둡니다.</div>
+<p><b>세 흐름을 구분하면</b></p><ul><li><b>Fine-tuning</b> — 문서 → 학습 → 가중치 변경 → 새로운 모델. 학습이 끝나면 원문을 매번 붙이지 않아도 학습한 패턴을 사용할 수 있지만 비용과 시간이 큽니다.</li><li><b>RAG</b> — 질문 → 검색 → 관련 문서 추출 → 컨텍스트에 추가 → LLM 답변. 모델 가중치는 바뀌지 않습니다.</li><li><b>지식화</b> — 문서 → 파싱·구조화 → 검색 저장소에 보관. 임베딩·벡터DB를 쓸 수도 있고, 파일·키워드 검색을 쓸 수도 있습니다. RAG를 위한 준비 작업인 경우가 많습니다.</li></ul>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — <b>RAG의 본질은 "검색해서 이번 요청의 컨텍스트에 추가하는 것"</b>입니다. 컨텍스트 윈도우가 모델이 한 번에 읽을 수 있는 작업 책상의 크기라면, 프롬프트는 그 책상 위에 실제로 올려놓은 종이들입니다. 시스템 지침, 검색 문서, 도구 결과, 이전 대화, 사용자의 질문이 하나의 입력을 이루고 모델은 그 전체를 읽어 답합니다.</div>
 <figure id="fig-context">
 <svg viewBox="0 0 560 292" role="img" aria-label="컨텍스트 윈도우 안에 들어가는 프롬프트 구성 요소">
 <g font-family="var(--font)">
@@ -483,20 +486,20 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 </svg>
 <figcaption>그림 2 · 사용자가 친 문장만 프롬프트가 아닙니다 — 이 상자 안 전체가 프롬프트</figcaption>
 </figure>
-<p><b>외우는 공식 세 줄</b></p><ul><li><b>컨텍스트 윈도우</b> = LLM이 한 번에 볼 수 있는 전체 작업 공간(모델의 작업 메모리). 예: 128K면 12만 8천 토큰까지, 그 이상은 보지 못합니다.</li><li><b>프롬프트</b> = 그 작업 공간 안에 실제로 넣어 주는 텍스트. 사용자가 친 문장만이 아니라 시스템 지침·검색 결과·도구 결과·이전 대화가 모두 포함됩니다.</li><li><b>RAG·지식화</b> = 검색해 온 문서를 프롬프트에 얹어 컨텍스트 윈도우 안으로 밀어 넣는 기술. 지식화한 파일을 시스템 프롬프트 뒤에 붙이는 6장의 LLM 위키도 같은 구조입니다.</li></ul><div class="quote"><span class="q-tag">한 문장으로</span>"RAG는 <b>검색 → 프롬프트에 추가 → 컨텍스트 윈도우에서 함께 읽고 추론</b>." 가중치는 끝까지 그대로입니다.</div></div>
+<p><b>외우는 공식 세 줄</b></p><ul><li><b>가중치</b> = 학습으로 바뀌는 모델 내부의 수많은 숫자(파라미터). 파인튜닝은 가중치를 바꿉니다.</li><li><b>컨텍스트 윈도우</b> = LLM이 한 번에 볼 수 있는 최대 입력 공간입니다. 예를 들어 128K면 최대 12만 8천 토큰까지 읽습니다.</li><li><b>프롬프트</b> = 그 공간에 실제로 들어가는 전체 입력입니다. 시스템 지침·검색 결과·도구 결과·이전 대화·사용자 질문이 모두 포함됩니다.</li><li><b>RAG·지식화</b> = 지식화한 문서를 검색해 컨텍스트에 추가하는 방식입니다. 지식화한 파일을 시스템 프롬프트 뒤에 붙이는 6장의 LLM 위키도 같은 구조입니다.</li></ul><div class="quote"><span class="q-tag">한 문장으로</span>"RAG는 <b>검색 → 컨텍스트에 추가 → 함께 읽고 추론</b>하는 방식입니다." 문서를 넣었다고 모델이 학습되는 것은 아니며, 가중치는 끝까지 그대로입니다.</div></div>
 </section>
 
 <!-- ═══════════ 2장 코드 어시스턴트 ═══════════ -->
 <section class="chapter" id="ch2">
 <div class="ch-head"><span class="ch-num">2</span><h2>코드 어시스턴트 — 에이전트의 탄생</h2></div>
-<p class="ch-lead">"채팅으로 물어보기"에서 "일을 맡기기"로. 1편(트렌드)에서 본 도구들이 여기 다 들어옵니다.</p>
+<p class="ch-lead">"채팅으로 물어보기"에서 "일을 맡기기"로.</p>
 
-<div class="term"><div class="term-head"><h3>6가지 표면</h3><span class="en">surfaces</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
-<p>같은 모델이라도 만나는 창구가 다릅니다. ① 웹 UI(ChatGPT·Claude 웹) ② CLI 에이전트(Claude Code·Codex) ③ IDE 통합(Cursor 등) ④ 데스크탑 앱 — 모델 회사들은 거의 같은 순서로 이 표면들을 만듭니다. 여기에 ⑤ <b>클라우드/백그라운드 에이전트</b>(원격 샌드박스에서 돌다가 PR로 회수)와 ⑥ <b>PR 리뷰 봇</b>(저장소에 상주)을 더하면 여섯 표면이 됩니다.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 같은 요리사(모델)가 홀 서빙(웹), 출장 요리(CLI), 주방 상주(IDE)로 일하는 차이. <b>일을 맡기려면</b> 파일을 읽고 명령을 실행할 수 있는 CLI/IDE 쪽으로 와야 합니다.</div></div>
+<div class="term"><div class="term-head"><h3>LLM을 만나는 창구</h3><span class="en">interfaces</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
+<p>처음에는 대부분 ChatGPT처럼 웹 화면에서 질문하고 답을 받았습니다. 지금은 LLM을 사용하는 창구가 훨씬 다양해졌습니다.</p>
+<ul><li><b>웹 UI</b> — ChatGPT·Claude처럼 질문하고 답을 받는 창구</li><li><b>CLI</b> — Claude Code·Codex처럼 터미널에서 작업하는 창구</li><li><b>IDE</b> — Cursor·VS Code 확장처럼 개발 환경에 붙는 창구</li><li><b>데스크톱 앱</b> · <b>클라우드 에이전트</b> · <b>PR 리뷰 봇</b> — 실행 환경과 역할이 더해진 창구</li></ul><p>핵심은 창구의 개수가 아니라, 각 창구가 모델에 줄 수 있는 <b>권한과 작업 범위</b>가 다르다는 점입니다. 웹에서는 주로 질문과 답변을 주고받지만, CLI·IDE·데스크톱 환경에서는 파일을 읽고 코드를 수정하고 명령을 실행하고 Git을 다루는 등 실제 작업을 수행할 수 있습니다. 그래서 AI는 단순한 <b>채팅 모델</b>에서 <b>업무를 수행하는 에이전트</b>로 발전했습니다.</p></div>
 
-<div class="term"><div class="term-head"><h3>에이전트 · 에이전틱 루프</h3><span class="en">agent · agentic loop</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
-<p>에이전트 = 모델이 도구·순서·분기·중단을 <b>스스로 결정</b>하며 목표를 향해 반복 실행하는 시스템. 그 반복이 에이전틱 루프: <b>계획 → 도구 → 관찰 → 판단 → (반복)</b>.</p>
+<div class="term" style="break-before:page;page-break-before:always"><div class="term-head"><h3>에이전틱 루프</h3><span class="en">agentic loop</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
+<p>에이전틱 루프는 모델이 목표를 향해 <b>계획하고 → 도구를 실행하고 → 결과를 확인하고 → 다음 행동을 판단하는</b> 과정을 반복하는 구조입니다. 작업이 끝날 때까지 이 순환을 이어 갑니다.</p>
 <figure>
 <svg viewBox="0 0 560 300" role="img" aria-label="에이전틱 루프 순환도">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5f6672"/></marker></defs>
@@ -516,9 +519,9 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="280" y="143" font-size="13" fill="#5f6672" text-anchor="middle">끝났으면 보고,</text>
 <text x="280" y="163" font-size="13" fill="#5f6672" text-anchor="middle">아니면 한 바퀴 더</text>
 </svg>
-<figcaption>그림 3 · 에이전틱 루프 — 이 원 하나가 2~4장 전체의 뼈대</figcaption>
+<figcaption>그림 3 · 에이전틱 루프</figcaption>
 </figure>
-<div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"모델은 '무엇을 하고 싶다'고 <b>말할 뿐</b>이고, 실제로 할지 말지는 하네스가 결정합니다. 그래서 보안은 모델이 아니라 하네스에 겁니다."</div></div>
+<div class="quote"><span class="q-tag">핵심 문장</span>모델은 계획과 판단을 제안하지만, 실제 실행은 하네스가 정한 도구·권한·검증 절차를 거쳐야 합니다. 따라서 보안과 실행 통제는 하네스가 담당합니다.</div></div>
 
 <div class="term"><div class="term-head"><h3>Workflow vs Agent</h3><span class="en"></span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
 <p>워크플로는 사람이 단계를 미리 고정, 에이전트는 모델이 단계를 동적으로 결정.</p>
