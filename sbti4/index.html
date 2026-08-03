@@ -456,7 +456,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <div class="kicker">SBTI 4 — GLOSSARY EDITION</div>
 <h1>AI 코딩 <em>용어사전</em></h1>
 <p class="sub">하네스부터 멀티에이전트, RAG, LLM 위키, 루프 엔지니어링까지 — 강의 1·2·3편의 핵심 용어를 선별해, 비유 하나와 그림 하나로 끝내는 책자.</p>
-<div class="badges"><span>6개 장</span><span>그림 11점</span><span>2026-08 기준</span></div>
+<div class="badges"><span>6개 장</span><span>그림 12점</span><span>2026-08 기준</span></div>
 <div class="cover-links"><a class="deck-btn" href="https://kimjiwon-slide.vercel.app/sbti4" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-link"></use></svg>웹으로 보기 <span class="deck-url">kimjiwon-slide.vercel.app/sbti4</span></a></div>
 </div>
 </header>
@@ -655,7 +655,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 
 <div class="term"><div class="term-head"><h3>바이브 코딩 → 에이전틱 엔지니어링</h3><span class="en">vibe coding → agentic engineering</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
 <p>바이브 코딩 = 결과만 보고 코드는 안 읽으며 "느낌으로" 만들기. 프로토타입엔 좋지만 운영엔 위험. 2026년의 방향은 <b>에이전틱 엔지니어링</b> — 에이전트에게 맡기되 스펙·검증·리뷰의 공학 규율을 유지하는 것<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span>.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 바이브 코딩이 "맛만 보고 합격"이라면, 에이전틱 엔지니어링은 <b>위생검사까지 통과</b>시키는 것. 관련 규율: Plan mode(계획만 세우는 읽기전용), TDD with agents(테스트 먼저 주고 통과까지 반복), SDD(스펙 먼저 쓰는 Spec-Driven Development).</div></div>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 바이브 코딩이 "맛만 보고 합격"이라면, 에이전틱 엔지니어링은 <b>위생검사까지 통과</b>시키는 것. 관련 규율: Plan mode(계획만 세우는 읽기전용), TDD with agents(테스트 먼저 주고 통과까지 반복), SDD(스펙 먼저 쓰는 Spec-Driven Development). 이 규율들이 실제로 무엇인지는 6장의 「고전 개발론 4종」에서 이어집니다.</div></div>
 </section>
 
 <!-- ═══════════ 4장 멀티에이전트 ═══════════ -->
@@ -834,6 +834,58 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 프롬프트는 지시문, 컨텍스트는 참고자료, 하네스는 작업장·안전장치·검증 절차입니다.</div>
 <div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — 좋은 프롬프트만 쓰면 에이전트가 안전하게 끝까지 일합니다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 실제 작업은 권한·도구·테스트·로그 같은 시스템 통제가 결정합니다.</div></div></div>
 
+<div class="term" id="classic-practices"><div class="term-head"><h3>고전 개발론 4종</h3><span class="en">TDD · DDD · MVC · 객체지향</span><span class="lv" data-tip="개발자용 — 구현·운영을 아는 사람이 대상이라 조금 공부가 필요합니다"><svg class="ico ico-lv2" aria-hidden="true"><use href="#i-study"></use></svg></span></div>
+<p>넷은 같은 층의 개념이 아닙니다. 자주 나란히 놓이지만 <b>답하는 질문이 서로 다릅니다.</b></p>
+<div class="tbl-scroll"><table>
+<tr><th>개념</th><th>정체</th><th>답하는 질문</th></tr>
+<tr><td><b>객체지향</b> OOP</td><td>프로그래밍 방식</td><td>상태와 동작을 코드로 어떻게 표현할까</td></tr>
+<tr><td><b>MVC</b></td><td>책임 분리 구조</td><td>화면·입력·업무 로직을 어떻게 나눌까</td></tr>
+<tr><td><b>DDD</b></td><td>업무 중심 설계</td><td>복잡한 업무를 어떤 개념과 경계로 나눌까</td></tr>
+<tr><td><b>TDD</b></td><td>개발·검증 방식</td><td>구현이 맞다는 것을 어떻게 증명하며 만들까</td></tr>
+</table></div>
+<p><b>TDD</b>는 실패하는 테스트를 먼저 쓰고, 통과하는 최소 코드를 만들고, 구조를 정리하는 반복입니다(Red → Green → Refactor). 마지막 정리를 빼먹으면 테스트만 있고 지저분한 코드가 쌓입니다. <b>DDD</b>의 핵심은 두 가지 — 기획·업무·개발이 같은 단어를 같은 뜻으로 쓰는 <b>보편 언어</b>, 그리고 큰 업무를 의미가 일관된 영역으로 나눈 <b>경계</b>입니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></p>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — DDD로 <b>말을 맞추고</b>, MVC·객체지향으로 <b>구조를 세우고</b>, TDD로 <b>맞다는 것을 증명합니다.</b> 순서가 있는 층이지 서로 경쟁하는 유행이 아닙니다. 그리고 이 층을 에이전트가 지키게 만드는 것이 하네스입니다.</div></div>
+
+<div class="term" id="practices-now"><div class="term-head"><h3>개발론은 어떻게 바뀌었나</h3><span class="en">classic practices in the agent era</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
+<p>에이전틱 엔지니어링은 이 개념들을 <b>대체하지 않습니다. 감쌉니다.</b> 사람이 목표·스펙·경계·합격 기준을 정하고, 에이전트가 탐색·계획·구현·실행하고, 테스트와 자동화가 결과를 검증하고, 사람이 최종 판단합니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></p>
+<div class="tbl-scroll"><table>
+<tr><th>개념</th><th>예전</th><th>지금</th></tr>
+<tr><td><b>TDD</b></td><td>회귀를 막는 안전망</td><td>에이전트에게 주는 <b>실행 가능한 합격 기준</b>. "됐습니다"가 아니라 통과한 테스트가 완료를 증명</td></tr>
+<tr><td><b>DDD</b></td><td>사람이 읽는 설계 문서</td><td>에이전트가 매 세션 읽는 <b>컨텍스트 파일</b>(<code>AGENTS.md</code>·업무 규칙 문서)</td></tr>
+<tr><td><b>MVC</b></td><td>폴더 이름과 계층</td><td>에이전트의 <b>수정 범위와 의존 방향을 막는 선</b>. 린트·의존성 검사로 강제</td></tr>
+<tr><td><b>객체지향</b></td><td>클래스를 잘 나누는 기술</td><td>에이전트가 함부로 깨지 못하게 <b>상태와 불변조건을 못박는 계약</b></td></tr>
+</table></div>
+<figure id="fig-stack">
+<svg viewBox="0 0 560 268" role="img" aria-label="DDD부터 사람 리뷰까지 여섯 층의 개발 스택">
+<g font-family="var(--font)">
+<g font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">
+  <rect x="70" y="8" width="250" height="32" rx="9" fill="#7c3aed"/><text x="195" y="29">DDD</text>
+  <rect x="70" y="50" width="250" height="32" rx="9" fill="#5b6bd6"/><text x="195" y="71">SDD</text>
+  <rect x="70" y="92" width="250" height="32" rx="9" fill="#0066cc"/><text x="195" y="113">MVC · 객체지향</text>
+  <rect x="70" y="134" width="250" height="32" rx="9" fill="#0ea5e9"/><text x="195" y="155">TDD · 타입 · 린트 · CI</text>
+  <rect x="70" y="176" width="250" height="32" rx="9" fill="#ea580c"/><text x="195" y="197">에이전트 루프 · 훅</text>
+  <rect x="70" y="218" width="250" height="32" rx="9" fill="#232832"/><text x="195" y="239">사람 리뷰</text>
+</g>
+<g stroke="#c3ccda" stroke-width="1.8" fill="none">
+  <path d="M195 40v10"/><path d="M195 82v10"/><path d="M195 124v10"/><path d="M195 166v10"/><path d="M195 208v10"/>
+</g>
+<g font-size="11.5" fill="#5f6672">
+  <text x="336" y="29">무엇이 어떤 의미인가 — 업무 언어와 경계</text>
+  <text x="336" y="71">무엇을 만들어야 하는가 — 스펙과 완료 조건</text>
+  <text x="336" y="113">어떤 책임과 구조로 나눌까</text>
+  <text x="336" y="155">맞다는 것을 어떻게 증명할까</text>
+  <text x="336" y="197">누가 이 과정을 반복 실행할까</text>
+  <text x="336" y="239">무엇을 승인하고 책임질까</text>
+</g>
+</g>
+</svg>
+<figcaption>그림 9 · 아래로 갈수록 "맞다는 증명"에 가까워집니다 — 에이전틱 엔지니어링은 이 스택을 대체하지 않고 감쌉니다</figcaption>
+</figure>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 예전에는 코드를 쓰는 일이 병목이었습니다. 지금은 <b>검증하고 맥락을 주는 일</b>이 병목입니다. 그래서 규칙을 말로 부탁하는 대신 파일과 검사로 못박습니다.</div>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — 에이전트가 테스트까지 짜서 통과시켰으니 검증은 끝난 것이다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 코드와 테스트를 <b>같은 에이전트가 동시에 만들면</b> 업무 규칙이 아니라 자기 구현에 맞춘 테스트를 짜 맞추기 쉽습니다. 수수료 계산이 늘 100원을 돌려주는 구현에 100원을 기대하는 테스트를 붙이면 초록불은 켜지지만 아무것도 검증하지 못합니다. 기대값과 업무 규칙은 <b>사람이 먼저</b> 정하고, 경계값·예외·반례를 포함시키고, 테스트 코드도 리뷰 대상에 넣습니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div>
+<div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"<b>프롬프트는 요청이고, 훅·CI·테스트는 강제입니다.</b>" — 같은 장에서 말한 확률적 순종과 결정적 강제의 차이가 여기서도 그대로 적용됩니다.</div></div>
+
+
 <div class="term"><div class="term-head"><h3>하네스의 5가지 역할</h3><span class="en">harness essentials</span><span class="lv" data-tip="개발자용 — 구현·운영을 아는 사람이 대상이라 조금 공부가 필요합니다"><svg class="ico ico-lv2" aria-hidden="true"><use href="#i-study"></use></svg></span></div>
 <p>하네스는 AI가 제대로 일하도록 실행·검증·기억·안전·기록을 담당합니다.</p>
 <div class="tbl-scroll"><table>
@@ -905,6 +957,10 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <li><a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">Anthropic 2026 Agentic Coding Trends Report</a></li>
 <li><a href="https://addyosmani.com/blog/code-agent-orchestra/">The Code Agent Orchestra — Addy Osmani</a></li>
 <li><a href="https://addyo.substack.com/">Loop Engineering — Addy Osmani (Substack, 2026-06)</a></li>
+<li><a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development — martinfowler.com</a></li>
+<li><a href="https://martinfowler.com/bliki/BoundedContext.html">Bounded Context — martinfowler.com</a></li>
+<li><a href="https://code.visualstudio.com/docs/agents/best-practices">Best practices for using AI in VS Code</a></li>
+<li><a href="https://docs.github.com/en/copilot/tutorials/write-tests">Writing tests with GitHub Copilot — GitHub Docs</a></li>
 <li><a href="https://www.digitalapplied.com/blog/multi-agent-orchestration-5-patterns-that-work">Multi-Agent Orchestration: 5 Patterns — Digital Applied</a></li>
 <li><a href="https://arxiv.org/pdf/2502.12110">A-MEM: Agentic Memory for LLM Agents — arXiv</a></li>
 <li><a href="https://dev.to/vishalmysore/rag-vs-agent-memory-vs-llm-wiki-a-practical-comparison-1oo6">RAG vs Agent Memory vs LLM Wiki — dev.to</a></li>
