@@ -315,6 +315,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <span class="cover-term" style="bottom:30%;left:10%">subagent</span>
 <span class="cover-term" style="bottom:16%;right:14%">agentic search</span>
 <span class="cover-term" style="top:52%;right:30%">RAG</span>
+<span class="cover-term" style="top:40%;left:3%">loop engineering</span>
 <div class="wrap">
 <div class="kicker">SBTI 4 — GLOSSARY EDITION</div>
 <h1>AI 코딩 <em>용어사전</em></h1>
@@ -323,23 +324,16 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 </div>
 </header>
 
-<!-- ═══════════ 읽는 법 ═══════════ -->
-<section class="howto"><div class="wrap">
-<div class="how-card"><b><svg class="ico" aria-hidden="true"><use href="#i-compass"></use></svg> 읽는 법</b>모든 용어는 <b>정의 → <svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면 → 예시</b> 순서. 사전처럼 아무 데나 펴도 됩니다.</div>
-<div class="how-card"><b><svg class="ico ico-hot" aria-hidden="true"><use href="#i-pepper"></use></svg> 난이도</b><span class="lv"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> = 커피 마시며 읽기 &nbsp;/&nbsp; <svg class="ico ico-hot" aria-hidden="true"><use href="#i-pepper"></use></svg> = 개발자용 매운맛</span></div>
-<div class="how-card"><b>신뢰도 표기</b><span class="g"></span> 1차 출처(공식·논문) 확인 &nbsp; <span class="y"></span> 2차 보도 다수 일치. 숫자는 강의 3일 사이에도 바뀔 수 있음 — <b>구조만 외우세요.</b></div>
-</div></section>
-
 <div class="wrap">
 
 <!-- ═══════════ 1장 기본기 ═══════════ -->
 <section class="chapter" id="ch1">
 <div class="ch-head"><span class="ch-num">1</span><h2>기본기 — LLM이라는 엔진</h2></div>
-<p class="ch-lead">모든 용어의 출발점. 여기 6개만 잡으면 나머지 장이 전부 쉬워집니다.</p>
+<p class="ch-lead">결국 LLM으로 통한다.</p>
 
 <div class="term"><div class="term-head"><h3>LLM</h3><span class="en">Large Language Model</span><span class="lv" title="난이도: 커피 — 누구나"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
-<p>다음에 올 말을 확률로 예측하도록 거대한 텍스트로 학습된 모델. 코드도 "말"이라서 코딩을 합니다.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 세상의 글을 엄청나게 읽고 "다음 단어 맞히기"의 신이 된 존재. 정답을 아는 게 아니라 <b>가장 그럴듯한 걸</b> 말합니다. 이 한 줄이 환각(4번째 용어)의 복선입니다.</div></div>
+<p>다음에 올 말을 확률로 예측하도록 거대한 텍스트로 학습된 모델.</p>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 세상의 글을 엄청나게 읽고 <b>다음에 올 단어를 맞히는 연습</b>만 반복한 존재. 학습을 많이 해서 다음 단어를 더 잘 맞힐수록 좋은 모델입니다. 정답을 아는 게 아니라 <b>가장 그럴듯한 걸</b> 말합니다.</div></div>
 
 <div class="term"><div class="term-head"><h3>토큰 · 컨텍스트 윈도우</h3><span class="en">token · context window</span><span class="lv" title="난이도: 커피 — 누구나"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
 <p>토큰 = 모델이 글을 세는 단위(한글 1자 ≈ 1~2토큰). 컨텍스트 윈도우 = 모델이 <b>한 번에 볼 수 있는</b> 토큰 한도.</p>
