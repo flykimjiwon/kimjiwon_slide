@@ -1,6 +1,13 @@
-# SBTI4 복원·운영 안내
+# EASY AI — AI 코딩 용어사전 복원·운영 안내
 
-이 폴더가 SBTI4의 전체 정본입니다. 이후 세션에서 "SBTI4 풀받아", "SBTI4 전부 복원해", "발표자료 싹 다 받아"라고 하면 `origin/main`의 `sbti4/` 전체를 기준으로 가져옵니다.
+이 폴더가 「AI 코딩 용어사전」(EASY AI)의 전체 정본입니다. 이후 세션에서 "이지에이아이 풀받아", "용어사전 전부 복원해", "발표자료 싹 다 받아"라고 하면 `origin/main`의 `easyai/` 전체를 기준으로 가져옵니다.
+
+## 배포 주소
+
+- 정본: <https://kimjiwon-slide.vercel.app/easyai>
+- 옛 주소 `/sbti4`는 `sbti4/index.html` 리다이렉트 페이지로 유지됩니다. 이 저장소에서는
+  `vercel.json`의 `rewrites`가 실제로 적용되지 않으므로, 새 경로가 필요하면 리라이트가 아니라
+  **실제 폴더나 리다이렉트 파일**을 만들어야 합니다.
 
 ## 정본 파일
 
@@ -28,7 +35,7 @@
 ```bash
 cd ~/kimjiwon_slide
 git pull --ff-only origin main
-open sbti4/index.html
+open easyai/index.html
 ```
 
 SBTI4 폴더만 sparse clone으로 새로 받으려면:
@@ -36,18 +43,36 @@ SBTI4 폴더만 sparse clone으로 새로 받으려면:
 ```bash
 git clone --filter=blob:none --sparse https://github.com/flykimjiwon/kimjiwon_slide.git
 cd kimjiwon_slide
-git sparse-checkout set sbti4
-open sbti4/index.html
+git sparse-checkout set easyai
+open easyai/index.html
 ```
 
 ## 로컬 실행
 
 ```bash
-open sbti4/index.html
-open sbti4/visual-options/index.html
+open easyai/index.html
+open easyai/visual-options/index.html
 ```
 
-별도 빌드나 서버가 필요하지 않습니다. 배포 시에는 `index.html`만으로도 열리지만, 시안 재선택과 전체 자산 보존을 위해 Git에는 `sbti4/` 폴더 전체를 유지합니다.
+별도 빌드나 서버가 필요하지 않습니다. 배포 시에는 `index.html`만으로도 열리지만, 시안 재선택과 전체 자산 보존을 위해 Git에는 `easyai/` 폴더 전체를 유지합니다.
+
+## 지금 구성 (2026-08-03)
+
+8장 + 하단 고지. 개념 → 활용 → 환경 순서입니다.
+
+| # | 장 | 비고 |
+|---|---|---|
+| 1 | 기본기 — LLM이라는 엔진 | 오픈웨이트 계보·컨텍스트 윈도우 그림 |
+| 2 | 코드 어시스턴트 | 창구 화면 4장(클릭 확대), 에이전틱 루프, Workflow vs Agent |
+| 3 | 멀티에이전트 | 운영하는 3가지 방식 · 자주 쓰는 4가지 방식 · 비용표 |
+| 4 | MCP · A2A | 연결 규격. MCP는 도구, A2A는 다른 에이전트 |
+| 5 | RAG와 검색 | 벡터 → 에이전틱 검색 대전환 |
+| 6 | 메모리와 LLM 위키 | 지식 시스템 4가지 역할·조합 |
+| 7 | 하네스 | 개발론 4종 · SDD · 6가지 역할 |
+| 8 | 루프 엔지니어링 | 하네스 위층 |
+
+하단에는 근거 표시 안내(초록·노란 점 범례), 출처 목록, 접이식 저작권·제작 크레딧이 있습니다.
+부록 한 줄 사전과 팩트체크 장은 본문 중복이라 제거했습니다.
 
 ## 책자 사용법 (2026-08-03 개편)
 
