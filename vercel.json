@@ -23,10 +23,6 @@
   ],
   "rewrites": [
     {
-      "source": "/sbti4",
-      "destination": "/easyai/index.html"
-    },
-    {
       "source": "/agentmake",
       "destination": "/agentmake/index.html"
     },
