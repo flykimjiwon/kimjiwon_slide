@@ -209,7 +209,10 @@ body.editing .edit-hint{display:block;position:sticky;top:0;z-index:40;backgroun
   .ch-num{font-size:26pt}
   .ch-head h2{font-size:17pt}
   .ch-lead{font-size:10.4pt;margin:3mm 0}
-  .term{break-inside:avoid;page-break-inside:avoid;margin:4mm 0;padding:4mm 5mm;box-shadow:none}
+  /* 긴 용어 카드는 페이지를 넘겨 이어지게 둔다. 통짜로 밀면 빈 페이지가 쏟아진다.
+     대신 내부 블록(easy·myth·quote·표·그림)은 아래 규칙에서 분할을 막는다. */
+  .term{break-inside:auto;page-break-inside:auto;margin:4mm 0;padding:4mm 5mm;box-shadow:none}
+  .term-head{break-after:avoid;page-break-after:avoid}
   .term-head h3{font-size:12.6pt}
   .term p,.term ul{font-size:10.2pt}
   .easy,.myth,.quote,figure,table,.fact-card{break-inside:avoid;page-break-inside:avoid}
@@ -540,18 +543,22 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <li><b>2026-02-11</b> OpenAI, 동명의 대규모 Codex 사례 공개 → 용어 급속 확산</li>
 <li><b>2026-03-10</b> LangChain, "Agent = Model + Harness"로 구성요소 체계화</li>
 <li><b>2026-04</b> martinfowler.com, 가이드(예방)×센서(교정) 프레임으로 사용자 측 정리</li>
+<li><b>2026-06</b> Addy Osmani, 하네스 위층으로 <b>루프 엔지니어링</b> 제안 — 사람이 아니라 시스템이 에이전트를 찌르게<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span></li>
 </ul>
 <figure>
-<svg viewBox="0 0 560 150" role="img" aria-label="3단계 성숙도 타임라인">
-<g font-family="var(--font)" text-anchor="middle" font-size="13">
-<line x1="40" y1="75" x2="520" y2="75" stroke="#e2e7ee" stroke-width="3"/>
-<circle cx="110" cy="75" r="9" fill="#0ea5e9"/><circle cx="280" cy="75" r="9" fill="#0066cc"/><circle cx="450" cy="75" r="11" fill="#7c3aed"/>
-<text x="110" y="45" font-weight="800" fill="#0ea5e9">프롬프트 엔지니어링</text><text x="110" y="108" fill="#5f6672">2022–23 · "무엇을 시킬지"</text>
-<text x="280" y="45" font-weight="800" fill="#0066cc">컨텍스트 엔지니어링</text><text x="280" y="108" fill="#5f6672">2024–25 · "무엇을 보여줄지"</text>
-<text x="450" y="45" font-weight="800" fill="#7c3aed">하네스 엔지니어링</text><text x="450" y="108" fill="#5f6672">2026– · "어떻게 일하게 할지"</text>
+<svg viewBox="0 0 560 154" role="img" aria-label="4단계 성숙도 타임라인">
+<g font-family="var(--font)" text-anchor="middle" font-size="12">
+<line x1="30" y1="76" x2="534" y2="76" stroke="#e2e7ee" stroke-width="3"/>
+<circle cx="72" cy="76" r="8" fill="#0ea5e9"/><circle cx="218" cy="76" r="8" fill="#0066cc"/>
+<circle cx="366" cy="76" r="10" fill="#7c3aed"/><circle cx="500" cy="76" r="10" fill="#ea580c"/>
+<text x="72" y="46" font-weight="800" fill="#0ea5e9">프롬프트 엔지니어링</text><text x="72" y="108" font-size="11" fill="#5f6672">2022–23 · 무엇을 시킬지</text>
+<text x="218" y="46" font-weight="800" fill="#0066cc">컨텍스트 엔지니어링</text><text x="218" y="108" font-size="11" fill="#5f6672">2024–25 · 무엇을 보여줄지</text>
+<text x="366" y="46" font-weight="800" fill="#7c3aed">하네스 엔지니어링</text><text x="366" y="108" font-size="11" fill="#5f6672">2026– · 어떻게 일하게 할지</text>
+<text x="500" y="46" font-weight="800" fill="#ea580c">루프 엔지니어링</text><text x="500" y="108" font-size="11" fill="#5f6672">2026– · 누가 언제 시킬지</text>
+<text x="280" y="140" font-size="11" fill="#8a93a3">뒤로 갈수록 사람이 손대는 지점이 한 단계씩 바깥으로 밀립니다</text>
 </g>
 </svg>
-<figcaption>그림 5 · AI 엔지니어링 성숙도 3단계 <span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></figcaption>
+<figcaption>그림 5 · AI 엔지니어링 성숙도 4단계 — 네 번째 칸은 아직 한 필자의 프레이밍입니다 <span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></figcaption>
 </figure>
 <div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면 (운전 비유)</b> — "모델은 운전 실력이고, 하네스는 <b>차선, 가드레일, 속도계, 블랙박스, 그리고 브레이크</b>입니다. 운전 실력이 최고여도 밤에 차선 없는 산길에서는 사고가 납니다."</div>
 <p><b>실증 카드 두 장:</b></p>
@@ -583,6 +590,24 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <tr><td><b>T4 모델 독립 통제</b></td><td>모델이 협조하지 않아도 작동하는 제한·검증·결정론 처리</td></tr>
 </table></div>
 <div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 판별 팁</b> — 오래된 메시지를 길이 기준으로 잘라내는 건 T3가 아닙니다. "중요 파일 삭제하지 마"라는 프롬프트는 T4가 아닙니다. 도구 호출 상한·승인 게이트·샌드박스·테스트 통과 조건처럼 <b>모델이 무시할 수 없는 것</b>만 통제입니다.</div></div>
+
+<div class="term" id="loop-eng"><div class="term-head"><h3>루프 엔지니어링</h3><span class="en">loop engineering</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
+<p>에이전트에게 매 턴 직접 프롬프트하는 대신, <b>에이전트를 대신 프롬프트하는 시스템</b>을 설계하는 것. 여기서 루프는 목적만 정해 주면 완료될 때까지 스스로 반복하는 <b>재귀적 목표</b>입니다. 하네스 엔지니어링의 <b>한 층 위</b>를 다루며, 2026년 중반 Addy Osmani가 정리한 개념이라 아직 한 필자의 프레이밍에 가깝습니다<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span>.</p>
+<div class="quote"><span class="q-tag">발언 취지 요약 · 직접 인용 아님<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span></span>"이제 Claude에 프롬프트하지 않습니다. Claude에 프롬프트하고 무엇을 할지 정하는 <b>루프를 돌립니다.</b> 내 일은 루프를 작성하는 것입니다." — Boris Cherny(Claude Code)</div>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 하네스가 <b>에이전트 한 명이 일하는 작업장</b>이라면, 루프는 <b>그 작업장에 일감을 물어다 주고 결과를 검사해 다음 일감을 정하는 관리자</b>입니다. 사람이 매번 "이거 해줘"라고 찌르던 자리를 시스템이 대신합니다.</div>
+<div class="tbl-scroll"><table>
+<tr><th>구성요소</th><th>하는 일</th><th>도구에서는</th></tr>
+<tr><td><b>Automations</b><br>심장 박동</td><td>정해진 주기에 스스로 실행하고 분류(triage)</td><td>Claude Code <code>/loop</code>·훅·cron / Codex Automations</td></tr>
+<tr><td><b>Worktrees</b><br>격리</td><td>병렬 에이전트가 같은 파일에서 부딪히지 않게</td><td><code>git worktree</code> · <code>--worktree</code> · <code>isolation: worktree</code></td></tr>
+<tr><td><b>Skills</b><br>누적</td><td>매 세션 다시 설명할 프로젝트 지식을 적어 둠</td><td>양쪽 다 <code>SKILL.md</code> 동일 포맷</td></tr>
+<tr><td><b>플러그인·커넥터</b><br>연결</td><td>이슈 트래커·DB·CI 같은 실제 도구에 닿게</td><td>MCP(4장) — 한쪽 커넥터가 대개 양쪽에서 동작</td></tr>
+<tr><td><b>서브에이전트</b><br>분리</td><td>만드는 쪽과 검사하는 쪽을 나눔</td><td><code>.claude/agents/</code> · <code>.codex/agents/</code>(4장)</td></tr>
+<tr><td><b>메모리</b><br>여섯 번째</td><td>실행 사이에 무엇을 했고 다음에 뭘 할지 남김</td><td>md 파일·이슈 보드 — <b>컨텍스트가 아니라 디스크에</b>(6장)</td></tr>
+</table></div>
+<p><b>정지 조건이 핵심</b> — 주기마다 다시 도는 <code>/loop</code>과 달리 <code>/goal</code>은 <b>적어 둔 조건이 참이 될 때까지</b> 돕니다("test/auth 전체 통과, lint clean"처럼). 매 턴 뒤 별도의 작은 모델이 완료 여부를 검사해서, <b>코드를 쓴 에이전트가 자기 채점자가 되지 않게</b> 합니다. 3장의 검증 루프와 4장의 만드는 쪽·검사하는 쪽 분리가 여기서 만납니다.</p>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "루프를 잘 짜 두면 사람이 볼 일이 없다."</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 무인으로 도는 루프는 <b>무인으로 실수하는 루프</b>이기도 합니다. 루프가 말하는 "완료"는 증명이 아니라 주장이고, 읽지 않은 코드가 쌓일수록 존재하는 것과 실제로 이해하는 것 사이의 간극(comprehension debt)이 더 빨리 벌어집니다. 병렬로 몇 개를 돌릴 수 있는지는 도구가 아니라 <b>리뷰 대역폭</b>이 정합니다.</div></div>
+<div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"루프를 만들되 <b>엔지니어로 남으십시오.</b> 같은 루프를 만든 두 사람 중 한 명은 이해한 일을 더 빨리 하고, 다른 한 명은 이해하지 않으려고 씁니다. 루프는 그 차이를 모르지만 사람은 압니다."</div>
+<p class="src">출처 — Addy Osmani, Loop Engineering(Substack, 2026-06) · 국내 요약 GeekNews</p></div>
 </section>
 
 <!-- ═══════════ 4장 멀티에이전트 ═══════════ -->
@@ -863,6 +888,8 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <p><b>Vibe coding</b> — 코드를 안 읽고 느낌으로 만들기. 프로토타입용</p>
 <p>Agentic engineering — 에이전트에게 맡기되 공학 규율 유지</p>
 <p><b>하네스 엔지니어링</b> — 환경·제약·피드백 루프를 설계하는 규율. 2026년의 단어</p>
+<p><b>루프 엔지니어링</b> — 에이전트에 매번 프롬프트하는 대신, 대신 찔러 줄 루프를 설계하는 규율(자동화·worktree·스킬·커넥터·서브에이전트 + 디스크 메모리)</p>
+<p><b>/goal</b> — 적어 둔 정지 조건이 참이 될 때까지 도는 실행 모드. 완료 판정은 별도 모델이 함</p>
 <p>PR review agent — PR을 자동 리뷰하는 에이전트(CodeRabbit 등)</p>
 <p>Onboarding collapse — 신규 코드베이스 적응이 주→시간으로 붕괴하는 현상</p>
 </div>
@@ -885,6 +912,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <li><a href="https://www.databricks.com/blog/ai-harness">What is an AI Agent Harness? — Databricks</a></li>
 <li><a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">Anthropic 2026 Agentic Coding Trends Report</a></li>
 <li><a href="https://addyosmani.com/blog/code-agent-orchestra/">The Code Agent Orchestra — Addy Osmani</a></li>
+<li><a href="https://addyo.substack.com/">Loop Engineering — Addy Osmani (Substack, 2026-06)</a></li>
 <li><a href="https://www.digitalapplied.com/blog/multi-agent-orchestration-5-patterns-that-work">Multi-Agent Orchestration: 5 Patterns — Digital Applied</a></li>
 <li><a href="https://arxiv.org/pdf/2502.12110">A-MEM: Agentic Memory for LLM Agents — arXiv</a></li>
 <li><a href="https://dev.to/vishalmysore/rag-vs-agent-memory-vs-llm-wiki-a-practical-comparison-1oo6">RAG vs Agent Memory vs LLM Wiki — dev.to</a></li>
