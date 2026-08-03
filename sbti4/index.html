@@ -355,7 +355,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <div class="kicker">SBTI 4 — GLOSSARY EDITION</div>
 <h1>AI 코딩 <em>용어사전</em></h1>
 <p class="sub">하네스부터 멀티에이전트, RAG, LLM 위키까지 — 강의 1·2·3편의 핵심 용어를 선별해, 비유 하나와 그림 하나로 끝내는 책자.</p>
-<div class="badges"><span>6개 장</span><span>그림 9점</span><span>부록 한줄사전 90+</span><span>2026-08 기준</span></div>
+<div class="badges"><span>6개 장</span><span>그림 11점</span><span>부록 한줄사전 90+</span><span>2026-08 기준</span></div>
 </div>
 </header>
 
@@ -375,24 +375,79 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 
 <div class="term"><div class="term-head"><h3>토큰 · 컨텍스트 윈도우</h3><span class="en">token · context window</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
 <p>토큰 = 모델이 글을 세는 단위(한글 1자 ≈ 1~2토큰). 컨텍스트 윈도우 = 모델이 <b>한 번에 볼 수 있는</b> 토큰 한도.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 컨텍스트 윈도우는 <b>책상 크기</b>입니다. 책상이 아무리 커도, 서류를 산처럼 쌓으면 정작 필요한 종이를 못 찾죠. 그게 다음 용어입니다.</div>
-<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "1M 토큰 모델이니까 1M을 다 넣으면 되지."</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 광고 창(1M)과 <b>실효 컨텍스트</b>(정확도가 유지되는 구간, 대략 200~400K<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span>)는 다릅니다. 200K 모델이 5만 토큰에서 이미 정확도를 잃는 연구도 있습니다(Chroma, 18개 모델<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span>).</div></div></div>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 컨텍스트 윈도우는 <b>책상 크기</b>입니다. 책상이 아무리 커도, 서류를 산처럼 쌓으면 정작 필요한 종이를 못 찾습니다.</div>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "1M 토큰 모델이니까 1M을 다 넣으면 되지."</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — <b>스펙에 적힌 최대치</b>(1M)와 <b>실효 컨텍스트</b>(정확도가 유지되는 구간, 대략 200~400K<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span>)는 다릅니다. 200K 모델이 5만 토큰에서 이미 정확도를 잃는 연구도 있습니다(Chroma, 18개 모델<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span>).</div></div></div>
 
 <div class="term"><div class="term-head"><h3>추론 모델 · 생각 토큰</h3><span class="en">reasoning model · thinking budget</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
 <p>답하기 전에 "생각 토큰"을 태우며 문제를 풀어보는 모델. 수학·코드·계획에 강하지만 느리고 비쌉니다. 생각의 양을 조절하는 손잡이가 thinking budget(effort).</p>
 <div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 일반 모델은 즉답하는 사람, 추론 모델은 <b>연습장에 풀어보고 답하는 사람</b>. 연습장 쓰는 시간만큼 느리고, 연습장 종이값(토큰)이 듭니다.</div></div>
 
-<div class="term"><div class="term-head"><h3>환각 · 그라운딩</h3><span class="en">hallucination · grounding</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
-<p>환각 = 근거 없는 내용을 그럴듯하게 생성하는 것. 그라운딩 = 답을 실제 근거(문서·코드·검색결과)에 묶는 것.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — LLM은 "모른다"보다 "그럴듯한 오답"을 잘 만듭니다. 그래서 5장(RAG·검색)과 3장(하네스의 검증 루프)이 존재합니다. <b>이 책 절반은 사실 환각 대책입니다.</b></div></div>
+<div class="term"><div class="term-head"><h3>할루시네이션(환각) · 그라운딩</h3><span class="en">hallucination · grounding</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
+<p><b>할루시네이션(환각)</b> = 근거 없는 내용을 그럴듯하게 생성하는 것. <b>그라운딩</b> = 답을 실제 근거(문서·코드·검색결과)에 묶는 것.</p>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — LLM은 "모른다"보다 "그럴듯한 오답"을 잘 만듭니다. 그래서 5장(RAG·검색)과 3장(하네스의 검증 루프)이 존재합니다. <b>이 책 절반은 사실 환각 대책입니다.</b><br><b>그라운딩은 더 쉽게 말하면 — 답하기 전에 힌트를 최대한 많이 쥐여 주는 것</b>입니다. 관련 문서·코드·검색 결과를 미리 옆에 놓아 주면, 모델이 스스로 지어낼 여지가 그만큼 줄어듭니다.</div></div>
 
 <div class="term"><div class="term-head"><h3>오픈웨이트 vs 폐쇄형</h3><span class="en">open-weight vs closed</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
 <p>가중치 파일을 내려받아 <b>내 서버에서</b> 돌릴 수 있으면 오픈웨이트, API로만 쓸 수 있으면 폐쇄형. 오픈웨이트 ≠ 오픈소스(학습 데이터·코드 공개와는 다른 얘기).</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — <b>온프렘(내부망) 가능 여부</b>가 여기서 갈립니다. 금융권처럼 데이터가 밖으로 못 나가는 곳에서 이 축이 모델 선택의 1번 기준.</div></div>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — <b>온프렘(내부망) 가능 여부</b>가 여기서 갈립니다. 금융권처럼 데이터가 밖으로 못 나가는 곳에서 이 축이 모델 선택의 1번 기준.</div>
+<figure id="fig-openweight">
+<svg viewBox="0 0 560 262" role="img" aria-label="AI 모델 계보 — 폐쇄형과 오픈웨이트, 그 안의 오픈소스 AI">
+<g font-family="var(--font)" text-anchor="middle">
+<rect x="215" y="8" width="130" height="34" rx="17" fill="#111827"/>
+<text x="280" y="30" font-size="14" font-weight="800" fill="#fff">AI 모델</text>
+<g stroke="#c3ccda" stroke-width="2" fill="none">
+  <path d="M280 42v16H100v20"/><path d="M280 42v16h120v20"/>
+  <path d="M400 112v14H320v18"/><path d="M400 112v14h70v18"/>
+</g>
+<rect x="20" y="78" width="160" height="34" rx="10" fill="#232832"/>
+<text x="100" y="100" font-size="13.5" font-weight="800" fill="#e8ecf3">폐쇄형 closed</text>
+<text x="100" y="134" font-size="12" fill="#5f6672">GPT · Claude · Gemini</text>
+<text x="100" y="151" font-size="11.5" fill="#8a93a3">API로만 사용 · 온프렘 불가</text>
+
+<rect x="310" y="78" width="180" height="34" rx="10" fill="#0066cc"/>
+<text x="400" y="100" font-size="13.5" font-weight="800" fill="#fff">오픈웨이트 open-weight</text>
+
+<rect x="250" y="144" width="140" height="32" rx="9" fill="#0ea5e9"/>
+<text x="320" y="165" font-size="12.5" font-weight="800" fill="#fff">오픈웨이트만</text>
+<text x="320" y="196" font-size="12" fill="#5f6672">Llama · Qwen · Gemma</text>
+<text x="320" y="213" font-size="11.5" fill="#8a93a3">학습데이터·코드 비공개</text>
+
+<rect x="402" y="144" width="136" height="32" rx="9" fill="#16a34a"/>
+<text x="470" y="165" font-size="12.5" font-weight="800" fill="#fff">오픈소스 AI</text>
+<text x="470" y="196" font-size="12" fill="#5f6672">OLMo · Pythia</text>
+<text x="470" y="213" font-size="11.5" fill="#8a93a3">데이터·코드까지 공개</text>
+
+<text x="280" y="248" font-size="12.5" font-weight="700" fill="#7c3aed">오픈소스 AI는 대부분 오픈웨이트 · 그러나 오픈웨이트가 곧 오픈소스는 아닙니다</text>
+</g>
+</svg>
+<figcaption>그림 1 · 폐쇄형 → 오픈웨이트 → (그중 일부만) 오픈소스 AI</figcaption>
+</figure>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "가중치를 받아서 사내 서버에서 돌릴 수 있으니 오픈소스네요."</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아닙니다. Llama·Qwen은 <b>가중치 공개·자체 서버 실행까지는 가능</b>하지만 학습 데이터 전체와 학습 코드·파이프라인은 공개하지 않습니다. 그래서 오픈웨이트라고 부릅니다. 반대로 코드만 공개하고 모델 파일을 주지 않으면 실제로 쓸 수 없기 때문에, <b>오픈소스 AI는 대부분 오픈웨이트를 겸합니다.</b><span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span></div></div></div>
 
 <div class="term"><div class="term-head"><h3>파인튜닝 vs RAG vs 지식화</h3><span class="en">fine-tuning vs RAG</span><span class="lv" data-tip="커피 난이도 — 배경지식 없이 그냥 읽힙니다"><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg></span></div>
 <p>파인튜닝 = 가중치 일부를 다시 학습(모델 자체가 변함). RAG·지식화 = 모델은 그대로 두고 <b>필요할 때 자료를 찾아 옆에 놓아주는 것</b>.</p>
-<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "문서를 지식화하면 모델이 학습되나요?"</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아니요. 가중치는 1도 안 바뀝니다. 문서를 파싱해 검색 가능한 형태로 저장했다가, 필요할 때 대화 맥락에 넣어주는 겁니다. 파인튜닝과 완전히 다릅니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div></div>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "문서를 지식화하면 모델이 학습되나요?"</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 아니요. 가중치는 1도 안 바뀝니다. 문서를 파싱해 검색 가능한 형태로 저장했다가, 필요할 때 대화 맥락에 넣어주는 겁니다. 파인튜닝과 완전히 다릅니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div><div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — RAG의 본질은 <b>"검색해서 프롬프트에 붙여 넣는 것"</b>입니다. <b>컨텍스트 윈도우</b>가 모델의 작업 책상 전체라면, <b>프롬프트</b>는 그 책상 위에 실제로 올려놓은 종이입니다. 시스템 지침, 검색해 온 문서, 도구 실행 결과, 이전 대화, 사용자가 친 문장이 <b>전부 합쳐져 하나의 프롬프트</b>가 되고, 모델은 그 묶음을 한 번에 읽고 답합니다.</div>
+<figure id="fig-context">
+<svg viewBox="0 0 560 292" role="img" aria-label="컨텍스트 윈도우 안에 들어가는 프롬프트 구성 요소">
+<g font-family="var(--font)">
+<rect x="58" y="8" width="444" height="212" rx="16" fill="#f4f7fb" stroke="#0066cc" stroke-width="2"/>
+<text x="280" y="32" font-size="13" font-weight="800" fill="#0066cc" text-anchor="middle">컨텍스트 윈도우 — 한 번에 볼 수 있는 전체 작업 공간</text>
+<g text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">
+  <rect x="80" y="44" width="400" height="30" rx="8" fill="#7c3aed"/><text x="280" y="64">System Prompt — 역할·규칙</text>
+  <rect x="80" y="80" width="400" height="30" rx="8" fill="#0066cc"/><text x="280" y="100">RAG 검색 결과 · 지식화한 문서</text>
+  <rect x="80" y="116" width="400" height="30" rx="8" fill="#0ea5e9"/><text x="280" y="136">도구(Tool) 실행 결과</text>
+  <rect x="80" y="152" width="400" height="30" rx="8" fill="#5f6672"/><text x="280" y="172">이전 대화</text>
+  <rect x="80" y="188" width="400" height="26" rx="8" fill="#16a34a"/><text x="280" y="206">User Prompt — 사용자가 친 문장</text>
+</g>
+<text x="34" y="118" font-size="11.5" font-weight="800" fill="#7c3aed" text-anchor="middle" transform="rotate(-90 34 118)">이 전체가 프롬프트</text>
+<path d="M280 224v18" stroke="#5f6672" stroke-width="2" marker-end="url(#ar-ctx)"/>
+<defs><marker id="ar-ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5f6672"/></marker></defs>
+<rect x="215" y="248" width="130" height="34" rx="17" fill="#232832"/>
+<text x="280" y="270" font-size="13.5" font-weight="800" fill="#0ea5e9" text-anchor="middle">LLM 추론</text>
+</g>
+</svg>
+<figcaption>그림 2 · 사용자가 친 문장만 프롬프트가 아닙니다 — 이 상자 안 전체가 프롬프트</figcaption>
+</figure>
+<p><b>외우는 공식 세 줄</b></p><ul><li><b>컨텍스트 윈도우</b> = LLM이 한 번에 볼 수 있는 전체 작업 공간(모델의 작업 메모리). 예: 128K면 12만 8천 토큰까지, 그 이상은 보지 못합니다.</li><li><b>프롬프트</b> = 그 작업 공간 안에 실제로 넣어 주는 텍스트. 사용자가 친 문장만이 아니라 시스템 지침·검색 결과·도구 결과·이전 대화가 모두 포함됩니다.</li><li><b>RAG·지식화</b> = 검색해 온 문서를 프롬프트에 얹어 컨텍스트 윈도우 안으로 밀어 넣는 기술. 지식화한 파일을 시스템 프롬프트 뒤에 붙이는 6장의 LLM 위키도 같은 구조입니다.</li></ul><div class="quote"><span class="q-tag">한 문장으로</span>"RAG는 <b>검색 → 프롬프트에 추가 → 컨텍스트 윈도우에서 함께 읽고 추론</b>." 가중치는 끝까지 그대로입니다.</div></div>
 </section>
 
 <!-- ═══════════ 2장 코드 어시스턴트 ═══════════ -->
@@ -425,7 +480,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="280" y="143" font-size="13" fill="#5f6672" text-anchor="middle">끝났으면 보고,</text>
 <text x="280" y="163" font-size="13" fill="#5f6672" text-anchor="middle">아니면 한 바퀴 더</text>
 </svg>
-<figcaption>그림 1 · 에이전틱 루프 — 이 원 하나가 2~4장 전체의 뼈대</figcaption>
+<figcaption>그림 3 · 에이전틱 루프 — 이 원 하나가 2~4장 전체의 뼈대</figcaption>
 </figure>
 <div class="quote"><span class="q-tag">강의에서 그대로 쓰는 문장</span>"모델은 '무엇을 하고 싶다'고 <b>말할 뿐</b>이고, 실제로 할지 말지는 하네스가 결정합니다. 그래서 보안은 모델이 아니라 하네스에 겁니다."</div></div>
 
@@ -470,7 +525,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="280" y="175" font-size="14" font-weight="800" fill="#0ea5e9">모델 (추론 그 자체)</text>
 </g>
 </svg>
-<figcaption>그림 2 · 3층 구조 — 넓은 의미의 "하네스"는 모델 빼고 전부(보라+파랑)</figcaption>
+<figcaption>그림 4 · 3층 구조 — 넓은 의미의 "하네스"는 모델 빼고 전부(보라+파랑)</figcaption>
 </figure>
 <p>층을 나누면: <b>하네스(좁은 의미)</b> = 루프를 실행하는 계층(Claude Code·Codex CLI), <b>스캐폴드</b> = 모델이 보는 세계를 정의하는 층(지침 파일·훅·서브에이전트). 커뮤니티 하네스 번들(oh-my-claudecode, 가재코드, LazyCodex, Ouroboros 등)은 스캐폴드 층의 제품들입니다.</p>
 <p><b>겹겹의 하네스</b> — 벤더 하네스(Claude Code·Codex 자체) 바깥에 <b>프로젝트 하네스</b>(AGENTS.md·아키텍처 규칙·테스트·빌드 스크립트), 그 바깥에 <b>조직 하네스</b>(보안정책·권한승인·감사로그)가 쌓입니다. "하네스 안에 또 하네스"가 정상 구조입니다.</p></div>
@@ -496,7 +551,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="450" y="45" font-weight="800" fill="#7c3aed">하네스 엔지니어링</text><text x="450" y="108" fill="#5f6672">2026– · "어떻게 일하게 할지"</text>
 </g>
 </svg>
-<figcaption>그림 3 · AI 엔지니어링 성숙도 3단계 <span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></figcaption>
+<figcaption>그림 5 · AI 엔지니어링 성숙도 3단계 <span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></figcaption>
 </figure>
 <div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면 (운전 비유)</b> — "모델은 운전 실력이고, 하네스는 <b>차선, 가드레일, 속도계, 블랙박스, 그리고 브레이크</b>입니다. 운전 실력이 최고여도 밤에 차선 없는 산길에서는 사고가 납니다."</div>
 <p><b>실증 카드 두 장:</b></p>
@@ -558,7 +613,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="465" y="180" fill="#5f6672">서로 직접 통신·자율 조율</text>
 </g>
 </svg>
-<figcaption>그림 4 · 멀티세션 → 서브에이전트 → 에이전트 팀 <span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span></figcaption>
+<figcaption>그림 6 · 멀티세션 → 서브에이전트 → 에이전트 팀 <span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span></figcaption>
 </figure>
 <p><b>오케스트레이터</b> = 과업을 분해해 하위 에이전트에 위임하고 결과를 통합하는 상위 에이전트. <b>서브에이전트</b> = 독립 컨텍스트와 도구 집합을 가진 하위 에이전트. <b>에이전트 팀</b> = 팀원끼리 직접 통신하고 작업 목록을 공유하는 2026년의 최신 형태<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span>. 2026년 업계 합의는 "오케스트레이터 + <b>격리된</b> 서브에이전트 + 요약만 반환"<span class="y" data-tip="2차 보도 다수 일치 — 숫자는 강의 3일 사이에도 바뀔 수 있으니 구조만 외우세요"></span>.</p></div>
 
@@ -620,7 +675,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="425" y="205" fill="#5f6672">항상 현재 파일 상태 · 코드에 강함</text>
 </g>
 </svg>
-<figcaption>그림 5 · 코드는 grep, 문서는 검색형 지식 — 용도가 다릅니다</figcaption>
+<figcaption>그림 7 · 코드는 grep, 문서는 검색형 지식 — 용도가 다릅니다</figcaption>
 </figure>
 <div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — "그럼 RAG는 죽었네?"</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 코드 검색에서 퇴조했을 뿐, <b>문서·가이드·사내 지식은 여전히 검색형(RAG·지식화)이 정답</b>입니다. 논문 "Is Grep All You Need?"(arXiv 2605.15184<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span>)도 노이즈가 커지면 교차점이 생긴다고 답합니다. 요지는 "retrieval is really retrieval-plus-orchestration" — 검색은 하네스와 한 몸.</div></div>
 <p><b>에이전틱 RAG</b> = 언제, 무엇을, 다시 검색할지 에이전트가 동적으로 결정하고 중간 결과에 따라 전략을 바꾸는 진화형. <b>GraphRAG</b> = 문서를 지식 그래프로 엮어 관계 질문("A와 B의 연결고리는?")에 강해진 변형.</p></div>
@@ -665,7 +720,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="280" y="180" fill="#5f6672" font-size="12">셋은 경쟁이 아니라 조합 — 코드는 grep, 문서는 RAG, 결정은 위키, 선호는 메모리</text>
 </g>
 </svg>
-<figcaption>그림 6 · 망각과 싸우는 세 무기의 역할 분담</figcaption>
+<figcaption>그림 8 · 망각과 싸우는 세 무기의 역할 분담</figcaption>
 </figure>
 <p>학계 쪽 흐름: <b>A-MEM</b>(스스로 메모리를 연결·진화시키는 에이전틱 메모리), <b>Letta(구 MemGPT)</b>의 3계층(core=RAM / archival=디스크 / recall=대화이력). 다만 코딩 실무의 정직한 결론은 여전히 — <b>파일/저장소가 최고의 메모리</b>입니다.</p></div>
 </section>
