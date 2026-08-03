@@ -116,7 +116,14 @@ footer a{color:var(--blue);text-underline-offset:2px}
 .rights-reference{margin-top:8px;color:var(--muted)}
 .quote a{color:var(--cyan);text-underline-offset:3px}
 @media(max-width:640px){.rights-head{display:block}.rights-owner{display:inline-block;margin-top:10px}.rights-grid{grid-template-columns:1fr}.rights-panel{padding:16px}}
-@media(max-width:640px){figure{overflow-x:auto;text-align:left}figure svg{min-width:540px}figcaption{text-align:center}}
+@media(max-width:640px){
+  figure{overflow:visible;text-align:center}
+  figure svg{min-width:0;width:100%}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-scroll>table{min-width:560px}
+  .tbl-scroll th,.tbl-scroll td{word-break:keep-all;overflow-wrap:normal;line-break:strict}
+  figcaption{text-align:center}
+}
 @media print{nav{display:none}.cover{padding:60px 0}.chapter{page-break-before:always;padding-top:30px}.term{break-inside:avoid}}
 
 /* ══════════ 자체 SVG 아이콘 ══════════ */
@@ -730,7 +737,7 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <text x="465" y="45" font-weight="800" font-size="13.5" fill="#7c3aed">③ 팀끼리 대화</text>
 <circle cx="425" cy="95" r="15" fill="#7c3aed"/><circle cx="505" cy="95" r="15" fill="#7c3aed"/><circle cx="465" cy="150" r="15" fill="#7c3aed"/>
 <line x1="440" y1="95" x2="490" y2="95" stroke="#7c3aed" stroke-width="2"/><line x1="433" y1="108" x2="457" y2="138" stroke="#7c3aed" stroke-width="2"/><line x1="497" y1="108" x2="473" y2="138" stroke="#7c3aed" stroke-width="2"/>
-<text x="465" y="180" fill="#5f6672">팀원끼리 직접 주고받음</text>
+<text x="465" y="170" fill="#5f6672">팀원끼리 직접 주고받음</text>
 </g>
 </svg>
 <figcaption>그림 5 · 뒤로 갈수록 사람이 덜 개입합니다. 좋아지는 순서가 아니라 통제 방식의 차이입니다 <span class="y" data-tip="공식 문서·논문 출처가 아니라 여러 매체와 커뮤니티에서 오간 이야기 수준입니다. 숫자는 자주 바뀌니 구조만 기억하세요"></span></figcaption>
