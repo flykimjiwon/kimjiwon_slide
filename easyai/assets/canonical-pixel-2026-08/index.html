@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EASY AI 용어사전의 기존 픽셀 유령 그림체를 기준으로 만든 정본 삽화 27점 갤러리">
+  <title>EASY AI 정본 픽셀 삽화 27점</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="01-context-window-wide.png" imagesrcset="01-context-window-wide.png 1672w">
+  <style>
+    :root {
+      --canvas: #101722;
+      --navy: #07101f;
+      --navy-2: #0d1930;
+      --grid-dot: #123166;
+      --line: #19345d;
+      --ink: #eef6ff;
+      --muted: #8fa5c2;
+      --cyan: #18d7f2;
+      --blue: #1677ff;
+      --yellow: #ffd84a;
+      --pink: #ff6f91;
+      --white: #f8fafc;
+      --shadow: rgba(0, 0, 0, .36);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --radius-card: 12px;
+      --radius-panel: 16px;
+      --font-sans: Pretendard, "Noto Sans KR", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --text-display: clamp(32px, 6vw, 64px);
+      --text-section: clamp(21px, 3vw, 30px);
+      --text-body: 16px;
+      --text-meta: 13px;
+      --motion: 160ms ease-out;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--navy); }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      line-height: 1.65;
+      word-break: keep-all;
+      background: var(--navy);
+    }
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+    .shell { width: min(100% - var(--space-10), 1180px); margin: 0 auto; }
+    .hero {
+      padding: var(--space-12) 0 var(--space-8);
+      border-bottom: 1px solid var(--line);
+      background: var(--navy-2);
+    }
+    .eyebrow, .status, .asset-meta span, .filter, .dialog-count {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      letter-spacing: .04em;
+    }
+    .eyebrow { margin: 0 0 var(--space-2); color: var(--cyan); }
+    h1, h2, p { margin-top: 0; }
+    h1 { max-width: 920px; margin-bottom: var(--space-4); font-size: var(--text-display); line-height: 1.03; letter-spacing: -.05em; }
+    h1 em { color: var(--cyan); font-style: normal; }
+    .lead { max-width: 750px; margin-bottom: var(--space-5); color: var(--muted); }
+    .keep { white-space: nowrap; }
+    .hero-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .hero-links a, .filter {
+      min-height: 40px;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      text-decoration: none;
+      transition: transform var(--motion), border-color var(--motion), color var(--motion), background-color var(--motion);
+    }
+    .hero-links a:hover, .filter:hover { border-color: var(--cyan); color: var(--white); transform: translateY(-2px); }
+    .hero-links a:first-child { border-color: var(--cyan); color: var(--cyan); }
+
+    main { padding: var(--space-8) 0 var(--space-12); }
+    .control-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      padding: var(--space-4);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--navy-2);
+    }
+    .control-panel p { margin: 0; color: var(--muted); }
+    .status { color: var(--yellow); }
+    .filterbar { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .filter { color: var(--muted); background: transparent; }
+    .filter[aria-pressed="true"] { color: var(--navy); border-color: var(--cyan); background: var(--cyan); }
+
+    .concept-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+    .concept-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-panel);
+      background: var(--navy-2);
+    }
+    .concept-card[hidden] { display: none; }
+    .concept-head { padding: var(--space-5) var(--space-5) var(--space-3); border-bottom: 1px solid var(--line); }
+    .concept-number { margin: 0 0 var(--space-1); color: var(--cyan); font-family: var(--font-mono); font-size: var(--text-meta); }
+    h2 { margin-bottom: var(--space-1); font-size: var(--text-section); line-height: 1.16; letter-spacing: -.035em; }
+    .concept-head p { margin: 0; color: var(--muted); font-size: var(--text-meta); }
+    .asset-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); padding: var(--space-3); }
+    .asset-card {
+      min-width: 0;
+      overflow: hidden;
+      padding: 0;
+      color: inherit;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--canvas);
+      transition: transform var(--motion), border-color var(--motion), box-shadow var(--motion);
+    }
+    .asset-card[hidden] { display: none; }
+    .asset-card:hover { border-color: var(--cyan); box-shadow: 0 0 0 2px rgba(24, 215, 242, .18); transform: translateY(-3px); }
+    figure { margin: 0; }
+    .asset-media { overflow: hidden; background: var(--canvas); }
+    .asset-card[data-ratio="wide"] .asset-media { aspect-ratio: 16 / 9; }
+    .asset-card[data-ratio="square"] .asset-media { aspect-ratio: 1; }
+    .asset-card[data-ratio="portrait"] .asset-media { aspect-ratio: 4 / 5; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
+    .asset-meta { display: grid; gap: 2px; padding: var(--space-2); background: var(--navy-2); }
+    .asset-meta strong { font-size: var(--text-meta); }
+    .asset-meta span { color: var(--muted); font-size: 11px; }
+
+    .guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-8);
+    }
+    .guide > div { padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--navy-2); }
+    .guide strong { display: block; margin-bottom: var(--space-1); color: var(--cyan); }
+    .guide p { margin: 0; color: var(--muted); font-size: var(--text-meta); }
+
+    .preview-dialog { width: min(100% - var(--space-6), 1080px); max-height: min(100dvh - var(--space-6), 900px); padding: 0; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-panel); background: var(--navy); box-shadow: 0 24px 80px var(--shadow); }
+    .preview-dialog::backdrop { background: rgba(1, 5, 13, .76); }
+    .preview-shell { display: grid; gap: var(--space-3); padding: var(--space-4); }
+    .preview-head, .preview-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+    .preview-head h2 { margin: 0; font-size: clamp(18px, 3vw, 26px); }
+    .dialog-count { color: var(--muted); }
+    .dialog-close, .preview-actions button { min-height: 40px; padding: var(--space-2) var(--space-3); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--navy-2); }
+    .dialog-close:hover, .preview-actions button:hover { border-color: var(--cyan); color: var(--cyan); }
+    .preview-figure { display: grid; gap: var(--space-2); }
+    .preview-figure img { max-height: 70dvh; object-fit: contain; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--canvas); }
+    .preview-figure figcaption { color: var(--muted); font-size: var(--text-meta); }
+    .preview-actions { justify-content: flex-end; }
+    .empty { grid-column: 1 / -1; padding: var(--space-8); color: var(--muted); text-align: center; border: 1px dashed var(--line); border-radius: var(--radius-panel); }
+
+    @media (max-width: 960px) {
+      .concept-grid { grid-template-columns: 1fr; }
+      .asset-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .shell { width: min(100% - var(--space-6), 1180px); }
+      .hero { padding-top: var(--space-8); }
+      .asset-list, .guide { grid-template-columns: 1fr; }
+      .asset-card > figure { display: grid; grid-template-columns: 128px minmax(0, 1fr); align-items: stretch; }
+      .asset-card .asset-media { min-height: 128px; aspect-ratio: auto !important; }
+      .asset-meta { align-content: center; }
+      .control-panel { align-items: flex-start; }
+      .preview-head { align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="shell">
+      <p class="eyebrow">EASY AI / CANONICAL PIXEL ART SET</p>
+      <h1>기존 그림체 기준<br><em>정본 삽화 27점</em></h1>
+      <p class="lead">라이브 <code>/sbti4</code> 표지의 큰 사각 픽셀·친근한 <span class="keep">유령 작업자</span>·청록 직각 신호선 문법으로 새로 만든 9개 개념 × 3개 비율 세트입니다.</p>
+      <nav class="hero-links" aria-label="관련 페이지">
+        <a href="https://kimjiwon-slide.vercel.app/sbti4" target="_blank" rel="noreferrer">라이브 그림체 기준 보기</a>
+        <a href="../expansion-2026-08/index.html">이전 후보 27점 보존본</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="control-panel" aria-labelledby="gallery-control-title">
+      <div>
+        <p id="gallery-control-title" class="status">CURRENT / CANONICAL · 27 ASSETS</p>
+        <p id="result-count" aria-live="polite">9개 개념, 27개 이미지가 표시됩니다.</p>
+      </div>
+      <nav class="filterbar" aria-label="삽화 비율 필터" role="group">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">전체 27</button>
+        <button class="filter" type="button" data-filter="wide" aria-pressed="false">가로 9</button>
+        <button class="filter" type="button" data-filter="square" aria-pressed="false">정사각 9</button>
+        <button class="filter" type="button" data-filter="portrait" aria-pressed="false">세로 9</button>
+      </nav>
+    </section>
+
+    <section id="concept-grid" class="concept-grid" aria-label="정본 삽화 목록"></section>
+
+    <section class="guide" aria-label="채택 안내">
+      <div><strong>1. 한 지점에는 한 장</strong><p>같은 개념의 세 변형은 비교용입니다. 슬라이드 한 구간에는 우선 하나만 채택합니다.</p></div>
+      <div><strong>2. 픽셀을 보존</strong><p>최종 PNG의 정사각 픽셀과 여백 비율을 유지합니다. 세로 컷은 강제 왜곡하지 않았습니다.</p></div>
+      <div><strong>3. 이전 후보는 유지</strong><p>이 폴더가 새 정본이며, 이전 <code>expansion-2026-08</code> 후보·현재 본문 삽화는 바꾸지 않습니다.</p></div>
+    </section>
+  </main>
+
+  <dialog id="preview-dialog" class="preview-dialog" aria-labelledby="preview-title">
+    <div class="preview-shell">
+      <header class="preview-head">
+        <div><p id="preview-count" class="dialog-count"></p><h2 id="preview-title"></h2></div>
+        <button class="dialog-close" type="button" id="preview-close">닫기</button>
+      </header>
+      <figure class="preview-figure"><img id="preview-image" alt=""><figcaption id="preview-caption"></figcaption></figure>
+      <div class="preview-actions"><button type="button" id="preview-prev">이전</button><button type="button" id="preview-next">다음</button></div>
+    </div>
+  </dialog>
+
+  <script>
+    const concepts = [
+      { number: "01", title: "토큰 · 컨텍스트 윈도우", summary: "한정된 작업창에 필요한 카드만 넣는 장면", slug: "context-window", alts: ["넓은 청록 작업창의 두 줄 토큰 블록이 기록 유령과 제어 코어로 이어지는 가로 픽셀 장면", "토큰 블록이 정사각 작업창을 채우고 기록 유령에게 이어지는 픽셀 장면", "위쪽 작업창의 토큰 블록과 아래 기록 유령, 제어 코어를 잇는 세로 픽셀 장면"] },
+      { number: "02", title: "그라운딩 vs 환각", summary: "근거 문서의 경로와 멈춘 분홍 구름을 대비", slug: "grounding", alts: ["왼쪽의 초록 검증 표시 문서와 오른쪽의 분홍 불일치 문서가 중앙 유령으로 이어지는 가로 픽셀 장면", "두 문서의 대비와 답변 유령, 제어 코어를 보여 주는 정사각 픽셀 장면", "위아래로 배치한 검증 문서와 불일치 문서, 답변 유령을 연결한 세로 픽셀 장면"] },
+      { number: "03", title: "에이전틱 루프", summary: "계획·도구·관찰이 직각 회로를 따라 순환", slug: "agentic-loop", alts: ["계획 유령, 제어 코어, 도구 유령, 관찰 문서가 네 방향 화살표로 닫힌 회로를 이루는 가로 픽셀 장면", "네 개의 계획·실행·관찰·제어 노드가 닫힌 사각 회로를 이루는 정사각 픽셀 장면", "계획 유령과 제어 코어, 도구 유령, 관찰 문서가 세로 사각 루프를 이루는 픽셀 장면"] },
+      { number: "04", title: "도구 호출 · MCP", summary: "중앙 포트가 파일·도구·보호된 서비스에 연결", slug: "tool-calling-mcp", alts: ["세 개의 색상별 도구 포트가 중앙 제어 코어와 작업 유령에 청록 선으로 연결된 가로 픽셀 장면", "세 도구 포트와 중앙 코어를 보여 주는 정사각 픽셀 장면", "위쪽 세 도구 포트에서 중앙 코어와 작업 유령으로 선이 이어지는 세로 픽셀 장면"] },
+      { number: "05", title: "하네스 · 가드레일", summary: "체크 카드·보안 방패·제어 코어를 통과하는 흐름", slug: "harness-guardrails", alts: ["노란 안전 레일 안에서 세 검증 체크와 헬멧 유령, 제어 코어가 연결되고 분홍 위험 조각은 밖에서 멈추는 가로 픽셀 장면", "안전 레일 안의 검증 체크·헬멧 유령·제어 코어를 보여 주는 정사각 픽셀 장면", "세 검증 체크가 위에 있고 레일 안의 헬멧 유령과 제어 코어로 이어지는 세로 픽셀 장면"] },
+      { number: "06", title: "멀티에이전트 핸드오프", summary: "코디네이터가 세 역할에 일을 나누고 결과를 받음", slug: "multiagent-handoff", alts: ["왼쪽 코디네이터 유령이 가운데 세 역할 유령에 일을 나누고 오른쪽 결과 문서와 코어로 모으는 가로 픽셀 장면", "위 코디네이터 유령에서 가운데 세 역할 유령을 거쳐 아래 결과 코어로 모이는 정사각 픽셀 장면", "위 코디네이터와 세 역할 유령의 작업이 아래 결과 코어로 합쳐지는 세로 픽셀 장면"] },
+      { number: "07", title: "RAG와 에이전틱 검색", summary: "사서의 정밀 선택과 탐험가의 능동 탐색", slug: "rag-agentic-search", alts: ["왼쪽 기록 유령과 오른쪽 도구 유령이 중앙 문서 더미와 픽셀 검색 렌즈를 거쳐 제어 코어에 연결되는 가로 장면", "두 역할 유령이 문서 더미와 검색 렌즈, 제어 코어에 연결되는 정사각 픽셀 장면", "위 기록 유령과 문서 더미, 가운데 검색 렌즈, 아래 도구 유령과 제어 코어를 잇는 세로 장면"] },
+      { number: "08", title: "컨텍스트 부패 · 압축", summary: "잡음 카드가 요약 카드와 메모리 큐브로 정돈", slug: "context-compaction", alts: ["큰 분홍 잡음 카드 묶음이 청록 압축 경로를 지나 작은 요약 카드와 메모리 코어로 정돈되는 가로 픽셀 장면", "잡음 토큰 묶음과 작은 요약 카드, 압축 코어를 보여 주는 정사각 픽셀 장면", "위쪽 잡음 카드가 압축 경로를 지나 아래 메모리 코어로 이어지는 세로 픽셀 장면"] },
+      { number: "09", title: "메모리 · 스킬 · 규칙 · 위키", summary: "기록·도구·규칙·위키 타일을 지식 코어에 연결", slug: "memory-wiki", alts: ["기록 문서·도구 타일·체크 규칙·위키 트리가 중앙 지식 코어와 기록 유령에 연결되는 가로 픽셀 장면", "기록·도구·규칙·위키의 네 타일이 중앙 지식 코어로 모이는 정사각 픽셀 장면", "기록과 도구, 규칙, 위키 타일이 세로 지식 코어와 기록 유령에 연결되는 픽셀 장면"] }
+    ];
+    const ratios = [
+      { key: "wide", label: "가로", dimensions: "16:9 · 1672×941" },
+      { key: "square", label: "정사각", dimensions: "1:1 · 941×941" },
+      { key: "portrait", label: "세로", dimensions: "4:5 · 753×941" }
+    ];
+    const allAssets = concepts.flatMap((concept) => ratios.map((ratio, ratioIndex) => ({
+      ...ratio, concept, alt: concept.alts[ratioIndex], file: `${concept.number}-${concept.slug}-${ratio.key}.png`, caption: `${concept.title} · ${ratio.label} 정본`
+    })));
+    const grid = document.querySelector("#concept-grid");
+    const resultCount = document.querySelector("#result-count");
+    const dialog = document.querySelector("#preview-dialog");
+    const previewImage = document.querySelector("#preview-image");
+    const previewTitle = document.querySelector("#preview-title");
+    const previewCaption = document.querySelector("#preview-caption");
+    const previewCount = document.querySelector("#preview-count");
+    let activeFilter = "all";
+    let activeIndex = 0;
+    let opener = null;
+
+    grid.innerHTML = concepts.map((concept) => {
+      const cards = ratios.map((ratio, ratioIndex) => {
+        const index = allAssets.findIndex((asset) => asset.concept.number === concept.number && asset.key === ratio.key);
+        const asset = allAssets[index];
+        const loading = index === 0 ? "eager" : "lazy";
+        const priority = index === 0 ? " fetchpriority=\"high\"" : "";
+        return `<button class="asset-card" type="button" data-index="${index}" data-ratio="${ratio.key}" aria-label="${concept.title} ${ratio.label} 이미지 확대"><figure><div class="asset-media"><img src="${asset.file}" width="${ratio.key === "wide" ? "1672\" height=\"941" : ratio.key === "square" ? "941\" height=\"941" : "753\" height=\"941"}" loading="${loading}" decoding="async"${priority} alt="${asset.alt}"></div><figcaption class="asset-meta"><strong>${ratio.label}</strong><span>${ratio.dimensions}</span></figcaption></figure></button>`;
+      }).join("");
+      return `<article class="concept-card" data-concept="${concept.number}"><header class="concept-head"><p class="concept-number">${concept.number} / CANONICAL</p><h2>${concept.title}</h2><p>${concept.summary}</p></header><div class="asset-list">${cards}</div></article>`;
+    }).join("");
+
+    function visibleIndexes() {
+      return [...document.querySelectorAll(".asset-card")].filter((card) => !card.hidden).map((card) => Number(card.dataset.index));
+    }
+    function applyFilter(nextFilter) {
+      activeFilter = nextFilter;
+      document.querySelectorAll(".filter").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === nextFilter)));
+      document.querySelectorAll(".asset-card").forEach((card) => { card.hidden = nextFilter !== "all" && card.dataset.ratio !== nextFilter; });
+      document.querySelectorAll(".concept-card").forEach((card) => { card.hidden = !card.querySelector(".asset-card:not([hidden])"); });
+      const count = visibleIndexes().length;
+      const label = nextFilter === "all" ? "전체" : ratios.find((ratio) => ratio.key === nextFilter).label;
+      resultCount.textContent = `${label} ${count}개 이미지가 표시됩니다.`;
+    }
+    function renderPreview() {
+      const asset = allAssets[activeIndex];
+      const indexes = visibleIndexes();
+      const position = indexes.indexOf(activeIndex) + 1;
+      previewImage.src = asset.file;
+      previewImage.alt = asset.alt;
+      previewTitle.textContent = `${asset.concept.title} · ${asset.label}`;
+      previewCaption.textContent = `${asset.alt} ${asset.dimensions}`;
+      previewCount.textContent = `${position} / ${indexes.length}`;
+      document.querySelector("#preview-prev").disabled = indexes.length < 2;
+      document.querySelector("#preview-next").disabled = indexes.length < 2;
+    }
+    function openPreview(index, openingButton) {
+      activeIndex = index;
+      opener = openingButton;
+      renderPreview();
+      dialog.showModal();
+      document.querySelector("#preview-close").focus();
+    }
+    function movePreview(direction) {
+      const indexes = visibleIndexes();
+      if (indexes.length < 2) return;
+      const current = indexes.indexOf(activeIndex);
+      activeIndex = indexes[(current + direction + indexes.length) % indexes.length];
+      renderPreview();
+    }
+    document.querySelectorAll(".filter").forEach((button) => button.addEventListener("click", () => applyFilter(button.dataset.filter)));
+    grid.addEventListener("click", (event) => { const button = event.target.closest(".asset-card"); if (button) openPreview(Number(button.dataset.index), button); });
+    document.querySelector("#preview-close").addEventListener("click", () => dialog.close());
+    document.querySelector("#preview-prev").addEventListener("click", () => movePreview(-1));
+    document.querySelector("#preview-next").addEventListener("click", () => movePreview(1));
+    dialog.addEventListener("close", () => { if (opener) opener.focus(); });
+    dialog.addEventListener("keydown", (event) => { if (event.key === "ArrowLeft") movePreview(-1); if (event.key === "ArrowRight") movePreview(1); });
+  </script>
+</body>
+</html>
