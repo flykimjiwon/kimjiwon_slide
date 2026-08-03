@@ -232,10 +232,77 @@ body.editing .edit-hint{display:block;position:sticky;top:0;z-index:40;backgroun
   a[href^="http"]::after{content:""}
 }
 
+
+/* ══════════ 사이드바 접기/펼치기 ══════════ */
+:root{--sbw-min:64px}
+body{transition:padding-left .2s ease}
+.sidebar{transition:width .2s ease}
+.sb-collapse{margin-left:auto;display:flex;align-items:center;justify-content:center;width:30px;height:30px;
+  border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--muted);cursor:pointer;flex:none}
+.sb-collapse:hover{color:var(--blue);border-color:#cfe3ff;background:var(--soft)}
+.sb-collapse .ic-closed{display:none}
+body.sb-collapsed{padding-left:var(--sbw-min)}
+body.sb-collapsed .sidebar{width:var(--sbw-min)}
+body.sb-collapsed .sb-collapse{margin:0}
+body.sb-collapsed .sb-collapse .ic-open{display:none}
+body.sb-collapsed .sb-collapse .ic-closed{display:inline-block}
+body.sb-collapsed .sb-brand{justify-content:center;padding:14px 0 12px;gap:0}
+body.sb-collapsed .sb-logo,body.sb-collapsed .sb-brand>span,body.sb-collapsed .sb-txt,
+body.sb-collapsed .sb-num,body.sb-collapsed .sb-search input,body.sb-collapsed .sb-results,
+body.sb-collapsed .sb-btn>span,body.sb-collapsed .sb-foot-txt,body.sb-collapsed .sb-lock{display:none}
+body.sb-collapsed .sb-search{justify-content:center;margin:10px 10px 6px;padding:9px 0;cursor:pointer}
+body.sb-collapsed .sb-nav{padding:6px 9px}
+body.sb-collapsed .sb-nav a{justify-content:center;padding:11px 0}
+body.sb-collapsed .sb-nav a .ico{width:19px;height:19px}
+body.sb-collapsed .sb-actions{padding:9px}
+body.sb-collapsed .sb-btn{position:relative;justify-content:center;padding:11px 0}
+body.sb-collapsed .sb-badge{position:absolute;top:3px;right:5px;margin:0;padding:0 5px;font-size:10px}
+body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
+.sb-foot{display:flex;flex-direction:column;gap:7px}
+.sb-lock{display:flex;align-items:center;gap:6px;align-self:flex-start;border:1px solid var(--line);
+  background:var(--surface);border-radius:8px;padding:5px 9px;font:inherit;font-size:11.5px;font-weight:700;
+  color:var(--green);cursor:pointer}
+.sb-lock:hover{background:var(--soft)}
+@media(max-width:1120px){
+  body.sb-collapsed{padding-left:0}
+  body.sb-collapsed .sidebar{width:290px}
+  body.sb-collapsed .sb-logo,body.sb-collapsed .sb-brand>span,body.sb-collapsed .sb-txt,
+  body.sb-collapsed .sb-num,body.sb-collapsed .sb-search input,body.sb-collapsed .sb-btn>span,
+  body.sb-collapsed .sb-foot-txt,body.sb-collapsed .sb-lock{display:revert}
+  body.sb-collapsed .sb-brand{justify-content:flex-start;padding:18px 16px 14px;gap:10px}
+  body.sb-collapsed .sb-nav a,body.sb-collapsed .sb-btn{justify-content:flex-start;padding:8px 10px}
+  body.sb-collapsed .sb-btn{padding:9px 11px}
+  body.sb-collapsed .sb-search{justify-content:flex-start;margin:12px 14px 8px;padding:8px 11px}
+  body.sb-collapsed .sb-badge{position:static}
+  .sb-collapse{display:none}
+}
+
+/* ══════════ 관리자 비밀번호 ══════════ */
+.pw-modal{position:fixed;inset:0;z-index:120;background:rgba(15,20,28,.5);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+/* [hidden] 속성이 author display 선언에 밀리지 않도록 전역 고정
+   (모달·백드롭·잠금버튼·배지 전부 hidden 토글로 제어하므로 반드시 유지) */
+[hidden]{display:none!important}
+.pw-card{background:var(--surface);border-radius:16px;padding:22px 24px 18px;width:min(380px,100%);
+  box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.pw-head{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--dark);margin-bottom:8px}
+.pw-head .ico{width:20px;height:20px;color:var(--blue)}
+.pw-card p{font-size:13.5px;color:var(--muted);margin-bottom:12px}
+.pw-card input{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;
+  font:inherit;font-size:15px;outline:none;background:#fff}
+.pw-card input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,.13)}
+.pw-err{margin-top:8px;font-size:12.5px;font-weight:700;color:var(--red)}
+.pw-act{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.pw-act button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 16px;
+  font:inherit;font-size:13.5px;font-weight:700;color:var(--dark);cursor:pointer}
+.pw-act button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.pw-act button:hover{filter:brightness(.97)}
+@media print{.pw-modal{display:none!important}}
+
 </style>
 </head>
 <body>
-<svg id="sbti4-sprite" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7c0-1.1-.9-2-2-2H4v13h6c1.1 0 2 .9 2 2V7Z"/><path d="M12 7c0-1.1.9-2 2-2h6v13h-6c-1.1 0-2 .9-2 2V7Z"/></symbol><symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.2 8.8-2.1 4.3-4.3 2.1 2.1-4.3 4.3-2.1Z"/></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 8.5h11v5A4.5 4.5 0 0 1 10.5 18h-2A4.5 4.5 0 0 1 4 13.5v-5Z"/><path d="M15 10h1.6a2.2 2.2 0 0 1 0 4.4H15"/><path d="M6.6 3.4v2.2M9.5 3.4v2.2M12.4 3.4v2.2"/><path d="M3.2 20.8h12.6"/></symbol><symbol id="i-pepper" viewBox="0 0 24 24"><path d="M17.2 7.6c1.6 4-.9 9.2-5.8 10.9-2.7.9-5.5.7-7.4-.4 3.6-.3 6.2-1.8 7.7-4.3"/><path d="M15.7 7.9c.1-1.8 1-3 2.6-3.5"/><path d="M14.2 5.2c1-.5 2.1-.3 2.9.5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9.2 9.2 5.6 5.6M14.8 9.2l-5.6 5.6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.3"/><path d="m15.7 15.7 4.4 4.4"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4.2 19.8h3.9L18.4 9.5a2.4 2.4 0 0 0-3.4-3.4L4.7 16.4l-.5 3.4Z"/><path d="m13.6 7.4 3.4 3.4"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.4"/><path d="M15.2 6.4A2.4 2.4 0 0 0 12.8 4H6.4A2.4 2.4 0 0 0 4 6.4v6.4a2.4 2.4 0 0 0 2.4 2.4"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M7 9.5V4h10v5.5"/><rect x="3.6" y="9.5" width="16.8" height="7" rx="2.2"/><path d="M7 13.6h10v6.6H7z"/><path d="M17.2 12.4h.01"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.4 6.9h15.2M9.6 6.9V5.4A1.5 1.5 0 0 1 11.1 4h1.8a1.5 1.5 0 0 1 1.5 1.4v1.5"/><path d="m6.5 6.9.8 12.2A2 2 0 0 0 9.3 21h5.4a2 2 0 0 0 2-1.9l.8-12.2"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6.2 6.2 11.6 11.6M17.8 6.2 6.2 17.8"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2.2"/><path d="M10 4.2v2.6M14 4.2v2.6M10 17.2v2.6M14 17.2v2.6M4.2 10h2.6M4.2 14h2.6M17.2 10h2.6M17.2 14h2.6"/></symbol><symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol><symbol id="i-gate" viewBox="0 0 24 24"><path d="M12 3.4 19 6v5.4c0 4.2-2.8 7.4-7 8.9-4.2-1.5-7-4.7-7-8.9V6l7-2.6Z"/><path d="m8.9 11.9 2.2 2.2 4.1-4.4"/></symbol><symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5.4" r="2.4"/><circle cx="5.6" cy="17" r="2.4"/><circle cx="18.4" cy="17" r="2.4"/><path d="M10.4 7.2 7.1 14.7M13.6 7.2l3.3 7.5M8 17.2h8"/></symbol><symbol id="i-filesearch" viewBox="0 0 24 24"><path d="M13.2 3.6H7.2a2 2 0 0 0-2 2v12.8a2 2 0 0 0 2 2h4"/><path d="M13.2 3.6 18 8.4v1.9"/><circle cx="16.4" cy="16" r="3.4"/><path d="m19 18.7 1.8 1.8"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><rect x="3.5" y="4.4" width="17" height="4.4" rx="1.5"/><path d="M5.4 8.8v9a2 2 0 0 0 2 2h9.2a2 2 0 0 0 2-2v-9"/><path d="M10 12.8h4"/></symbol><symbol id="i-badge" viewBox="0 0 24 24"><path d="M12 3.4 14.3 5.9l3.4.2.2 3.4L20.4 12l-2.5 2.5-.2 3.4-3.4.2L12 20.6 9.5 18.1l-3.4-.2-.2-3.4L3.6 12l2.3-2.5.2-3.4 3.4-.2L12 3.4Z"/><path d="m9.4 12.2 1.9 1.9 3.4-3.8"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.6h11M9 12h11M9 17.4h11"/><path d="M4.6 6.6h.01M4.6 12h.01M4.6 17.4h.01"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol></svg><button class="sb-toggle" id="sbToggle" aria-label="목차 열기" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-menu"></use></svg></button><div class="sb-backdrop" id="sbBackdrop" hidden></div><aside class="sidebar" id="sidebar" aria-label="본문 내비게이션"><div class="sb-brand"><svg class="ico sb-logo" aria-hidden="true"><use href="#i-book"></use></svg><span><b>SBTI 4</b><small>AI 코딩 용어사전</small></span><button class="sb-x" id="sbClose" aria-label="목차 닫기"><svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg></button></div><div class="sb-search"><svg class="ico" aria-hidden="true"><use href="#i-search"></use></svg><input id="globalSearch" type="search" placeholder="용어 검색 (예: 하네스)" autocomplete="off"></div><div class="sb-results" id="searchResults" hidden></div><nav class="sb-nav" id="sbNav"><a href="#ch1" data-target="ch1"><svg class="ico" aria-hidden="true"><use href="#i-chip"></use></svg><span class="sb-num">1</span><span class="sb-txt"><b>기본기</b><small>LLM이라는 엔진</small></span></a><a href="#ch2" data-target="ch2"><svg class="ico" aria-hidden="true"><use href="#i-terminal"></use></svg><span class="sb-num">2</span><span class="sb-txt"><b>코드 어시스턴트</b><small>에이전트의 탄생</small></span></a><a href="#ch3" data-target="ch3"><svg class="ico" aria-hidden="true"><use href="#i-gate"></use></svg><span class="sb-num">3</span><span class="sb-txt"><b>하네스</b><small>이 책의 심장</small></span></a><a href="#ch4" data-target="ch4"><svg class="ico" aria-hidden="true"><use href="#i-network"></use></svg><span class="sb-num">4</span><span class="sb-txt"><b>멀티에이전트</b><small>혼자보다 팀</small></span></a><a href="#ch5" data-target="ch5"><svg class="ico" aria-hidden="true"><use href="#i-filesearch"></use></svg><span class="sb-num">5</span><span class="sb-txt"><b>RAG·검색</b><small>그리고 대전환</small></span></a><a href="#ch6" data-target="ch6"><svg class="ico" aria-hidden="true"><use href="#i-archive"></use></svg><span class="sb-num">6</span><span class="sb-txt"><b>메모리·위키</b><small>잊지 않는 에이전트</small></span></a><a href="#facts" data-target="facts"><svg class="ico" aria-hidden="true"><use href="#i-badge"></use></svg><span class="sb-num">F</span><span class="sb-txt"><b>팩트체크</b><small>말의 세기 맞추기</small></span></a><a href="#dict" data-target="dict"><svg class="ico" aria-hidden="true"><use href="#i-list"></use></svg><span class="sb-num">A</span><span class="sb-txt"><b>부록 한줄사전</b><small>90+ 항목</small></span></a></nav><div class="sb-actions"><button class="sb-btn" id="btnEdit" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-pencil"></use></svg><span>편집 모드</span><em class="sb-badge" id="editCount" hidden>0</em></button><button class="sb-btn" id="btnCopy"><svg class="ico" aria-hidden="true"><use href="#i-copy"></use></svg><span>수정요청 전체 복사</span></button><button class="sb-btn" id="btnPrint"><svg class="ico" aria-hidden="true"><use href="#i-printer"></use></svg><span>인쇄 · PDF(A4)</span></button><button class="sb-btn sb-danger" id="btnReset"><svg class="ico" aria-hidden="true"><use href="#i-trash"></use></svg><span>입력 초기화</span></button></div><div class="sb-foot">2026-08 · SBTI 1·2·3 동반 개념집</div></aside><div class="toast" id="toast" hidden></div>
+<svg id="sbti4-sprite" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7c0-1.1-.9-2-2-2H4v13h6c1.1 0 2 .9 2 2V7Z"/><path d="M12 7c0-1.1.9-2 2-2h6v13h-6c-1.1 0-2 .9-2 2V7Z"/></symbol><symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.2 8.8-2.1 4.3-4.3 2.1 2.1-4.3 4.3-2.1Z"/></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 8.5h11v5A4.5 4.5 0 0 1 10.5 18h-2A4.5 4.5 0 0 1 4 13.5v-5Z"/><path d="M15 10h1.6a2.2 2.2 0 0 1 0 4.4H15"/><path d="M6.6 3.4v2.2M9.5 3.4v2.2M12.4 3.4v2.2"/><path d="M3.2 20.8h12.6"/></symbol><symbol id="i-pepper" viewBox="0 0 24 24"><path d="M17.2 7.6c1.6 4-.9 9.2-5.8 10.9-2.7.9-5.5.7-7.4-.4 3.6-.3 6.2-1.8 7.7-4.3"/><path d="M15.7 7.9c.1-1.8 1-3 2.6-3.5"/><path d="M14.2 5.2c1-.5 2.1-.3 2.9.5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9.2 9.2 5.6 5.6M14.8 9.2l-5.6 5.6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.3"/><path d="m15.7 15.7 4.4 4.4"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4.2 19.8h3.9L18.4 9.5a2.4 2.4 0 0 0-3.4-3.4L4.7 16.4l-.5 3.4Z"/><path d="m13.6 7.4 3.4 3.4"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.4"/><path d="M15.2 6.4A2.4 2.4 0 0 0 12.8 4H6.4A2.4 2.4 0 0 0 4 6.4v6.4a2.4 2.4 0 0 0 2.4 2.4"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M7 9.5V4h10v5.5"/><rect x="3.6" y="9.5" width="16.8" height="7" rx="2.2"/><path d="M7 13.6h10v6.6H7z"/><path d="M17.2 12.4h.01"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.4 6.9h15.2M9.6 6.9V5.4A1.5 1.5 0 0 1 11.1 4h1.8a1.5 1.5 0 0 1 1.5 1.4v1.5"/><path d="m6.5 6.9.8 12.2A2 2 0 0 0 9.3 21h5.4a2 2 0 0 0 2-1.9l.8-12.2"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6.2 6.2 11.6 11.6M17.8 6.2 6.2 17.8"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2.2"/><path d="M10 4.2v2.6M14 4.2v2.6M10 17.2v2.6M14 17.2v2.6M4.2 10h2.6M4.2 14h2.6M17.2 10h2.6M17.2 14h2.6"/></symbol><symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol><symbol id="i-gate" viewBox="0 0 24 24"><path d="M12 3.4 19 6v5.4c0 4.2-2.8 7.4-7 8.9-4.2-1.5-7-4.7-7-8.9V6l7-2.6Z"/><path d="m8.9 11.9 2.2 2.2 4.1-4.4"/></symbol><symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5.4" r="2.4"/><circle cx="5.6" cy="17" r="2.4"/><circle cx="18.4" cy="17" r="2.4"/><path d="M10.4 7.2 7.1 14.7M13.6 7.2l3.3 7.5M8 17.2h8"/></symbol><symbol id="i-filesearch" viewBox="0 0 24 24"><path d="M13.2 3.6H7.2a2 2 0 0 0-2 2v12.8a2 2 0 0 0 2 2h4"/><path d="M13.2 3.6 18 8.4v1.9"/><circle cx="16.4" cy="16" r="3.4"/><path d="m19 18.7 1.8 1.8"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><rect x="3.5" y="4.4" width="17" height="4.4" rx="1.5"/><path d="M5.4 8.8v9a2 2 0 0 0 2 2h9.2a2 2 0 0 0 2-2v-9"/><path d="M10 12.8h4"/></symbol><symbol id="i-badge" viewBox="0 0 24 24"><path d="M12 3.4 14.3 5.9l3.4.2.2 3.4L20.4 12l-2.5 2.5-.2 3.4-3.4.2L12 20.6 9.5 18.1l-3.4-.2-.2-3.4L3.6 12l2.3-2.5.2-3.4 3.4-.2L12 3.4Z"/><path d="m9.4 12.2 1.9 1.9 3.4-3.8"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.6h11M9 12h11M9 17.4h11"/><path d="M4.6 6.6h.01M4.6 12h.01M4.6 17.4h.01"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.2" width="15" height="9.8" rx="2.4"/><path d="M8 10.2V7.6a4 4 0 0 1 8 0v2.6"/><path d="M12 14v2.4"/></symbol><symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4.5" y="10.2" width="15" height="9.8" rx="2.4"/><path d="M8 10.2V7.6a4 4 0 0 1 7.6-1.8"/><path d="M12 14v2.4"/></symbol><symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m14.5 6.5-5.5 5.5 5.5 5.5"/><path d="M18.5 6.5v11"/></symbol><symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/><path d="M5.5 6.5v11"/></symbol></svg><button class="sb-toggle" id="sbToggle" aria-label="목차 열기" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-menu"></use></svg></button><div class="sb-backdrop" id="sbBackdrop" hidden></div><aside class="sidebar" id="sidebar" aria-label="본문 내비게이션"><div class="sb-brand"><svg class="ico sb-logo" aria-hidden="true"><use href="#i-book"></use></svg><span><b>SBTI 4</b><small>AI 코딩 용어사전</small></span><button class="sb-collapse" id="sbCollapse" aria-label="목차 접기/펼치기" title="목차 접기/펼치기"><svg class="ico ic-open" aria-hidden="true"><use href="#i-chev-l"></use></svg><svg class="ico ic-closed" aria-hidden="true"><use href="#i-chev-r"></use></svg></button><button class="sb-x" id="sbClose" aria-label="목차 닫기"><svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg></button></div><div class="sb-search"><svg class="ico" aria-hidden="true"><use href="#i-search"></use></svg><input id="globalSearch" type="search" placeholder="용어 검색 (예: 하네스)" autocomplete="off"></div><div class="sb-results" id="searchResults" hidden></div><nav class="sb-nav" id="sbNav"><a title="1 기본기 — LLM이라는 엔진" href="#ch1" data-target="ch1"><svg class="ico" aria-hidden="true"><use href="#i-chip"></use></svg><span class="sb-num">1</span><span class="sb-txt"><b>기본기</b><small>LLM이라는 엔진</small></span></a><a title="2 코드 어시스턴트 — 에이전트의 탄생" href="#ch2" data-target="ch2"><svg class="ico" aria-hidden="true"><use href="#i-terminal"></use></svg><span class="sb-num">2</span><span class="sb-txt"><b>코드 어시스턴트</b><small>에이전트의 탄생</small></span></a><a title="3 하네스 — 이 책의 심장" href="#ch3" data-target="ch3"><svg class="ico" aria-hidden="true"><use href="#i-gate"></use></svg><span class="sb-num">3</span><span class="sb-txt"><b>하네스</b><small>이 책의 심장</small></span></a><a title="4 멀티에이전트 — 혼자보다 팀" href="#ch4" data-target="ch4"><svg class="ico" aria-hidden="true"><use href="#i-network"></use></svg><span class="sb-num">4</span><span class="sb-txt"><b>멀티에이전트</b><small>혼자보다 팀</small></span></a><a title="5 RAG·검색 — 그리고 대전환" href="#ch5" data-target="ch5"><svg class="ico" aria-hidden="true"><use href="#i-filesearch"></use></svg><span class="sb-num">5</span><span class="sb-txt"><b>RAG·검색</b><small>그리고 대전환</small></span></a><a title="6 메모리·위키 — 잊지 않는 에이전트" href="#ch6" data-target="ch6"><svg class="ico" aria-hidden="true"><use href="#i-archive"></use></svg><span class="sb-num">6</span><span class="sb-txt"><b>메모리·위키</b><small>잊지 않는 에이전트</small></span></a><a title="F 팩트체크 — 말의 세기 맞추기" href="#facts" data-target="facts"><svg class="ico" aria-hidden="true"><use href="#i-badge"></use></svg><span class="sb-num">F</span><span class="sb-txt"><b>팩트체크</b><small>말의 세기 맞추기</small></span></a><a title="A 부록 한줄사전 — 90+ 항목" href="#dict" data-target="dict"><svg class="ico" aria-hidden="true"><use href="#i-list"></use></svg><span class="sb-num">A</span><span class="sb-txt"><b>부록 한줄사전</b><small>90+ 항목</small></span></a></nav><div class="sb-actions"><button class="sb-btn" id="btnEdit" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-pencil"></use></svg><span>편집 모드</span><em class="sb-badge" id="editCount" hidden>0</em></button><button class="sb-btn" id="btnCopy"><svg class="ico" aria-hidden="true"><use href="#i-copy"></use></svg><span>수정요청 전체 복사</span></button><button class="sb-btn" id="btnPrint"><svg class="ico" aria-hidden="true"><use href="#i-printer"></use></svg><span>인쇄 · PDF(A4)</span></button><button class="sb-btn sb-danger" id="btnReset"><svg class="ico" aria-hidden="true"><use href="#i-trash"></use></svg><span>입력 초기화</span></button></div><div class="sb-foot"><span class="sb-foot-txt">2026-08 · SBTI 1·2·3 동반 개념집</span><button class="sb-lock" id="btnLock" hidden><svg class="ico" aria-hidden="true"><use href="#i-unlock"></use></svg>관리자 잠금</button></div></aside><div class="pw-modal" id="pwModal" hidden><div class="pw-card" role="dialog" aria-modal="true" aria-labelledby="pwTitle"><div class="pw-head"><svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg><b id="pwTitle">관리자 확인</b></div><p>편집 모드는 관리자 전용입니다. 비밀번호를 입력하세요.</p><input type="password" id="pwInput" autocomplete="current-password" placeholder="비밀번호"><div class="pw-err" id="pwErr" hidden>비밀번호가 맞지 않습니다.</div><div class="pw-act"><button type="button" id="pwCancel">취소</button><button type="button" id="pwOk" class="primary">확인</button></div></div></div><div class="toast" id="toast" hidden></div>
 
 
 
@@ -892,8 +959,69 @@ dictInput.addEventListener('input',filterDict);filterDict();
     try{localStorage.setItem(STORE+'-mode',on?'1':'0')}catch(e){}
     if(on)toast('편집 모드 켜짐 — 블록마다 입력칸이 생겼습니다');
   }
-  btnEdit.addEventListener('click',function(){setEdit(btnEdit.getAttribute('aria-pressed')!=='true')});
-  if(location.search.indexOf('edit=1')>-1||(function(){try{return localStorage.getItem(STORE+'-mode')==='1'}catch(e){return false}})())setEdit(true);
+  /* ── 관리자 잠금 ── */
+  var PWH=628361614,SKEY='sbti4-admin';
+  function hash(t){var x=5381;for(var i=0;i<t.length;i++){x=((x<<5)+x+t.charCodeAt(i))>>>0}return x}
+  function unlocked(){try{return sessionStorage.getItem(SKEY)==='1'}catch(e){return false}}
+  var pwModal=$('#pwModal'),pwInput=$('#pwInput'),pwErr=$('#pwErr'),btnLock=$('#btnLock'),pending=null;
+  function paintLock(){
+    var u=unlocked();
+    $('use',btnEdit).setAttribute('href',u?'#i-pencil':'#i-lock');
+    $('span',btnEdit).textContent=u?'편집 모드':'편집 모드 (잠김)';
+    btnEdit.title=u?'편집 모드 켜기/끄기':'관리자 비밀번호 필요';
+    btnLock.hidden=!u;
+  }
+  function askPw(after){
+    pending=after;pwErr.hidden=true;pwInput.value='';pwModal.hidden=false;
+    setTimeout(function(){pwInput.focus()},30);
+  }
+  function closePw(){pwModal.hidden=true;pending=null}
+  function submitPw(){
+    if(hash(pwInput.value)!==PWH){pwErr.hidden=false;pwInput.select();return}
+    try{sessionStorage.setItem(SKEY,'1')}catch(e){}
+    var f=pending;                       /* closePw()가 pending을 지우므로 먼저 확보 */
+    closePw();paintLock();toast('관리자 확인됨 — 편집 기능이 열렸습니다');
+    if(f)f();
+  }
+  $('#pwOk').addEventListener('click',submitPw);
+  $('#pwCancel').addEventListener('click',closePw);
+  pwInput.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();submitPw()}
+    if(e.key==='Escape'){closePw()}
+  });
+  pwModal.addEventListener('click',function(e){if(e.target===pwModal)closePw()});
+  function requireAdmin(fn){if(unlocked()){fn();return}askPw(fn)}
+  btnLock.addEventListener('click',function(){
+    try{sessionStorage.removeItem(SKEY)}catch(e){}
+    setEdit(false);paintLock();toast('관리자 잠금 — 편집 기능이 닫혔습니다');
+  });
+  paintLock();
+
+  btnEdit.addEventListener('click',function(){
+    var on=btnEdit.getAttribute('aria-pressed')!=='true';
+    if(!on){setEdit(false);return}
+    requireAdmin(function(){setEdit(true)});
+  });
+  var wantEdit=location.search.indexOf('edit=1')>-1||
+    (function(){try{return localStorage.getItem(STORE+'-mode')==='1'}catch(e){return false}})();
+  if(wantEdit){ if(unlocked()){setEdit(true)} else {try{localStorage.setItem(STORE+'-mode','0')}catch(e){}} }
+
+  /* ── 사이드바 접기/펼치기 (기본: 접힘) ── */
+  var CKEY='sbti4-sidebar';
+  function setCollapsed(c){
+    document.body.classList.toggle('sb-collapsed',c);
+    $('#sbCollapse').setAttribute('aria-expanded',String(!c));
+    try{localStorage.setItem(CKEY,c?'1':'0')}catch(e){}
+  }
+  $('#sbCollapse').addEventListener('click',function(){
+    setCollapsed(!document.body.classList.contains('sb-collapsed'));
+  });
+  setCollapsed((function(){try{var v=localStorage.getItem(CKEY);return v===null?true:v==='1'}catch(e){return true}})());
+  $('.sb-search').addEventListener('click',function(){
+    if(document.body.classList.contains('sb-collapsed')&&innerWidth>1120){
+      setCollapsed(false);setTimeout(function(){gi.focus()},220);
+    }
+  });
   refreshCount();
 
   /* ── 수정요청 일괄 복사 ── */
@@ -930,6 +1058,7 @@ dictInput.addEventListener('input',filterDict);filterDict();
     });
   }
   $('#btnCopy').addEventListener('click',function(){
+    if(!unlocked()){askPw(function(){$('#btnCopy').click()});return}
     var p=buildPrompt();
     if(!p){toast('입력된 수정요청이 없습니다 — 편집 모드에서 먼저 적어주세요');setEdit(true);return}
     copyText(p).then(function(){toast('수정요청 '+refreshCount()+'건 복사됨 — 대화창에 붙여넣으세요')})
@@ -943,6 +1072,7 @@ dictInput.addEventListener('input',filterDict);filterDict();
 
   /* ── 초기화 ── */
   $('#btnReset').addEventListener('click',function(){
+    if(!unlocked()){askPw(function(){$('#btnReset').click()});return}
     var n=refreshCount();
     if(!n){toast('지울 입력이 없습니다');return}
     if(!confirm('입력한 수정요청 '+n+'건을 모두 지웁니다. 계속할까요?'))return;
