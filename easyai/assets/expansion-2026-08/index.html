@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Easy AI 용어 설명의 빈 구간을 채울 9개 개념, 27개 픽셀 유령 삽화를 한 번에 비교하고 확대하는 갤러리">
+  <meta name="theme-color" content="#07101f">
+  <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="01-context-window-wide.png" imagesrcset="01-context-window-wide.png 1672w">
+  <title>Easy AI 픽셀 삽화 갤러리</title>
+  <style>
+    :root {
+      --navy: #07101f;
+      --navy2: #0d1930;
+      --card: #0b172a;
+      --visual: #050c18;
+      --ink: #eef6ff;
+      --muted: #8fa5c2;
+      --line: #19345d;
+      --cyan: #18d7f2;
+      --blue: #1677ff;
+      --yellow: #ffd84a;
+      --green: #4ce58a;
+      --pink: #ff6f91;
+      --grid-dot: #16427c;
+      --cyan-glow: rgba(24, 215, 242, .18);
+      --shadow: rgba(0, 0, 0, .28);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --content: 1180px;
+      --radius-card: 18px;
+      --radius-control: 999px;
+      --duration-micro: 180ms;
+      --duration-dialog: 180ms;
+    }
+
+    * { box-sizing: border-box; }
+    figure { margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 0;
+      margin: 0;
+      background: var(--navy);
+      color: var(--ink);
+      font-family: Pretendard, "Noto Sans KR", sans-serif;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      content: "";
+      opacity: .2;
+    }
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+    .wrap { width: min(var(--content), calc(100% - var(--space-10))); margin: 0 auto; }
+    .hero { border-bottom: 1px solid var(--line); padding: 72px 0 var(--space-12); }
+    .eyebrow {
+      margin: 0 0 var(--space-3);
+      color: var(--cyan);
+      font: 700 13px/1.2 "JetBrains Mono", monospace;
+      letter-spacing: .18em;
+    }
+    h1 {
+      max-width: 950px;
+      margin: 0;
+      font-size: clamp(38px, 7vw, 82px);
+      letter-spacing: -.055em;
+      line-height: 1;
+    }
+    h1 span { color: var(--cyan); }
+    .hero-copy { max-width: 780px; margin: 22px 0 0; color: var(--muted); font-size: 18px; }
+    .stats { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      color: var(--cyan);
+      padding: 7px var(--space-3);
+      font: 700 12px/1.2 "JetBrains Mono", monospace;
+    }
+    .filterbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: var(--navy2);
+    }
+    .filterbar .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      min-height: 72px;
+      padding: var(--space-3) 0;
+    }
+    .filter-summary { margin: 0; color: var(--yellow); font-size: 13px; font-weight: 700; }
+    .filter-summary b { color: var(--ink); }
+    .filters { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+    .filter {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      background: var(--navy);
+      color: var(--muted);
+      cursor: pointer;
+      padding: 7px var(--space-3);
+      transition: border-color var(--duration-micro) ease, color var(--duration-micro) ease, transform var(--duration-micro) ease;
+    }
+    .filter:hover { border-color: var(--cyan); color: var(--ink); transform: translateY(-1px); }
+    .filter[aria-pressed="true"] { border-color: var(--cyan); background: var(--cyan); color: var(--navy); font-weight: 800; }
+    main { padding: var(--space-10) 0 96px; }
+    .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+    .concept-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--card);
+      overflow: clip;
+    }
+    .concept-head { display: flex; align-items: start; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-3); }
+    .concept-no { color: var(--cyan); font: 800 20px/1 "JetBrains Mono", monospace; }
+    .concept-head h2 { margin: 0; font-size: 20px; letter-spacing: -.035em; }
+    .concept-head p { margin: var(--space-1) 0 0; color: var(--muted); font-size: 13px; }
+    .asset-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); padding: 0 var(--space-3) var(--space-3); }
+    .asset-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--navy2);
+      color: inherit;
+      cursor: zoom-in;
+      overflow: hidden;
+      padding: 0;
+      text-align: left;
+      transition: border-color var(--duration-micro) ease, box-shadow var(--duration-micro) ease, transform var(--duration-micro) ease;
+    }
+    .asset-card:hover { border-color: var(--cyan); box-shadow: 0 0 0 2px var(--cyan-glow); transform: translateY(-3px); }
+    .asset-card[hidden] { display: none; }
+    .asset-media { display: grid; overflow: hidden; background: var(--visual); place-items: center; }
+    .asset-card[data-ratio="wide"] .asset-media { aspect-ratio: 16 / 9; }
+    .asset-card[data-ratio="square"] .asset-media { aspect-ratio: 1; }
+    .asset-card[data-ratio="portrait"] .asset-media { aspect-ratio: 4 / 5; }
+    .asset-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .asset-meta { padding: 10px; }
+    .asset-meta strong { display: block; color: var(--ink); font-size: 12px; line-height: 1.25; }
+    .asset-meta span { display: block; margin-top: var(--space-1); color: var(--muted); font: 700 10px/1.2 "JetBrains Mono", monospace; }
+    .gallery[data-filter]:not([data-filter="all"]) .asset-list { grid-template-columns: minmax(0, 1fr); }
+    .gallery[data-filter]:not([data-filter="all"]) .asset-card > figure { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(132px, 1fr); align-items: stretch; }
+    .gallery[data-filter]:not([data-filter="all"]) .asset-card[data-ratio] .asset-media { aspect-ratio: auto; min-height: 190px; }
+    .gallery[data-filter]:not([data-filter="all"]) .asset-media img { object-fit: contain; }
+    .gallery[data-filter]:not([data-filter="all"]) .asset-meta { align-self: center; }
+    .gallery[data-filter] .asset-card[hidden] { display: none; }
+    .empty { display: none; margin: var(--space-10) 0; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--navy2); color: var(--muted); padding: var(--space-6); text-align: center; }
+    .empty.is-visible { display: block; }
+    footer { border-top: 1px solid var(--line); color: var(--muted); padding: var(--space-6) 0 var(--space-12); font-size: 13px; }
+    footer p { margin: 0; }
+    footer a { color: var(--cyan); text-underline-offset: 3px; }
+    .preview-dialog {
+      width: min(1120px, calc(100% - var(--space-6)));
+      max-height: calc(100dvh - var(--space-6));
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--navy2);
+      box-shadow: 0 24px 80px var(--shadow);
+      color: var(--ink);
+      padding: 0;
+    }
+    .preview-dialog::backdrop { background: var(--shadow); backdrop-filter: blur(4px); }
+    .preview-shell { display: grid; max-height: calc(100dvh - var(--space-6)); grid-template-rows: auto minmax(0, 1fr) auto; }
+    .preview-head, .preview-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+    .preview-head { border-bottom: 1px solid var(--line); }
+    .preview-kicker { margin: 0; color: var(--cyan); font: 700 11px/1.2 "JetBrains Mono", monospace; letter-spacing: .12em; }
+    .preview-title { margin: var(--space-1) 0 0; font-size: 18px; }
+    .preview-close, .preview-nav {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      background: var(--navy);
+      color: var(--ink);
+      cursor: pointer;
+      padding: 7px var(--space-3);
+    }
+    .preview-close:hover, .preview-nav:hover { border-color: var(--cyan); color: var(--cyan); }
+    .preview-figure { display: grid; min-height: 0; margin: 0; padding: var(--space-4); place-items: center; }
+    .preview-figure img { display: block; max-width: 100%; max-height: calc(100dvh - 220px); object-fit: contain; }
+    .preview-figure figcaption { margin-top: var(--space-3); color: var(--muted); font-size: 13px; text-align: center; }
+    .preview-actions { border-top: 1px solid var(--line); }
+    .preview-counter { margin: 0; color: var(--muted); font: 700 11px/1.2 "JetBrains Mono", monospace; }
+    .preview-actions div { display: flex; gap: var(--space-2); }
+    @media (max-width: 900px) {
+      .gallery { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .wrap { width: min(var(--content), calc(100% - var(--space-6))); }
+      .hero { padding: var(--space-12) 0 var(--space-8); }
+      .hero-copy { font-size: 15px; }
+      .filterbar .wrap { align-items: start; flex-direction: column; }
+      .filters { justify-content: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .asset-list { grid-template-columns: 1fr; }
+      .asset-card > figure { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: stretch; }
+      .asset-card[data-ratio] .asset-media { aspect-ratio: auto; min-height: 120px; }
+      .gallery[data-filter]:not([data-filter="all"]) .asset-card > figure { grid-template-columns: 120px minmax(0, 1fr); }
+      .gallery[data-filter]:not([data-filter="all"]) .asset-card[data-ratio] .asset-media { min-height: 120px; }
+      .asset-media img { object-fit: contain; }
+      .asset-meta { align-self: center; }
+      .preview-head, .preview-actions { padding: var(--space-3); }
+      .preview-figure { padding: var(--space-3); }
+      .preview-figure img { max-height: calc(100dvh - 240px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .filter, .asset-card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">EASY AI · PIXEL ILLUSTRATION PACK</p>
+      <h1>빈 설명을 채울 <span>27개 장면</span></h1>
+      <p class="hero-copy">토큰부터 메모리 위키까지 9개 개념을 가로·정사각·세로 비율로 비교합니다. 카드를 누르면 실제 원본 크기에 가깝게 확대하고, 필터로 필요한 비율만 볼 수 있습니다.</p>
+      <div class="stats" aria-label="갤러리 구성">
+        <span class="stat">09 CONCEPTS</span>
+        <span class="stat">27 PNG ASSETS</span>
+        <span class="stat">3 ASPECT RATIOS</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="filterbar" aria-label="이미지 비율 필터">
+    <div class="wrap">
+      <p class="filter-summary" aria-live="polite"><b id="visibleCount">27개</b> 후보를 보고 있습니다</p>
+      <div class="filters" role="group" aria-label="비율별 이미지 보기">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">전체 27</button>
+        <button class="filter" type="button" data-filter="wide" aria-pressed="false">가로 9</button>
+        <button class="filter" type="button" data-filter="square" aria-pressed="false">정사각 9</button>
+        <button class="filter" type="button" data-filter="portrait" aria-pressed="false">세로 9</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="gallery" id="gallery" data-filter="all" aria-label="Easy AI 픽셀 삽화 27개">
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">01</span><div><h2>토큰 · 컨텍스트 윈도우</h2><p>규칙·도구·대화·문서를 한정된 작업창에 고르는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="토큰 · 컨텍스트 윈도우" data-caption="장 도입·본문 중간의 넓은 figure에 적합합니다." aria-label="토큰과 컨텍스트 윈도우 가로 이미지 확대"><figure><div class="asset-media"><img src="01-context-window-wide.png" width="1672" height="941" fetchpriority="high" alt="노란 스카프 유령이 규칙과 도구, 대화, 문서 카드를 빛나는 작업창에 골라 넣는 픽셀 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="토큰 · 컨텍스트 윈도우" data-caption="요약 카드나 사이드 설명에 적합합니다." aria-label="토큰과 컨텍스트 윈도우 정사각 이미지 확대"><figure><div class="asset-media"><img src="01-context-window-square.png" width="941" height="941" alt="노란 스카프 유령이 작은 정사각 작업창에 중요한 카드만 정리하는 픽셀 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="토큰 · 컨텍스트 윈도우" data-caption="좁은 열·모바일·세로 포스터에 적합합니다." aria-label="토큰과 컨텍스트 윈도우 세로 이미지 확대"><figure><div class="asset-media"><img src="01-context-window-portrait.png" width="753" height="941" alt="세로 작업창에 카드와 문서를 차례로 넣는 노란 스카프 유령 픽셀 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">02</span><div><h2>그라운딩 vs 환각</h2><p>근거 없는 구름과 검증된 답변 경로를 대비하는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="그라운딩 vs 환각" data-caption="근거와 검증 흐름을 넓게 보여주는 비교 장면입니다." aria-label="그라운딩과 환각 가로 이미지 확대"><figure><div class="asset-media"><img src="02-grounding-wide.png" width="1672" height="941" alt="분홍 픽셀 구름의 불확실한 답과 문서와 돋보기로 검증된 청록 답변 경로를 대비한 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="그라운딩 vs 환각" data-caption="핵심 대조 카드에 적합합니다." aria-label="그라운딩과 환각 정사각 이미지 확대"><figure><div class="asset-media"><img src="02-grounding-square.png" width="941" height="941" alt="돋보기 유령이 분홍 구름 대신 근거 문서를 확인하는 정사각 픽셀 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="그라운딩 vs 환각" data-caption="세로 설명 열에서 대비를 강조할 수 있습니다." aria-label="그라운딩과 환각 세로 이미지 확대"><figure><div class="asset-media"><img src="02-grounding-portrait.png" width="753" height="941" alt="검증 문서 쪽으로 이어진 청록 길과 분홍 환각 구름을 위아래로 대비한 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">03</span><div><h2>에이전틱 루프</h2><p>계획·도구·관찰·다음 분기를 반복하는 팀의 순환</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="에이전틱 루프" data-caption="순환 경로와 역할을 한 화면에 보여주는 장면입니다." aria-label="에이전틱 루프 가로 이미지 확대"><figure><div class="asset-media"><img src="03-agentic-loop-wide.png" width="1672" height="941" alt="계획 지도와 도구 상자, 관찰 돋보기, 다음 분기판을 든 유령 팀이 청록 순환 트랙을 도는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="에이전틱 루프" data-caption="루프 개념 요약 카드에 적합합니다." aria-label="에이전틱 루프 정사각 이미지 확대"><figure><div class="asset-media"><img src="03-agentic-loop-square.png" width="941" height="941" alt="네 유령이 순환 트랙 안에서 계획과 도구, 관찰을 이어 가는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="에이전틱 루프" data-caption="세로 교육 자료에서 반복 흐름을 강조합니다." aria-label="에이전틱 루프 세로 이미지 확대"><figure><div class="asset-media"><img src="03-agentic-loop-portrait.png" width="753" height="941" alt="유령이 위에서 아래로 이어지는 순환 경로를 따라 계획과 실행을 반복하는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">04</span><div><h2>도구 호출 · MCP</h2><p>에이전트가 파일·도구·서비스에 안전하게 연결되는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="도구 호출 · MCP" data-caption="도구와 데이터 연결 관계를 넓게 설명합니다." aria-label="도구 호출과 MCP 가로 이미지 확대"><figure><div class="asset-media"><img src="04-tool-calling-mcp-wide.png" width="1672" height="941" alt="중앙 유령 코디네이터가 파일과 도구 상자, 잠긴 외부 서비스에 모듈 케이블을 연결하는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="도구 호출 · MCP" data-caption="MCP와 도구 호출의 요약 삽화에 적합합니다." aria-label="도구 호출과 MCP 정사각 이미지 확대"><figure><div class="asset-media"><img src="04-tool-calling-mcp-square.png" width="941" height="941" alt="유령 코디네이터가 중앙 포트에서 파일과 도구를 연결하는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="도구 호출 · MCP" data-caption="권한과 외부 도구 설명이 있는 세로 열에 적합합니다." aria-label="도구 호출과 MCP 세로 이미지 확대"><figure><div class="asset-media"><img src="04-tool-calling-mcp-portrait.png" width="753" height="941" alt="유령이 위쪽 명령 카드에서 아래쪽 파일과 도구 서비스로 선을 잇는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">05</span><div><h2>하네스 · 가드레일</h2><p>작업 카트가 점검·보안·검증 게이트를 통과하는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="하네스 · 가드레일" data-caption="도구 점검과 보안, 검증 단계를 한 번에 보여줍니다." aria-label="하네스와 가드레일 가로 이미지 확대"><figure><div class="asset-media"><img src="05-harness-guardrails-wide.png" width="1672" height="941" alt="유령이 탄 작업 카트가 도구 점검과 보안 방패, 검증 게이트를 지나 목표로 가는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="하네스 · 가드레일" data-caption="안전한 실행 환경을 요약하는 카드에 적합합니다." aria-label="하네스와 가드레일 정사각 이미지 확대"><figure><div class="asset-media"><img src="05-harness-guardrails-square.png" width="941" height="941" alt="유령 작업 카트가 방패와 게이트 사이를 통과하는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="하네스 · 가드레일" data-caption="단계적 검문 과정을 세로로 보여줍니다." aria-label="하네스와 가드레일 세로 이미지 확대"><figure><div class="asset-media"><img src="05-harness-guardrails-portrait.png" width="753" height="941" alt="세 개의 안전 게이트를 위에서 아래로 통과하는 유령 작업 카트 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">06</span><div><h2>멀티에이전트 핸드오프</h2><p>코디네이터와 빌더·리서처·리뷰어가 꾸러미를 주고받는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="멀티에이전트 핸드오프" data-caption="역할 분담과 결과 검토 루프를 한 화면에 보여줍니다." aria-label="멀티에이전트 핸드오프 가로 이미지 확대"><figure><div class="asset-media"><img src="06-multiagent-handoff-wide.png" width="1672" height="941" alt="코디네이터 유령이 빌더와 리서처, 리뷰어 유령에게 작업 꾸러미를 보내고 결과를 되돌려 받는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="멀티에이전트 핸드오프" data-caption="역할 분담을 간결하게 보여주는 카드에 적합합니다." aria-label="멀티에이전트 핸드오프 정사각 이미지 확대"><figure><div class="asset-media"><img src="06-multiagent-handoff-square.png" width="941" height="941" alt="네 유령이 중앙 허브를 중심으로 작업 꾸러미를 주고받는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="멀티에이전트 핸드오프" data-caption="인수인계 흐름을 세로 설명 열에서 강조합니다." aria-label="멀티에이전트 핸드오프 세로 이미지 확대"><figure><div class="asset-media"><img src="06-multiagent-handoff-portrait.png" width="753" height="941" alt="위쪽 코디네이터 유령에서 아래쪽 역할 유령들에게 작업이 전달되는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">07</span><div><h2>RAG와 에이전틱 검색</h2><p>사서의 정밀 검색과 탐험가의 능동 탐색을 대비하는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="RAG와 에이전틱 검색" data-caption="정밀 검색과 능동 탐색의 역할 차이를 넓게 보여줍니다." aria-label="RAG와 에이전틱 검색 가로 이미지 확대"><figure><div class="asset-media"><img src="07-rag-agentic-search-wide.png" width="1672" height="941" alt="사서 유령이 자료를 고르고 탐험가 유령이 파일 미로를 탐색해 유용한 묶음을 건네는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="RAG와 에이전틱 검색" data-caption="두 검색 방식의 역할을 요약하는 카드에 적합합니다." aria-label="RAG와 에이전틱 검색 정사각 이미지 확대"><figure><div class="asset-media"><img src="07-rag-agentic-search-square.png" width="941" height="941" alt="사서 유령과 탐험가 유령이 문서 선반과 파일 미로 사이에서 자료를 찾는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="RAG와 에이전틱 검색" data-caption="탐색 경로를 세로로 보여주는 교육 자료에 적합합니다." aria-label="RAG와 에이전틱 검색 세로 이미지 확대"><figure><div class="asset-media"><img src="07-rag-agentic-search-portrait.png" width="753" height="941" alt="위쪽 문서 선반에서 아래쪽 파일 미로로 이어지는 탐색 흐름을 보여주는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">08</span><div><h2>컨텍스트 부패 · 압축</h2><p>쌓인 카드와 도구 조각을 기억 가능한 묶음으로 정돈하는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="컨텍스트 부패 · 압축" data-caption="잡음 제거와 압축 결과를 넓게 설명하는 장면입니다." aria-label="컨텍스트 부패와 압축 가로 이미지 확대"><figure><div class="asset-media"><img src="08-context-compaction-wide.png" width="1672" height="941" alt="쌓인 카드와 도구 조각을 압축기에 넣어 작은 메모리 큐브와 정돈된 바인더로 만드는 유령들"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="컨텍스트 부패 · 압축" data-caption="컨텍스트 정돈을 보여주는 요약 카드에 적합합니다." aria-label="컨텍스트 부패와 압축 정사각 이미지 확대"><figure><div class="asset-media"><img src="08-context-compaction-square.png" width="941" height="941" alt="유령이 흐트러진 카드 묶음을 압축 장치로 보내는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="컨텍스트 부패 · 압축" data-caption="압축 전후 흐름을 세로 열에서 보여줍니다." aria-label="컨텍스트 부패와 압축 세로 이미지 확대"><figure><div class="asset-media"><img src="08-context-compaction-portrait.png" width="753" height="941" alt="위쪽의 흩어진 카드가 압축기를 지나 아래쪽의 정돈된 메모리 큐브가 되는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <header class="concept-head"><span class="concept-no">09</span><div><h2>메모리 · 스킬 · 규칙 · 위키</h2><p>결정과 레시피, 노트, 안전 규칙을 오래 쌓아 두는 장면</p></div></header>
+        <div class="asset-list">
+          <button class="asset-card" type="button" data-ratio="wide" data-concept="메모리 · 스킬 · 규칙 · 위키" data-caption="장기 지식 아카이브의 역할을 넓게 보여줍니다." aria-label="메모리와 스킬 규칙 위키 가로 이미지 확대"><figure><div class="asset-media"><img src="09-memory-wiki-wide.png" width="1672" height="941" alt="유령들이 결정 두루마리와 레시피, 노트, 방패 토큰을 빛나는 장기 보관 아카이브에 쌓는 장면"></div><figcaption class="asset-meta"><strong>가로</strong><span>16:9 · 1672×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="square" data-concept="메모리 · 스킬 · 규칙 · 위키" data-caption="지식 저장 구조를 한 장으로 요약하는 카드에 적합합니다." aria-label="메모리와 스킬 규칙 위키 정사각 이미지 확대"><figure><div class="asset-media"><img src="09-memory-wiki-square.png" width="941" height="941" alt="유령들이 노트와 두루마리, 방패 토큰을 둥근 지식 아카이브에 정리하는 정사각 장면"></div><figcaption class="asset-meta"><strong>정사각</strong><span>1:1 · 941×941</span></figcaption></figure></button>
+          <button class="asset-card" type="button" data-ratio="portrait" data-concept="메모리 · 스킬 · 규칙 · 위키" data-caption="모바일 또는 세로 포스터에서 축적 흐름을 강조합니다." aria-label="메모리와 스킬 규칙 위키 세로 이미지 확대"><figure><div class="asset-media"><img src="09-memory-wiki-portrait.png" width="753" height="941" alt="유령들이 위쪽의 기록 도구를 아래쪽 지식 아카이브로 차곡차곡 보관하는 세로 장면"></div><figcaption class="asset-meta"><strong>세로</strong><span>4:5 · 753×941</span></figcaption></figure></button>
+        </div>
+      </article>
+    </section>
+    <p class="empty" id="emptyState" role="status">표시할 이미지를 찾지 못했습니다. 다른 비율을 선택해 보세요.</p>
+  </main>
+
+  <footer>
+    <div class="wrap"><p>Easy AI 삽화 후보 27점 · OpenAI 이미지 생성 도구 보조 · <a href="README.md">개념별 삽입 가이드 보기</a></p></div>
+  </footer>
+
+  <dialog class="preview-dialog" id="previewDialog" aria-labelledby="previewTitle">
+    <div class="preview-shell">
+      <header class="preview-head">
+        <div><p class="preview-kicker" id="previewRatio">ASSET PREVIEW</p><h2 class="preview-title" id="previewTitle">삽화 미리보기</h2></div>
+        <button class="preview-close" id="previewClose" type="button">닫기</button>
+      </header>
+      <figure class="preview-figure">
+        <img id="previewImage" src="" alt="">
+        <figcaption id="previewCaption"></figcaption>
+      </figure>
+      <div class="preview-actions">
+        <p class="preview-counter" id="previewCounter">1 / 27</p>
+        <div>
+          <button class="preview-nav" id="previewPrevious" type="button" aria-label="이전 이미지"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m14 5-7 7 7 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></button>
+          <button class="preview-nav" id="previewNext" type="button" aria-label="다음 이미지"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m10 5 7 7-7 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const cards = [...document.querySelectorAll(".asset-card")];
+    const concepts = [...document.querySelectorAll(".concept-card")];
+    const gallery = document.querySelector("#gallery");
+    const filters = [...document.querySelectorAll(".filter")];
+    const visibleCount = document.querySelector("#visibleCount");
+    const emptyState = document.querySelector("#emptyState");
+    const dialog = document.querySelector("#previewDialog");
+    const previewImage = document.querySelector("#previewImage");
+    const previewRatio = document.querySelector("#previewRatio");
+    const previewTitle = document.querySelector("#previewTitle");
+    const previewCaption = document.querySelector("#previewCaption");
+    const previewCounter = document.querySelector("#previewCounter");
+    const previewClose = document.querySelector("#previewClose");
+    const previous = document.querySelector("#previewPrevious");
+    const next = document.querySelector("#previewNext");
+    let activeCard = null;
+    let lastOpener = null;
+
+    const currentCards = () => cards.filter((card) => !card.hidden);
+    const labelFor = (ratio) => ({ wide: "가로 16:9", square: "정사각 1:1", portrait: "세로 4:5" })[ratio];
+
+    function updatePreview(card) {
+      const image = card.querySelector("img");
+      const visible = currentCards();
+      const currentIndex = visible.indexOf(card);
+      activeCard = card;
+      previewImage.src = image.currentSrc || image.src;
+      previewImage.alt = image.alt;
+      previewRatio.textContent = labelFor(card.dataset.ratio);
+      previewTitle.textContent = card.dataset.concept;
+      previewCaption.textContent = card.dataset.caption;
+      previewCounter.textContent = `${currentIndex + 1} / ${visible.length}`;
+      previous.disabled = currentIndex <= 0;
+      next.disabled = currentIndex >= visible.length - 1;
+    }
+
+    function openPreview(card) {
+      lastOpener = card;
+      updatePreview(card);
+      dialog.showModal();
+      previewClose.focus();
+    }
+
+    function movePreview(offset) {
+      const visible = currentCards();
+      const nextCard = visible[visible.indexOf(activeCard) + offset];
+      if (nextCard) updatePreview(nextCard);
+    }
+
+    function filterAssets(value) {
+      gallery.dataset.filter = value;
+      cards.forEach((card) => { card.hidden = value !== "all" && card.dataset.ratio !== value; });
+      concepts.forEach((concept) => { concept.hidden = !concept.querySelector(".asset-card:not([hidden])"); });
+      const total = currentCards().length;
+      visibleCount.textContent = `${total}개`;
+      emptyState.classList.toggle("is-visible", total === 0);
+      filters.forEach((filter) => { filter.setAttribute("aria-pressed", String(filter.dataset.filter === value)); });
+    }
+
+    filters.forEach((filter) => filter.addEventListener("click", () => filterAssets(filter.dataset.filter)));
+    cards.forEach((card) => card.addEventListener("click", () => openPreview(card)));
+    previous.addEventListener("click", () => movePreview(-1));
+    next.addEventListener("click", () => movePreview(1));
+    previewClose.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener("close", () => { if (lastOpener) lastOpener.focus(); });
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") movePreview(-1);
+      if (event.key === "ArrowRight") movePreview(1);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SBTI2의 설명 구조를 SBTI4 개념 표현으로 옮긴 3페이지 독립 미리보기">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E">
+  <title>SBTI4 개념 보강 · 3페이지 미리보기</title>
+  <style>
+    :root {
+      --surface-canvas: #eef3f8;
+      --surface-paper: #ffffff;
+      --surface-soft: #f5f8fc;
+      --surface-dark: #172338;
+      --text-primary: #142033;
+      --text-secondary: #5f6b7a;
+      --text-tertiary: #8491a3;
+      --border-default: #d8e1ec;
+      --accent-primary: #155eef;
+      --accent-strong: #0b3d91;
+      --accent-cyan: #12a8c7;
+      --accent-violet: #6d4aff;
+      --status-success: #15845a;
+      --focus-ring: #ffb000;
+      --type-display: clamp(2rem, 3.1vw, 3.25rem);
+      --type-lead: clamp(1rem, 1.35vw, 1.28rem);
+      --type-h3: clamp(1rem, 1.25vw, 1.22rem);
+      --type-body: clamp(0.84rem, 0.92vw, 1rem);
+      --type-small: clamp(0.72rem, 0.78vw, 0.84rem);
+      --type-label: clamp(0.68rem, 0.72vw, 0.78rem);
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --radius-sm: 0.75rem;
+      --radius-md: 1.1rem;
+      --radius-lg: 1.5rem;
+      --shadow-paper: 0 1.5rem 4rem rgb(20 32 51 / 14%);
+      --shadow-card: 0 0.5rem 1.4rem rgb(20 32 51 / 8%);
+      --duration-micro: 120ms;
+      --duration-slide: 180ms;
+      --font-primary: Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-width: 20rem;
+      min-height: 100%;
+      overflow-x: clip;
+      color: var(--text-primary);
+      background: var(--surface-canvas);
+      font-family: var(--font-primary);
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      background:
+        radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--accent-primary) 13%, transparent), transparent 30%),
+        radial-gradient(circle at 88% 86%, color-mix(in srgb, var(--accent-cyan) 12%, transparent), transparent 32%),
+        linear-gradient(135deg, color-mix(in srgb, var(--surface-paper) 65%, transparent), transparent 42%),
+        var(--surface-canvas);
+    }
+
+    button { font: inherit; }
+
+    .icon {
+      width: 1.2em;
+      height: 1.2em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .deck {
+      width: 100%;
+      min-height: 100dvh;
+    }
+
+    .slide {
+      --tone: var(--accent-primary);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      width: 100%;
+      min-height: 100dvh;
+      padding: clamp(1.5rem, 3.2vw, var(--space-12)) clamp(2rem, 5vw, var(--space-16)) clamp(4.5rem, 6vw, 5.25rem);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--tone) 3%, transparent) 1px, transparent 1px),
+        linear-gradient(color-mix(in srgb, var(--tone) 3%, transparent) 1px, transparent 1px),
+        var(--surface-paper);
+      background-size: 2rem 2rem;
+      box-shadow: var(--shadow-paper);
+      animation: slide-in var(--duration-slide) ease-out both;
+      overflow: hidden;
+    }
+
+    .slide[hidden] { display: none; }
+    .slide.compare { --tone: var(--accent-violet); }
+    .slide.harness { --tone: var(--accent-cyan); }
+
+    .slide-head,
+    .slide-foot,
+    .slide-body {
+      width: min(100%, 90rem);
+      margin-inline: auto;
+    }
+
+    .slide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .eyebrow,
+    .preview-state {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--type-label);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--tone);
+    }
+
+    .eyebrow .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .preview-state {
+      padding: var(--space-2) var(--space-3);
+      color: var(--text-secondary);
+      letter-spacing: 0;
+      border: 1px solid var(--border-default);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface-soft) 90%, transparent);
+    }
+
+    .preview-state::before {
+      width: 0.5rem;
+      height: 0.5rem;
+      content: "";
+      border-radius: 50%;
+      background: var(--status-success);
+    }
+
+    .slide-body {
+      display: grid;
+      align-content: center;
+      gap: clamp(var(--space-4), 2vh, var(--space-6));
+      min-height: 0;
+      padding-block: clamp(var(--space-4), 2.8vh, var(--space-8));
+    }
+
+    .title-block {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    h1 {
+      max-width: 72rem;
+      margin: 0;
+      font-size: var(--type-display);
+      font-weight: 850;
+      line-height: 1.14;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    h1 span { color: var(--tone); }
+    h1 .mobile-clause { color: var(--text-primary); }
+    h1 .mobile-clause > span { color: var(--tone); }
+
+    .lead {
+      max-width: 75rem;
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: var(--type-lead);
+      line-height: 1.58;
+      letter-spacing: -0.012em;
+      text-wrap: pretty;
+    }
+
+    .lead strong { color: var(--text-primary); }
+    .keep { white-space: nowrap; }
+    .mobile-only { display: none; }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .flow-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      gap: var(--space-2) var(--space-3);
+      min-height: 8.6rem;
+      padding: var(--space-4);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--surface-paper) 92%, var(--surface-soft));
+      box-shadow: var(--shadow-card);
+    }
+
+    .flow-step:not(:last-child)::after {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      right: calc(var(--space-4) * -0.72);
+      width: var(--space-4);
+      color: var(--tone);
+      content: "→";
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-align: center;
+      transform: translateY(-50%);
+    }
+
+    .flow-step.result {
+      color: var(--surface-paper);
+      border-color: var(--accent-strong);
+      background: linear-gradient(145deg, var(--accent-primary), var(--accent-strong));
+    }
+
+    .step-icon {
+      display: grid;
+      place-items: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      color: var(--tone);
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--tone) 11%, var(--surface-paper));
+    }
+
+    .result .step-icon {
+      color: var(--surface-paper);
+      background: color-mix(in srgb, var(--surface-paper) 16%, transparent);
+    }
+
+    .step-copy {
+      min-width: 0;
+    }
+
+    .step-copy b {
+      display: block;
+      margin-bottom: var(--space-1);
+      font-size: var(--type-h3);
+      line-height: 1.35;
+    }
+
+    .step-copy p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: var(--type-body);
+      line-height: 1.48;
+      word-break: keep-all;
+    }
+
+    .result .step-copy p { color: color-mix(in srgb, var(--surface-paper) 82%, transparent); }
+
+    .handoff {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      gap: var(--space-4);
+    }
+
+    .handoff-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+    }
+
+    .handoff-card b { font-size: var(--type-h3); }
+    .handoff-card span { color: var(--text-secondary); font-size: var(--type-body); }
+
+    .handoff-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--tone);
+    }
+
+    .handoff-arrow .icon { width: 2rem; height: 2rem; }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: stretch;
+      gap: var(--space-4);
+    }
+
+    .compare-panel {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: var(--space-3);
+      padding: clamp(var(--space-4), 2vw, var(--space-6));
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      background: var(--surface-paper);
+      box-shadow: var(--shadow-card);
+    }
+
+    .compare-panel.multi {
+      border-color: color-mix(in srgb, var(--accent-violet) 35%, var(--border-default));
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent-violet) 7%, var(--surface-paper)), var(--surface-paper) 60%);
+    }
+
+    .panel-kicker {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      gap: var(--space-2);
+      color: var(--text-secondary);
+      font-size: var(--type-label);
+      font-weight: 850;
+      letter-spacing: 0.06em;
+    }
+
+    .multi .panel-kicker { color: var(--accent-violet); }
+
+    .compare-panel h2 {
+      margin: 0;
+      font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
+    .compare-panel p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: var(--type-body);
+      line-height: 1.52;
+    }
+
+    .compare-list {
+      display: grid;
+      gap: var(--space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .compare-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-2);
+      align-items: start;
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      font-size: var(--type-body);
+      line-height: 1.45;
+    }
+
+    .compare-list .icon { color: var(--tone); }
+
+    .versus {
+      display: grid;
+      place-items: center;
+      width: 3rem;
+      color: var(--accent-violet);
+      font-family: var(--font-mono);
+      font-size: var(--type-small);
+      font-weight: 900;
+    }
+
+    .use-grid,
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .use-card,
+    .concept-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-3);
+      align-items: start;
+      padding: var(--space-4);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+    }
+
+    .number {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      color: var(--surface-paper);
+      border-radius: 50%;
+      background: var(--tone);
+      font-size: var(--type-small);
+      font-weight: 900;
+    }
+
+    .use-card b,
+    .concept-card b {
+      display: block;
+      margin-bottom: var(--space-1);
+      font-size: var(--type-h3);
+    }
+
+    .use-card p,
+    .concept-card p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: var(--type-body);
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+
+    .engineering-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--surface-paper);
+      box-shadow: var(--shadow-card);
+    }
+
+    .engineering-item {
+      position: relative;
+      display: grid;
+      gap: var(--space-1);
+      padding: var(--space-4) var(--space-5);
+    }
+
+    .engineering-item + .engineering-item { border-left: 1px solid var(--border-default); }
+
+    .engineering-item small {
+      color: var(--text-tertiary);
+      font-size: var(--type-small);
+      font-weight: 800;
+    }
+
+    .engineering-item b {
+      font-size: var(--type-h3);
+      line-height: 1.35;
+    }
+
+    .engineering-item:last-child {
+      color: var(--surface-paper);
+      background: linear-gradient(145deg, var(--accent-cyan), var(--accent-strong));
+    }
+
+    .engineering-item:last-child small { color: color-mix(in srgb, var(--surface-paper) 75%, transparent); }
+
+    .concept-icon {
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      color: var(--tone);
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--tone) 11%, var(--surface-paper));
+    }
+
+    .concept-icon .icon { width: 1.35rem; height: 1.35rem; }
+
+    .note-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 3.5rem;
+      padding: var(--space-3) var(--space-5);
+      color: var(--surface-paper);
+      border-radius: var(--radius-md);
+      background: var(--surface-dark);
+      font-size: var(--type-body);
+      line-height: 1.45;
+    }
+
+    .note-bar .icon {
+      flex: 0 0 auto;
+      width: 1.35rem;
+      height: 1.35rem;
+      color: var(--accent-cyan);
+    }
+
+    .slide-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding-right: 10rem;
+      color: var(--text-tertiary);
+      font-size: var(--type-small);
+    }
+
+    .slide-foot b { color: var(--text-secondary); }
+
+    .pager {
+      position: fixed;
+      z-index: 10;
+      right: var(--space-5);
+      bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      border: 1px solid color-mix(in srgb, var(--border-default) 80%, transparent);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface-paper) 92%, transparent);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(0.75rem);
+    }
+
+    .pager button {
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      color: var(--text-primary);
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      transition: transform var(--duration-micro) ease-out, opacity var(--duration-micro) ease-out, background-color var(--duration-micro) ease-out;
+    }
+
+    .pager button:hover:not(:disabled) {
+      background: var(--surface-soft);
+      transform: translateY(-0.125rem);
+    }
+
+    .pager button:active:not(:disabled) { transform: translateY(0); }
+    .pager button:disabled { opacity: 0.28; cursor: default; }
+    .pager button:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+    .page-count {
+      min-width: 4rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: var(--type-small);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateX(0.75rem); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 63.99rem) {
+      .slide {
+        padding-inline: clamp(var(--space-6), 4vw, var(--space-10));
+      }
+
+      .flow-grid { gap: var(--space-3); }
+      .flow-step { min-height: 7.7rem; padding: var(--space-3); }
+      .flow-step:not(:last-child)::after { right: calc(var(--space-3) * -0.7); }
+      .use-card, .concept-card { padding: var(--space-3); }
+    }
+
+    @media (min-width: 51.26rem) and (max-height: 47.5rem) {
+      .slide {
+        padding-top: var(--space-6);
+        padding-bottom: var(--space-16);
+      }
+
+      .slide-head { padding-bottom: var(--space-3); }
+      .slide-body {
+        gap: var(--space-3);
+        padding-block: var(--space-4);
+      }
+    }
+
+    @media (max-width: 51.25rem) {
+      body { overflow-x: clip; overflow-y: auto; }
+
+      .slide {
+        min-height: 100dvh;
+        height: auto;
+        padding: var(--space-5) var(--space-4) 5.5rem;
+        overflow: visible;
+        background-size: 1.5rem 1.5rem;
+      }
+
+      .slide-head { align-items: flex-start; }
+      .preview-state { display: none; }
+      .slide-body { align-content: start; padding-block: var(--space-6); }
+      h1 { font-size: clamp(1.8rem, 8.5vw, 2.8rem); }
+      .lead { font-size: 1rem; }
+      .mobile-only { display: block; }
+      .mobile-clause { white-space: nowrap; }
+      .slide.harness h1 { font-size: 1.75rem; }
+
+      .flow-grid,
+      .use-grid,
+      .concept-grid,
+      .engineering-strip,
+      .handoff,
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step { min-height: auto; }
+      .flow-step:not(:last-child)::after { display: none; }
+      .flow-step:not(:last-child) { border-bottom: 0.2rem solid color-mix(in srgb, var(--tone) 45%, var(--border-default)); }
+      .handoff-arrow { transform: rotate(90deg); }
+      .versus { width: auto; height: 2rem; }
+      .engineering-item + .engineering-item { border-top: 1px solid var(--border-default); border-left: 0; }
+      .slide-foot { align-items: flex-start; flex-direction: column; gap: var(--space-1); padding-right: 0; }
+      .pager {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: fit-content;
+        margin: -5rem auto var(--space-4);
+        transform: none;
+        backdrop-filter: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @page { size: 13.333in 7.5in; margin: 0; }
+
+    @media print {
+      body { overflow: visible; background: var(--surface-paper); }
+      .slide, .slide[hidden] {
+        display: grid !important;
+        width: 13.333in;
+        min-height: 7.5in;
+        height: 7.5in;
+        page-break-after: always;
+        break-after: page;
+        animation: none;
+        box-shadow: none;
+      }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .pager { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c.8-4 3-6 6.5-6s5.7 2 6.5 6"/></symbol>
+    <symbol id="i-gate" viewBox="0 0 24 24"><path d="M12 3.4 19 6v5.4c0 4.2-2.8 7.4-7 8.9-4.2-1.5-7-4.7-7-8.9V6l7-2.6Z"/><path d="m8.9 11.9 2.2 2.2 4.1-4.4"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.4 5.4a4.2 4.2 0 0 0-5.1 5.1L4 15.8a2.8 2.8 0 0 0 4 4l5.3-5.3a4.2 4.2 0 0 0 5.1-5.1l-2.7 2.7-3.8-.9-.9-3.8 3.4-2Z"/></symbol>
+    <symbol id="i-return" viewBox="0 0 24 24"><path d="M9.5 7 4.5 12l5 5"/><path d="M5 12h8.2a5.8 5.8 0 0 1 5.8 5.8V19"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5.4" r="2.4"/><circle cx="5.6" cy="17" r="2.4"/><circle cx="18.4" cy="17" r="2.4"/><path d="M10.4 7.2 7.1 14.7M13.6 7.2l3.3 7.5M8 17.2h8"/></symbol>
+    <symbol id="i-one" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M10.5 9.3 12 8.2v7.6M10.3 15.8h3.4"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7c0-1.1-.9-2-2-2H4v13h6c1.1 0 2 .9 2 2V7Z"/><path d="M12 7c0-1.1.9-2 2-2h6v13h-6c-1.1 0-2 .9-2 2V7Z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path d="M14 3.5v4h4M8.5 12h7M8.5 16h5"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M18.2 8.5A7 7 0 0 0 6 7l-2 2"/><path d="M4 4.8V9h4.2M5.8 15.5A7 7 0 0 0 18 17l2-2"/><path d="M20 19.2V15h-4.2"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14.5 6.5-5.5 5.5 5.5 5.5"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/></symbol>
+  </svg>
+
+  <main class="deck" id="deck" aria-label="SBTI4 개념 보강 3페이지 미리보기">
+    <section class="slide flow" data-slide="1" aria-labelledby="slide-1-title">
+      <header class="slide-head">
+        <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-terminal"></use></svg>SBTI4 CONCEPT PREVIEW · 01</div>
+        <span class="preview-state">별도 미리보기 · 정본 미수정</span>
+      </header>
+      <div class="slide-body">
+        <div class="title-block">
+          <h1 id="slide-1-title">AI가 <span>도구를 쓰는 순서</span></h1>
+          <p class="lead">모델이 파일이나 터미널을 직접 조작하는 것이 아닙니다. 모델이 도구 사용을 요청하면, <strong>하네스가 권한을 확인하고 실제 작업을 실행한 뒤 결과를 다시 모델에게 전달</strong>합니다.</p>
+        </div>
+
+        <ol class="flow-grid" aria-label="에이전틱 루프의 5단계">
+          <li class="flow-step">
+            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg></span>
+            <div class="step-copy"><b>1. 요청</b><p>사용자가 목표와 작업을 요청합니다.</p></div>
+          </li>
+          <li class="flow-step">
+            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-gate"></use></svg></span>
+            <div class="step-copy"><b>2. 안전 확인</b><p>허용된 도구·권한·규칙을 확인합니다.</p></div>
+          </li>
+          <li class="flow-step">
+            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-tool"></use></svg></span>
+            <div class="step-copy"><b>3. 도구 실행</b><p>하네스가 파일·터미널 같은 도구를 실행합니다.</p></div>
+          </li>
+          <li class="flow-step">
+            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-return"></use></svg></span>
+            <div class="step-copy"><b>4. 결과 전달</b><p>실행 결과를 모델이 읽을 입력으로 돌려줍니다.</p></div>
+          </li>
+          <li class="flow-step result">
+            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-loop"></use></svg></span>
+            <div class="step-copy"><b>5. 다음 판단</b><p>계속할지, 수정할지, 끝낼지 선택합니다.</p></div>
+          </li>
+        </ol>
+
+        <div class="handoff" aria-label="모델과 하네스의 역할 구분">
+          <div class="handoff-card"><span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-terminal"></use></svg></span><div><b>모델</b><br><span>상황을 읽고 <span class="keep">다음 행동을</span> 결정합니다.</span></div></div>
+          <span class="handoff-arrow"><svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
+          <div class="handoff-card"><span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#i-gate"></use></svg></span><div><b>하네스</b><br><span>요청을 실제로 실행하고 결과를 반환합니다.</span></div></div>
+        </div>
+      </div>
+      <footer class="slide-foot"><b>핵심 · 에이전틱 루프는 판단 → 실행 → 결과 확인 → 다음 판단의 반복입니다.</b><span>SBTI2 11p 설명 구조 참고</span></footer>
+    </section>
+
+    <section class="slide compare" data-slide="2" aria-labelledby="slide-2-title" hidden>
+      <header class="slide-head">
+        <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg>SBTI4 CONCEPT PREVIEW · 02</div>
+        <span class="preview-state">별도 미리보기 · 정본 미수정</span>
+      </header>
+      <div class="slide-body">
+        <div class="title-block">
+          <h1 id="slide-2-title">싱글은 빠르게,<br class="mobile-only"> <span class="keep">멀티는 역할을 나눠서</span></h1>
+          <p class="lead">멀티에이전트의 핵심은 에이전트 수가 아닙니다. <strong>작업을 독립된 역할과 관점으로 나누고, 결과를 다시 모았을 때 품질이나 속도가 실제로 좋아지는지</strong>가 기준입니다.</p>
+        </div>
+
+        <div class="compare-grid" aria-label="싱글 에이전트와 멀티에이전트 비교">
+          <article class="compare-panel single">
+            <span class="panel-kicker"><svg class="icon" aria-hidden="true"><use href="#i-one"></use></svg>SINGLE AGENT</span>
+            <h2>한 흐름으로 빠르게</h2>
+            <ul class="compare-list">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>질문과 짧은 확인</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>단일 파일 수정</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>단계와 범위가 분명한 작업</span></li>
+            </ul>
+          </article>
+          <div class="versus" aria-hidden="true">VS</div>
+          <article class="compare-panel multi">
+            <span class="panel-kicker"><svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg>MULTI-AGENT</span>
+            <h2>역할과 관점을 나눠서</h2>
+            <ul class="compare-list">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>작성과 검토를 독립적으로 분리</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>서로 다른 관점을 나란히 비교</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>넓은 범위를 여러 갈래로 탐색</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="use-grid" aria-label="멀티에이전트가 유용한 세 가지 사례">
+          <article class="use-card"><span class="number">1</span><div><b>리뷰</b><p>작성 담당과 검토 담당을 분리해 <span class="keep">같은 실수를</span> 반복할 가능성을 낮춥니다.</p></div></article>
+          <article class="use-card"><span class="number">2</span><div><b>비교</b><p>서로 다른 기준으로 답을 만든 뒤 차이와 근거를 함께 봅니다.</p></div></article>
+          <article class="use-card"><span class="number">3</span><div><b>찾기</b><p>큰 자료나 코드 범위를 나눠 동시에 탐색하고 결과를 합칩니다.</p></div></article>
+        </div>
+
+        <div class="note-bar"><svg class="icon" aria-hidden="true"><use href="#i-gate"></use></svg><span><strong>주의 ·</strong> 멀티에이전트가 항상 더 좋은 것은 아닙니다. 역할을 나눴을 때 측정 가능한 <span class="keep">이점이 있을 때만 사용합니다.</span></span></div>
+      </div>
+      <footer class="slide-foot"><b>핵심 · 에이전트 수보다 역할 분리와 결과 통합 방식이 중요합니다.</b><span>SBTI2 15p 설명 구조 참고</span></footer>
+    </section>
+
+    <section class="slide harness" data-slide="3" aria-labelledby="slide-3-title" hidden>
+      <header class="slide-head">
+        <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-gate"></use></svg>SBTI4 CONCEPT PREVIEW · 03</div>
+        <span class="preview-state">별도 미리보기 · 정본 미수정</span>
+      </header>
+      <div class="slide-body">
+        <div class="title-block">
+          <h1 id="slide-3-title"><span class="mobile-clause">AI가 <span>궤도를 이탈하지 않게</span></span> <b class="keep">만드는 시스템</b></h1>
+          <p class="lead">하네스 엔지니어링은 AI 에이전트가 정해진 범위 안에서 실제 작업을 수행하고, 결과를 확인하며, 필요하면 다시 시도하도록 <strong>작업 환경·권한·검증 절차를 설계하는 기술</strong>입니다.</p>
+        </div>
+
+        <div class="engineering-strip" aria-label="프롬프트, 컨텍스트, 하네스 엔지니어링의 차이">
+          <div class="engineering-item"><small>PROMPT</small><b>무엇을 시킬지</b></div>
+          <div class="engineering-item"><small>CONTEXT</small><b>이번 요청에서 <span class="keep">무엇을 보여 줄지</span></b></div>
+          <div class="engineering-item"><small>HARNESS</small><b>어떻게 실행하고 <span class="keep">검증·재시도할지</span></b></div>
+        </div>
+
+        <div class="concept-grid" aria-label="하네스의 세 가지 핵심 구성">
+          <article class="concept-card">
+            <span class="concept-icon"><svg class="icon" aria-hidden="true"><use href="#i-book"></use></svg></span>
+            <div><b>1. 규칙·지식</b><p>프로젝트 지침, 참고 문서, 이전 작업 상태를 필요한 순간에 구성합니다.</p></div>
+          </article>
+          <article class="concept-card">
+            <span class="concept-icon"><svg class="icon" aria-hidden="true"><use href="#i-tool"></use></svg></span>
+            <div><b>2. 도구·권한</b><p>파일과 터미널을 연결하고 허용·확인·차단으로 실행 범위를 통제합니다.</p></div>
+          </article>
+          <article class="concept-card">
+            <span class="concept-icon"><svg class="icon" aria-hidden="true"><use href="#i-loop"></use></svg></span>
+            <div><b>3. 검증·피드백</b><p>테스트·빌드 결과를 다시 전달해 실패하면 수정하고 재시도합니다.</p></div>
+          </article>
+        </div>
+
+        <div class="note-bar"><svg class="icon" aria-hidden="true"><use href="#i-file"></use></svg><span><strong>정확성 메모 ·</strong> 이 구분은 이해를 위한 단순화입니다. 실제 하네스는 모델에 전달할 컨텍스트를 구성하고 관리하는 <span class="keep">일도 함께 담당합니다.</span></span></div>
+      </div>
+      <footer class="slide-foot"><b>핵심 · 모델은 판단하고, 하네스는 실행·검증·통제를 맡습니다.</b><span>SBTI2 16p 설명 구조 참고</span></footer>
+    </section>
+  </main>
+
+  <nav class="pager" aria-label="슬라이드 이동">
+    <button id="prevButton" type="button" aria-label="이전 슬라이드"><svg class="icon" aria-hidden="true"><use href="#i-left"></use></svg></button>
+    <span class="page-count" id="pageCount" aria-live="polite">01 / 03</span>
+    <button id="nextButton" type="button" aria-label="다음 슬라이드"><svg class="icon" aria-hidden="true"><use href="#i-right"></use></svg></button>
+  </nav>
+
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
+      const pageCount = document.getElementById('pageCount');
+      let currentIndex = 0;
+
+      const parseHash = () => {
+        const value = Number.parseInt(window.location.hash.slice(1), 10);
+        return Number.isFinite(value) ? Math.min(Math.max(value - 1, 0), slides.length - 1) : 0;
+      };
+
+      const showSlide = (index, updateHash = true) => {
+        currentIndex = Math.min(Math.max(index, 0), slides.length - 1);
+        slides.forEach((slide, slideIndex) => {
+          const active = slideIndex === currentIndex;
+          slide.hidden = !active;
+          slide.setAttribute('aria-hidden', String(!active));
+        });
+        pageCount.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        prevButton.disabled = currentIndex === 0;
+        nextButton.disabled = currentIndex === slides.length - 1;
+        if (updateHash) history.replaceState(null, '', `#${currentIndex + 1}`);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      };
+
+      prevButton.addEventListener('click', () => showSlide(currentIndex - 1));
+      nextButton.addEventListener('click', () => showSlide(currentIndex + 1));
+      window.addEventListener('hashchange', () => showSlide(parseHash(), false));
+      window.addEventListener('keydown', (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+          event.preventDefault();
+          showSlide(currentIndex - 1);
+        }
+        if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+          event.preventDefault();
+          showSlide(currentIndex + 1);
+        }
+        if (event.key === 'Home') {
+          event.preventDefault();
+          showSlide(0);
+        }
+        if (event.key === 'End') {
+          event.preventDefault();
+          showSlide(slides.length - 1);
+        }
+      });
+
+      showSlide(parseHash(), false);
+    })();
+  </script>
+</body>
+</html>
