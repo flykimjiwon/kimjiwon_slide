@@ -76,6 +76,14 @@
 - **Motion**: 없음.
 - **Layout**: 가로 overflow가 가능한 cluster.
 
+### RightsCredit
+
+- **Structure**: `footer .rights-note` 안에 제작·AI 보조·인용·상표 경계를 짧은 문단으로 묶는다.
+- **States**: 정적 정보. 링크를 추가하는 경우에만 default·hover·focus 상태를 제공한다.
+- **Accessibility**: `aria-label`이 있는 footer landmark와 충분한 대비, 모바일 자연 줄바꿈을 유지한다.
+- **Motion**: 없음.
+- **Layout**: 데스크톱 2열 정보 grid, 720px 이하 1열 stack.
+
 ## 6. Motion & Interaction
 
 | Type | Duration | Easing | Usage |
