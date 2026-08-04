@@ -6,7 +6,7 @@
     <symbol id="gate" viewBox="0 0 24 24"><path d="M12 3.4 19 6v5.4c0 4.2-2.8 7.4-7 8.9-4.2-1.5-7-4.7-7-8.9V6l7-2.6Z"/><path d="m8.9 11.9 2.2 2.2 4.1-4.4"/></symbol>
     <symbol id="terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol>
     <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol>
-    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
+    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
   </defs>
   <rect width="1200" height="675" rx="30" fill="#fff"/>
   <text x="70" y="80" class="title">모델은 제안하고, 하네스가 실제로 움직입니다</text>

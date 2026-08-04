@@ -5,7 +5,7 @@
     <symbol id="chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2.2"/><path d="M10 4.2v2.6M14 4.2v2.6M10 17.2v2.6M14 17.2v2.6M4.2 10h2.6M4.2 14h2.6M17.2 10h2.6M17.2 14h2.6"/></symbol>
     <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol>
     <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol>
-    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
+    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
   </defs>
   <rect width="1200" height="675" rx="30" fill="#fff"/>
   <text x="70" y="82" class="title">질문에서 답까지, 생각 토큰이 쓰이는 순서</text>

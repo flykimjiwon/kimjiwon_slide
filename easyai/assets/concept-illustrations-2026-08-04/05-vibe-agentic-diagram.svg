@@ -6,7 +6,7 @@
     <symbol id="list" viewBox="0 0 24 24"><path d="M9 6.6h11M9 12h11M9 17.4h11"/><path d="M4.6 6.6h.01M4.6 12h.01M4.6 17.4h.01"/></symbol>
     <symbol id="gate" viewBox="0 0 24 24"><path d="M12 3.4 19 6v5.4c0 4.2-2.8 7.4-7 8.9-4.2-1.5-7-4.7-7-8.9V6l7-2.6Z"/><path d="m8.9 11.9 2.2 2.2 4.1-4.4"/></symbol>
     <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.3"/><path d="m15.7 15.7 4.4 4.4"/></symbol>
-    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
+    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
   </defs>
   <rect width="1200" height="675" rx="30" fill="#fff"/>
   <text x="70" y="78" class="title">말로 끝내는가, 결과까지 확인하는가</text>

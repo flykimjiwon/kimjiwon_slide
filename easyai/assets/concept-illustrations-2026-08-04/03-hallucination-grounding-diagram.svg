@@ -6,7 +6,7 @@
     <symbol id="terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol>
     <symbol id="book" viewBox="0 0 24 24"><path d="M12 7c0-1.1-.9-2-2-2H4v13h6c1.1 0 2 .9 2 2V7Z"/><path d="M12 7c0-1.1.9-2 2-2h6v13h-6c-1.1 0-2 .9-2 2V7Z"/></symbol>
     <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol>
-    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
+    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
   </defs>
   <rect width="1200" height="675" rx="30" fill="#fff"/>
   <text x="70" y="78" class="title">그럴듯한 말과 근거 있는 답은 다릅니다</text>
