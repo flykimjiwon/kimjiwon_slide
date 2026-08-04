@@ -983,19 +983,16 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 
 
 <div class="term" id="one-loop"><div class="term-head"><h3>한 바퀴 돌려 보기</h3><span class="en">스펙 → 구현 → 검증 → 기록</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div><p>도구가 무엇이든 실제로 도는 모양은 거의 같습니다. <b>합격 기준을 먼저 적고, 에이전트가 만들고, 기계가 검사하고, 사람이 판단하고, 판단을 남깁니다.</b> 이 책자를 만든 과정도 그대로였습니다.</p><p>"만들기 전에 <b>이러면 된 것이다</b>를 먼저 적어 둔다" — 개발 쪽에서 오래 쓰던 방식이고, 테스트를 먼저 쓴다고 해서 <b>TDD</b>라고 부릅니다. 이름을 몰라도 상관없습니다. 중요한 건 <b>끝났다는 판단을 사람 말이 아니라 미리 정해 둔 조건에 맡긴다</b>는 점입니다. 에이전트와 일할 때 이게 특히 잘 듣는 이유는, 에이전트가 "다 했습니다"라고 말하는 것과 실제로 된 것이 자주 다르기 때문입니다.</p><div class="tbl-scroll"><table><tr><th>단계</th><th>하는 일</th><th>이 책자를 만들 때 실제로</th></tr><tr><td><b>1 · 합격 기준</b></td><td>무엇이 되면 끝인지 <b>먼저</b> 적습니다</td><td>"A4에서 페이지가 잘리지 않을 것 · 가로 스크롤 0 · 콘솔 에러 0"</td></tr><tr><td><b>2 · 구현</b></td><td>에이전트가 만들거나 고칩니다</td><td>카드·그림·인쇄 CSS 수정</td></tr><tr><td><b>3 · 검증</b></td><td>사람 말이 아니라 <b>기계가 확인</b>합니다</td><td>실제 브라우저 375·768·1280px 측정, A4 PDF 28쪽 전수 점검</td></tr><tr><td><b>4 · 판단</b></td><td>기계가 못 정하는 것만 사람이 정합니다</td><td>그림을 바꿀지, 문구 톤을 어디까지 낮출지</td></tr><tr><td><b>5 · 기록</b></td><td>고른 이유와 <b>버린 이유</b>를 남깁니다</td><td>커밋에 채택·기각 사유와 다음 사람에게 주는 경고를 함께</td></tr></table></div><div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — <b>완료는 에이전트가 선언하는 것이 아니라 검증이 증명합니다.</b> 그래서 3번을 사람이 눈으로 훑는 대신 명령 하나로 돌 수 있게 만들어 두는 것이 가장 크게 남습니다. 5번은 다음에 같은 고민을 반복하지 않기 위한 것이고, 특히 <b>버린 이유</b>가 고른 이유보다 오래 쓸모 있습니다.</div><div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — 테스트가 초록불이면 검증은 끝난 것이다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 코드와 테스트를 같은 에이전트가 함께 만들면 <b>자기 구현에 맞춘 테스트</b>가 붙기 쉽습니다. 늘 100원을 돌려주는 계산기에 100원을 기대하는 테스트를 달면 초록불은 켜지지만 아무것도 검증하지 못합니다. 기대값은 사람이 먼저 정하고, 경계값과 반례를 넣고, 테스트 코드도 리뷰합니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></div></div></div>
-<div class="term"><div class="term-head"><h3>하네스의 6가지 역할</h3><span class="en">harness essentials</span><span class="lv" data-tip="개발자용 — 구현·운영을 아는 사람이 대상이라 조금 공부가 필요합니다"><svg class="ico ico-lv2" aria-hidden="true"><use href="#i-study"></use></svg></span></div>
-<p>하네스는 AI가 제대로 일하도록 실행·검증·기억·안전·복구·추적을 담당합니다.</p>
+<div class="term"><div class="term-head"><h3>하네스의 핵심 역할</h3><span class="en">harness essentials</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
+<p>하네스는 AI가 실제로 일을 끝내도록 <b>실행하고, 확인하고, 통제하는</b> 시스템입니다.</p>
 <div class="tbl-scroll"><table>
-<tr><th>#</th><th>역할</th><th>하는 일</th></tr>
-<tr><td>1</td><td><b>도구 실행</b></td><td>필요한 Tool을 선택하고 순서대로 실행합니다.</td></tr>
-<tr><td>2</td><td><b>검증</b></td><td>테스트·빌드·린트로 확인하고 실패하면 다시 수정합니다.</td></tr>
-<tr><td>3</td><td><b>컨텍스트</b></td><td>규칙·프로젝트 지식·이전 작업 내용을 유지합니다.</td></tr>
-<tr><td>4</td><td><b>안전장치</b></td><td>권한·예산·승인으로 위험한 작업을 제어하고, <b>접근 가능한 파일·네트워크·비밀정보 범위를 샌드박스로 격리</b>해 허용된 작업 공간 안에서만 실행합니다. 4장에서 본 tool poisoning의 실질적인 방어선이 여기입니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></td></tr>
-<tr><td>5</td><td><b>상태·복구</b></td><td>작업 상태·중간 산출물·진행 기록을 저장해 <b>중단된 작업을 이어가고</b>, 실패하면 이전 정상 상태로 되돌립니다. 오래 도는 작업일수록 이 칸이 성패를 가릅니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></td></tr>
-<tr><td>6</td><td><b>추적·평가</b></td><td>최종 결과만 보지 않고 <b>모델 호출·도구 사용·에이전트 위임·실패 지점을 Trace로 남겨</b> 반복 평가합니다. 규제 산업에서는 이 칸이 도입 가능성 그 자체입니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></td></tr>
+<tr><th>역할</th><th>하는 일</th></tr>
+<tr><td><b>실행</b></td><td>도구를 쓰고, 작업 순서와 맥락을 관리합니다.</td></tr>
+<tr><td><b>검증</b></td><td>테스트·빌드·린트로 결과를 확인하고, 실패하면 다시 시도하거나 이전 상태로 되돌립니다.</td></tr>
+<tr><td><b>통제</b></td><td>권한·비용·작업 범위를 제한하고, 무엇을 어디까지 했는지 기록을 남깁니다. 파일·네트워크 접근을 격리하는 샌드박스가 4장에서 본 tool poisoning의 방어선입니다.<span class="g" data-tip="1차 출처 — 공식 문서·논문에서 직접 확인한 내용"></span></td></tr>
 </table></div>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 핵심</b> — AI의 완료 선언보다 테스트·빌드·린트·실행 결과를 믿습니다. 그리고 <b>Tool Call만 있다고 하네스가 되는 것은 아닙니다</b> — 반복 실행·컨텍스트·검증·통제가 함께 있어야 합니다.</div><div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 단정</b> — 하네스가 확률적 출력을 재현 가능한 결과로 바꾼다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 안전한 표현</b> — 하네스는 확률적 실행의 <b>재현·검증·복구 가능성을 높이고</b>, 실패할 수 있는 범위를 줄입니다.</div></div></div>
-
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 핵심</b> — AI가 "완료했습니다"라고 말하는지가 아니라 <b>실제 실행 결과</b>를 믿습니다. Tool Call만 연결했다고 하네스가 되는 것은 아니고, <b>실행·검증·통제가 함께</b> 있어야 합니다.</div>
+<div class="quote"><span class="q-tag">한 줄 정의</span>하네스는 <b>불안정한 AI 작업을 관리 가능한 실행 과정으로 바꿉니다.</b></div></div>
 </section>
 
 <!-- ═══════════ 7장 루프 엔지니어링 ═══════════ -->
@@ -1003,21 +1000,24 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <div class="ch-head"><span class="ch-num">8</span><h2>루프 엔지니어링</h2></div>
 <p class="ch-lead">하네스가 일할 환경을 만드는 기술이라면, 루프는 그 환경에 일감을 계속 넣어 주는 기술입니다.</p>
 <div class="term" id="loop-eng"><div class="term-head"><h3>루프 엔지니어링</h3><span class="en">loop engineering</span><span class="lv" data-tip="누구나 — 배경지식 없이 그냥 읽히는 대목입니다"><svg class="ico ico-lv1" aria-hidden="true"><use href="#i-face"></use></svg></span></div>
-<p><b>루프 엔지니어링</b>은 사람 대신 시스템이 AI에게 다음 작업을 주고, 결과를 확인하며 목표가 끝날 때까지 반복하도록 설계하는 기술입니다.</p>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 쉽게 말하면</b> — 목표 설정 → AI 실행 → 테스트 → 실패하면 수정 → 재실행 → 성공하면 종료합니다. 사람이 매번 지시하는 대신 시스템이 다음 작업을 관리합니다.</div>
+<p>루프 엔지니어링은 <b>AI가 목표를 끝낼 때까지 실행·검증·수정을 자동으로 반복하게 만드는 설계</b>입니다.</p>
+<div class="quote"><span class="q-tag">한 바퀴</span>목표 설정 → AI 실행 → 테스트 → 실패하면 수정 → 다시 실행 → <b>성공하면 종료</b></div>
+<p>사람이 매번 다음 지시를 내리는 대신, 시스템이 <b>다음 작업과 완료 여부를 관리</b>합니다.</p>
 <div class="tbl-scroll"><table>
-<tr><th>구성요소</th><th>역할</th></tr>
-<tr><td><b>자동 실행</b></td><td>정해진 시간이나 조건에 맞춰 시작합니다.</td></tr>
-<tr><td><b>작업 공간 분리</b></td><td>여러 AI가 동시에 일해도 충돌하지 않게 합니다.</td></tr>
-<tr><td><b>스킬·규칙</b></td><td>프로젝트 작업 방식을 재사용합니다.</td></tr>
-<tr><td><b>도구 연결</b></td><td>GitHub·DB·CI 등 실제 시스템과 연결합니다.</td></tr>
-<tr><td><b>서브에이전트</b></td><td>구현·검토처럼 역할을 나누어 협업합니다.</td></tr>
-<tr><td><b>메모리</b></td><td>이전 작업과 실패 이력을 남깁니다.</td></tr>
+<tr><th>구분</th><th>역할</th></tr>
+<tr><td><b>실행 관리</b></td><td>언제 시작하고 무엇을 다시 할지 정합니다.</td></tr>
+<tr><td><b>작업 환경</b></td><td>코드·도구·규칙을 연결하고 서로 충돌하지 않게 합니다.</td></tr>
+<tr><td><b>협업·기록</b></td><td>여러 에이전트가 역할을 나누고, 결과와 실패를 남깁니다.</td></tr>
 </table></div>
-<div class="quote"><span class="q-tag">핵심 문장</span>AI가 “완료했습니다”라고 말하는지가 아니라, <b>테스트·빌드·린트 같은 결과</b>로 완료를 판단합니다.</div>
-<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — 루프만 만들면 사람이 필요 없습니다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 목표가 올바른지, 결과를 제품에 반영해도 되는지는 사람이 최종 판단합니다.</div></div>
-<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 세 용어 연결</b> — 프롬프트 엔지니어링은 지시를 만들고, 하네스 엔지니어링은 작업 환경을 만들며, 루프 엔지니어링은 목표가 끝날 때까지 반복하게 합니다.</div></div>
-</section>
+<div class="easy"><b><svg class="ico ico-easy" aria-hidden="true"><use href="#i-coffee"></use></svg> 핵심</b> — AI의 "완료했습니다"라는 말이 아니라 <b>테스트·빌드·린트 결과로 완료를 판단합니다.</b></div>
+<div class="myth"><div class="m-no"><b><svg class="ico ico-no" aria-hidden="true"><use href="#i-x"></use></svg> 흔한 오해</b> — 루프를 만들면 사람이 필요 없습니다.</div><div class="m-yes"><b><svg class="ico ico-yes" aria-hidden="true"><use href="#i-check"></use></svg> 사실</b> — 사람을 없애는 기술이 아니라 <b>사람이 반복해서 지시하고 확인하는 일을 줄이는</b> 기술입니다. 최종 목표와 제품 반영 여부는 사람이 판단합니다.</div></div>
+<div class="tbl-scroll"><table>
+<tr><th>세 용어</th><th>쉽게 말하면</th></tr>
+<tr><td>프롬프트 엔지니어링</td><td><b>무엇을 시킬지</b> 설계</td></tr>
+<tr><td>하네스 엔지니어링</td><td><b>어떤 환경에서 일하게 할지</b> 설계</td></tr>
+<tr><td>루프 엔지니어링</td><td><b>끝날 때까지 어떻게 반복시킬지</b> 설계</td></tr>
+</table></div>
+<div class="quote"><span class="q-tag">한 문장으로</span>루프 엔지니어링은 <b>AI가 테스트를 통과할 때까지 실행과 수정을 스스로 반복하게 만드는 기술</b>입니다.</div></div></section>
 
 
 
