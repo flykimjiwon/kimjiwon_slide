@@ -16,10 +16,10 @@
     <g transform="translate(370 78)"><rect width="250" height="210" rx="24" fill="#fff5ea" stroke="#fed7aa" stroke-width="3"/><use href="#gate" x="87" y="25" width="76" height="76" class="icon" color="#ea580c"/><text x="125" y="135" text-anchor="middle" font-size="29" font-weight="850">문제집으로 평가</text><text x="125" y="174" text-anchor="middle" class="muted" font-size="22">점수 · 통과 여부</text></g>
     <path d="M640 182h100" stroke="#16a34a" stroke-width="7"/><path d="m728 166 20 16-20 16" fill="none" stroke="#16a34a" stroke-width="7"/>
     <g transform="translate(760 78)"><rect width="300" height="210" rx="24" fill="#eefcf4" stroke="#bbf7d0" stroke-width="3"/><use href="#check" x="112" y="25" width="76" height="76" class="icon" color="#16a34a"/><text x="150" y="135" text-anchor="middle" font-size="29" font-weight="850">가장 좋은 문구</text><text x="150" y="174" text-anchor="middle" class="muted" font-size="22">실제 점수로 선택</text></g>
-    <path d="M495 300v130H115V350" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
+    <path d="M495 300v118H115V350" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
     <path d="m99 372 16-20 16 20" fill="none" stroke="#dc2626" stroke-width="7"/>
-    <rect x="260" y="366" width="245" height="96" rx="18" fill="#fff0f5" stroke="#fecdd3" stroke-width="3"/>
-    <use href="#pencil" x="280" y="389" width="48" height="48" class="icon" color="#dc2626"/><text x="345" y="409" font-size="24" font-weight="800">점수가 낮으면</text><text x="345" y="441" font-size="22" class="muted">다시 써서 재평가</text>
+    <rect x="260" y="315" width="245" height="92" rx="18" fill="#fff0f5" stroke="#fecdd3" stroke-width="3"/>
+    <use href="#pencil" x="280" y="337" width="48" height="48" class="icon" color="#dc2626"/><text x="345" y="351" font-size="24" font-weight="800">점수가 낮으면</text><text x="345" y="383" font-size="22" class="muted">다시 써서 재평가</text>
   </g>
   <rect x="70" y="590" width="1060" height="60" rx="18" fill="#111827"/>
   <text x="600" y="629" text-anchor="middle" fill="#fff" font-size="26" font-weight="800">좋은 문구를 외우는 것이 아니라, 좋은 문구를 찾아내는 반복 과정을 설계합니다.</text>
