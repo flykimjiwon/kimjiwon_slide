@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">추론 모델과 생각 토큰의 순서</title>
+  <desc id="desc">질문을 받은 뒤 생각 토큰을 사용하고 검토를 거쳐 답변하는 순서를 보여 줍니다.</desc>
+  <defs>
+    <symbol id="chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2.2"/><path d="M10 4.2v2.6M14 4.2v2.6M10 17.2v2.6M14 17.2v2.6M4.2 10h2.6M4.2 14h2.6M17.2 10h2.6M17.2 14h2.6"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.5 2.5 4.9-5.3"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h13M12.5 6.5 19 12l-6.5 5.5"/></symbol>
+    <style>text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827}.title{font-size:36px;font-weight:850}.muted{fill:#5f6672}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}</style>
+  </defs>
+  <rect width="1200" height="675" rx="30" fill="#fff"/>
+  <text x="70" y="82" class="title">질문에서 답까지, 생각 토큰이 쓰이는 순서</text>
+  <g transform="translate(70 165)">
+    <g><rect width="220" height="250" rx="24" fill="#f4f7fb" stroke="#e2e7ee" stroke-width="3"/><circle cx="110" cy="82" r="45" fill="#0066cc"/><text x="110" y="98" text-anchor="middle" fill="#fff" font-size="52" font-weight="900">?</text><text x="110" y="162" text-anchor="middle" font-size="29" font-weight="800">질문</text><text x="110" y="203" text-anchor="middle" class="muted" font-size="23">문제를 받습니다</text></g>
+    <use href="#arrow" x="232" y="104" width="52" height="52" class="icon" color="#8a93a3"/>
+    <g transform="translate(292)"><rect width="250" height="250" rx="24" fill="#f5efff" stroke="#d8c5ff" stroke-width="3"/><use href="#chip" x="90" y="35" width="70" height="70" class="icon" color="#7c3aed"/><g fill="#7c3aed"><circle cx="75" cy="125" r="9"/><circle cx="105" cy="125" r="9"/><circle cx="135" cy="125" r="9"/><circle cx="165" cy="125" r="9"/></g><text x="125" y="176" text-anchor="middle" font-size="29" font-weight="800">생각 토큰</text><text x="125" y="213" text-anchor="middle" class="muted" font-size="23">풀이를 시도합니다</text></g>
+    <use href="#arrow" x="554" y="104" width="52" height="52" class="icon" color="#8a93a3"/>
+    <g transform="translate(614)"><rect width="220" height="250" rx="24" fill="#fff5ea" stroke="#fed7aa" stroke-width="3"/><circle cx="110" cy="82" r="44" fill="none" stroke="#ea580c" stroke-width="6"/><path d="M83 82h54M110 55v54" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/><text x="110" y="162" text-anchor="middle" font-size="29" font-weight="800">검토</text><text x="110" y="203" text-anchor="middle" class="muted" font-size="23">틀린 길을 고칩니다</text></g>
+    <use href="#arrow" x="846" y="104" width="52" height="52" class="icon" color="#8a93a3"/>
+    <g transform="translate(906)"><rect width="220" height="250" rx="24" fill="#eefcf4" stroke="#bbf7d0" stroke-width="3"/><use href="#check" x="72" y="35" width="76" height="76" class="icon" color="#16a34a"/><text x="110" y="162" text-anchor="middle" font-size="29" font-weight="800">답변</text><text x="110" y="203" text-anchor="middle" class="muted" font-size="23">결과를 내놓습니다</text></g>
+  </g>
+  <g transform="translate(70 470)">
+    <rect width="1060" height="130" rx="22" fill="#111827"/>
+    <text x="35" y="48" fill="#fff" font-size="27" font-weight="800">생각을 늘리면</text>
+    <rect x="230" y="30" width="560" height="28" rx="14" fill="#344055"/><rect x="230" y="30" width="390" height="28" rx="14" fill="#0ea5e9"/>
+    <text x="230" y="94" fill="#9fb0cc" font-size="23">빠르게</text><text x="790" y="94" text-anchor="end" fill="#9fb0cc" font-size="23">깊게</text>
+    <text x="840" y="50" fill="#fff" font-size="25" font-weight="750">정확도 기회가 늘지만</text><text x="840" y="88" fill="#fbbf24" font-size="24">시간과 비용도 늘어납니다.</text>
+  </g>
+</svg>

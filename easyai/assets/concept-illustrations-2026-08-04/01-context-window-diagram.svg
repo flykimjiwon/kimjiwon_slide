@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">컨텍스트 윈도우 사용량 68퍼센트</title>
+  <desc id="desc">모델이 한 번에 읽는 전체 공간 가운데 시스템 지침, 도구 결과, 검색 문서, 대화와 질문이 68퍼센트를 사용하고 32퍼센트가 남은 상태를 보여 줍니다.</desc>
+  <defs>
+    <symbol id="book" viewBox="0 0 24 24"><path d="M12 7c0-1.1-.9-2-2-2H4v13h6c1.1 0 2 .9 2 2V7Z"/><path d="M12 7c0-1.1.9-2 2-2h6v13h-6c-1.1 0-2 .9-2 2V7Z"/></symbol>
+    <symbol id="terminal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.4"/><path d="m7.6 10.2 2.4 1.9-2.4 1.9M13 15.2h3.8"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><path d="M13.2 3.6H7.2a2 2 0 0 0-2 2v12.8a2 2 0 0 0 2 2h4"/><path d="M13.2 3.6 18 8.4v1.9"/><circle cx="16.4" cy="16" r="3.4"/><path d="m19 18.7 1.8 1.8"/></symbol>
+    <style>
+      text{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;fill:#111827} .muted{fill:#5f6672}.small{font-size:24px}.label{font-size:27px;font-weight:750}.title{font-size:36px;font-weight:850}.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1200" height="675" rx="30" fill="#fff"/>
+  <text x="70" y="82" class="title">컨텍스트 윈도우 사용량</text>
+  <text x="70" y="120" class="small muted">전체 100% 중 현재 요청이 차지한 공간을 비율로 봅니다.</text>
+  <rect x="70" y="170" width="1060" height="150" rx="24" fill="#f4f7fb" stroke="#e2e7ee" stroke-width="3"/>
+  <clipPath id="bar"><rect x="82" y="182" width="1036" height="126" rx="16"/></clipPath>
+  <g clip-path="url(#bar)">
+    <rect x="82" y="182" width="704" height="126" fill="#0066cc"/>
+    <rect x="786" y="182" width="332" height="126" fill="#edf1f6"/>
+  </g>
+  <path d="M786 170v150" stroke="#111827" stroke-width="3" stroke-dasharray="8 8"/>
+  <text x="434" y="245" text-anchor="middle" fill="#fff" font-size="42" font-weight="850">68% 사용</text>
+  <text x="952" y="245" text-anchor="middle" class="label muted">32% 여유</text>
+  <g transform="translate(70 362)">
+    <g transform="translate(0)"><rect width="190" height="104" rx="18" fill="#e8f2ff"/><use href="#book" x="18" y="23" width="50" height="50" class="icon" color="#0066cc"/><text x="82" y="48" class="label">시스템 지침</text><text x="82" y="78" class="small muted">18%</text></g>
+    <g transform="translate(210)"><rect width="190" height="104" rx="18" fill="#eefcf4"/><use href="#terminal" x="18" y="23" width="50" height="50" class="icon" color="#16a34a"/><text x="82" y="48" class="label">도구 결과</text><text x="82" y="78" class="small muted">14%</text></g>
+    <g transform="translate(420)"><rect width="190" height="104" rx="18" fill="#f5efff"/><use href="#search" x="18" y="23" width="50" height="50" class="icon" color="#7c3aed"/><text x="82" y="48" class="label">검색 문서</text><text x="82" y="78" class="small muted">16%</text></g>
+    <g transform="translate(630)"><rect width="190" height="104" rx="18" fill="#fff5ea"/><circle cx="43" cy="48" r="24" fill="none" stroke="#ea580c" stroke-width="4"/><path d="M31 43h24M31 53h16" stroke="#ea580c" stroke-width="4" stroke-linecap="round"/><text x="82" y="48" class="label">이전 대화</text><text x="82" y="78" class="small muted">12%</text></g>
+    <g transform="translate(840)"><rect width="190" height="104" rx="18" fill="#fff0f5"/><circle cx="43" cy="48" r="25" fill="#dc2626"/><text x="43" y="58" text-anchor="middle" fill="#fff" font-size="30" font-weight="850">?</text><text x="82" y="48" class="label">현재 질문</text><text x="82" y="78" class="small muted">8%</text></g>
+  </g>
+  <rect x="70" y="510" width="1060" height="104" rx="18" fill="#111827"/>
+  <text x="100" y="555" fill="#fff" font-size="28" font-weight="800">핵심</text>
+  <text x="190" y="555" fill="#e8ecf3" font-size="26">가득 채우는 것이 목표가 아닙니다.</text>
+  <text x="190" y="590" fill="#9fb0cc" font-size="24">중요한 정보가 묻히지 않도록 남은 비율까지 함께 봅니다.</text>
+</svg>
