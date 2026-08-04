@@ -269,6 +269,15 @@ body.editing .edit-hint{display:block;position:sticky;top:0;z-index:40;backgroun
   .footer-meta{display:none!important}
   /* 작성자 표기는 인쇄본 마지막 장에도 남긴다(사용자 요청). 권리 패널과 중복 아님 */
   .byline{display:block!important;break-before:avoid;page-break-before:avoid;margin-top:3mm;padding-top:2mm}
+  /* ── 고아 블록 방지 ──
+     작은 보조 블록(쉽게 말하면·오해·인용)이 혼자 다음 장으로 넘어가면
+     앞 장에 큰 공백이 남고 그 장에는 두세 줄만 실린다. 앞 내용과 붙여 둔다. */
+  /* 보조 블록만 앞 내용과 붙인다. figure·표까지 묶으면 덩어리가 커져 오히려 더 밀린다. */
+  .easy,.myth{break-before:avoid;page-break-before:avoid}
+  /* 그림이 페이지에 더 잘 들어가도록 상한을 낮춘다 */
+  figure svg{max-height:78mm}
+  .ghost-visual img{max-height:66mm}
+  .surface-card img{max-height:52mm}
   a[href^="http"]::after{content:""}
 }
 
@@ -1085,13 +1094,13 @@ body.sb-collapsed .sb-foot{padding:10px 0;text-align:center}
 <li><a href="https://dev.to/vishalmysore/rag-vs-agent-memory-vs-llm-wiki-a-practical-comparison-1oo6">RAG vs Agent Memory vs LLM Wiki — dev.to</a></li>
 <li><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">LLM Wiki gist — Andrej Karpathy, 2026-04</a></li>
 </ul>
-<section class="rights-panel" aria-labelledby="rightsTitle"><details class="rights-details"><summary class="rights-summary"><svg class="ico" aria-hidden="true"><use href="#i-gate"></use></svg><span class="rights-sum-main"><b id="rightsTitle">저작권·제작 크레딧</b><small>© 2026 김지원 · 개인 저작물</small></span><span class="rights-owner">PERSONAL WORK · 2026</span><svg class="ico rights-chev" aria-hidden="true"><use href="#i-down"></use></svg></summary><div class="rights-body"><div class="rights-grid">
-<article class="rights-item"><h5>직접 제작</h5><p>본 자료의 구성·문안·도식·<span class="rights-nobr">캐릭터 콘셉트·편집 디자인을</span> 직접 기획·제작했습니다. 제3자 캐릭터·로고를 그래픽 소재로 가져다 쓰지 않았습니다. 다만 본문의 제품 화면 캡처에는 각 제품의 화면과 상표가 그대로 포함되며, 이는 설명을 위한 인용입니다.</p></article>
-<article class="rights-item"><h5>AI 제작 보조</h5><p>일부 삽화는 OpenAI 이미지 생성 도구를 <span class="rights-nobr">제작 보조로 사용했습니다.</span> 최종 콘셉트, 프롬프트 지시, 결과 선별, 편집과 배치는 직접 수행했습니다.</p></article>
-<article class="rights-item"><h5>인용·재구성</h5><p>외부 문헌의 사실과 개념을 참고해 <span class="rights-nobr">직접 다시 서술했으며,</span> 원문을 그대로 옮긴 부분은 인용으로 표시하고 저자와 원문을 위 출처 목록에 밝혔습니다. 인용 자료의 권리는 각 원저작자에게 있습니다.</p></article>
-<article class="rights-item"><h5>상표·비제휴</h5><p>본문의 제품·서비스·프로토콜 명칭과 상표는 각 권리자에게 귀속됩니다. 본 자료는 해당 권리자와의 제휴·후원·공식 인증 관계를 표시하지 않습니다.</p></article>
+<section class="rights-panel" aria-labelledby="rightsTitle"><details class="rights-details"><summary class="rights-summary"><svg class="ico" aria-hidden="true"><use href="#i-gate"></use></svg><span class="rights-sum-main"><b id="rightsTitle">저작권·제작 크레딧</b><small>© 2026 김지원 · 출처만 밝히면 자유롭게 쓰셔도 됩니다</small></span><span class="rights-owner">CC BY 4.0 · 2026</span><svg class="ico rights-chev" aria-hidden="true"><use href="#i-down"></use></svg></summary><div class="rights-body"><div class="rights-grid">
+<article class="rights-item"><h5>직접 만들었습니다</h5><p>구성·문안·도식·<span class="rights-nobr">자체 캐릭터 콘셉트·편집 디자인을</span> 직접 기획하고 만들었습니다. 직접 만든 삽화에 남의 캐릭터나 로고 원본을 가져다 쓰지 않았습니다.</p></article>
+<article class="rights-item"><h5>AI를 도구로 썼습니다</h5><p>일부 삽화는 OpenAI 이미지 생성 도구를 <span class="rights-nobr">보조로 사용했습니다.</span> 콘셉트, 프롬프트, 결과 선별, 편집과 배치는 직접 했습니다.</p></article>
+<article class="rights-item"><h5>출처는 다 밝혔습니다</h5><p>외부 문헌은 참고해 <span class="rights-nobr">직접 다시 썼고,</span> 원문을 그대로 옮긴 부분은 인용으로 표시했습니다. 저자와 원문은 위 출처 목록에 있습니다.</p></article>
+<article class="rights-item"><h5>제품 화면과 상표</h5><p>일부 제품 화면은 기능 설명을 위해 <span class="rights-nobr">직접 캡처해 실었습니다.</span> 화면·UI·상표의 권리는 각 권리자에게 있고, 이 자료는 그들과 제휴·후원 관계가 없습니다.</p></article>
 </div>
-<p class="rights-legal"><strong>© 2026 김지원.</strong> 본 자료는 <b>직접 기획·제작한 개인 저작물</b>입니다. 특정 조직의 업무로 작성된 자료가 아닙니다. 이 중 독자적으로 창작한 부분에 한하여 모든 권리를 보유합니다. 위에 표시한 인용 자료와 제3자 명칭·상표의 권리는 각 권리자에게 있습니다. 별도 허락 없이 본 자료의 전체 또는 주요 부분을 복제·재배포·상업적으로 이용하지 마십시오.</p>
+<p class="rights-legal"><strong>© 2026 김지원.</strong> 직접 만든 부분은 <a href="https://creativecommons.org/licenses/by/4.0/deed.ko"><b>CC BY 4.0</b></a>으로 공개합니다. <b>출처만 밝혀 주시면 복사·수정·재배포는 물론 상업적으로 쓰셔도 됩니다.</b> 표시는 이 정도면 충분합니다 — <code>AI 코딩 용어사전 — 김지원</code>. 위에 표시한 인용 자료와 제3자 상표, 제품 화면 캡처는 각 권리자의 것이라 이 허락 범위 밖입니다.</p>
 <p class="rights-reference">표시 기준 · <a href="https://law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&amp;lsJoLnkSeq=1025517657">저작권법 제28조(공표된 저작물의 인용)</a> · <a href="https://law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&amp;lsJoLnkSeq=1033063901">제37조(출처의 명시)</a> · <a href="https://www.copyright.or.kr/notify/notice/view.do?brdctsno=55402">한국저작권위원회 AI 저작권 안내서</a> · <a href="https://openai.com/policies/terms-of-use/">OpenAI 이용약관</a><br><span class="rights-disclaimer">본 표시는 제작 경위를 밝히기 위한 안내이며 법률 자문이 아닙니다.</span></p>
 </div></details></section>
 <p class="footer-meta" style="margin-top:18px">AI 코딩 용어사전 · 2026-08-03</p>
