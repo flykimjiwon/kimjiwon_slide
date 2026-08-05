@@ -1,0 +1,81 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>S.B.T.I 과정 — 통합본 표지</title><link rel="icon" type="image/svg+xml" href="assets/techai-code-favicon.svg"/><style>
+:root{--bg:#fafafa;--surface:#fff;--text:#1a1a1a;--muted:#5f6672;--line:#e2e7ee;--blue:#0066cc;--blue2:#0a84ff;--cyan:#0ea5e9;--dark:#111827;--terminal:#232832;--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#151922;color:var(--text);font-family:var(--font)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:58px 70px;overflow:hidden}
+.dark-title{background:radial-gradient(circle at 20% 10%,rgba(66,124,255,.22),transparent 30%),linear-gradient(135deg,#151922,#242831);color:#f8fbff}
+.topline{font:800 12px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#7ab2ff;margin-bottom:16px}
+.lead{font-size:clamp(21px,2.3vw,30px);line-height:1.45;max-width:900px}
+.lead.light{color:#d9e6ff}
+
+/* 상단 아카데미 배지 — 기존 sbti-tag 문법 차용 */
+.academy-tag{position:absolute;top:22px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:9px;background:#0a84ff;color:#fff;font:900 13px var(--mono);padding:6px 18px;border-radius:999px;letter-spacing:.1em;z-index:6;box-shadow:0 6px 18px rgba(10,132,255,.35);white-space:nowrap}
+.academy-tag i{font-style:normal;opacity:.72;font-weight:800}
+
+.title-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:44px;align-items:center;width:min(1180px,100%)}
+.title-copy{text-align:left}
+
+/* 한글 로고 — 기존 word-logo.kr-logo 문법 차용 */
+.word-logo{font-family:var(--mono);font-weight:950;letter-spacing:-.02em;line-height:1.04;color:#fff;text-shadow:3px 0 #2855d9,6px 0 #172554}
+.word-logo span{display:block;font-size:clamp(46px,5.6vw,78px);white-space:nowrap}
+.word-logo b{display:block;font-size:clamp(36px,4.5vw,62px);white-space:nowrap;margin-top:6px;color:#8bbcff}
+.course-sub{margin:18px 0 0;font-size:clamp(17px,1.85vw,24px);font-weight:800;color:#d9e6ff;letter-spacing:-.02em;line-height:1.4}
+.course-sub b{color:#fff}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;margin-top:20px}
+.chips span{background:rgba(255,255,255,.08);color:#dbeafe;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:800}
+.chips span i{font-style:normal;color:#7ab2ff;font:900 11px var(--mono);margin-right:6px}
+
+.logo-stage{position:relative;display:grid;place-items:center;min-height:520px}
+.logo-main{width:400px;border-radius:74px;filter:drop-shadow(0 34px 70px rgba(0,0,0,.45))}
+.logo-sub{position:absolute;right:26px;bottom:88px;width:142px;border-radius:34px;border:1px solid rgba(255,255,255,.2)}
+.mini-terminal{position:absolute;left:8px;bottom:30px;width:296px;background:#0b1020;border:1px solid #334155;border-radius:16px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.34);text-align:left}
+.mini-terminal-header{height:36px;background:#111827;border-bottom:1px solid #263244;display:flex;align-items:center;gap:8px;padding:0 13px}
+.code-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
+.code-dot.red{background:#ff5f57}.code-dot.yellow{background:#ffbd2e}.code-dot.green{background:#28c840}
+.mini-terminal-title{margin-left:6px;font:700 11px var(--mono);color:#8b9ab1}
+.mini-terminal-body{padding:18px 20px 20px;font:900 22px var(--mono);color:#dbeafe;letter-spacing:-.02em}
+.mini-terminal-body .term-prefix{color:#60a5fa;margin-right:10px}
+.mini-terminal-body .cursor{display:inline-block;width:10px;height:22px;margin-left:6px;vertical-align:-4px;background:#60a5fa;border-radius:2px}
+
+.org-footer{position:absolute;left:70px;right:70px;bottom:34px;text-align:center;font:850 17px var(--mono);letter-spacing:.08em;color:#c7d2fe;text-transform:uppercase;opacity:.95}
+
+@media (max-width:1400px),(max-height:800px){
+.slide{padding:44px 54px}
+.title-grid{gap:32px;width:min(1120px,100%)}
+.logo-stage{min-height:420px}
+.logo-main{width:330px;border-radius:62px}
+.logo-sub{width:118px;bottom:74px;border-radius:28px}
+.mini-terminal{width:250px}
+.mini-terminal-body{font-size:19px;padding:15px 17px 17px}
+.course-sub{margin-top:14px}
+.chips{margin-top:15px}
+.org-footer{font-size:15px;bottom:26px}
+}
+</style></head><body>
+<section class="slide dark-title">
+  <div class="academy-tag"><i>신한</i>Tech Academy</div>
+  <div class="title-grid">
+    <div class="title-copy">
+      <div class="topline">S.B.T.I 과정 · AI 개발 자동화 실무 활용</div>
+      <div class="word-logo"><span>S.B.T.I 과정</span><b>택가이 코드어시스턴트</b></div>
+      <p class="course-sub">AI 개발 자동화 실무 활용 — <b>도구 흐름부터 행내 연계·활용 사례까지</b></p>
+      <div class="chips">
+        <span><i>01</i>AI 코딩 도구 변화와 최신 개발 트렌드</span>
+        <span><i>02</i>택가이 코드 소개</span>
+        <span><i>03</i>활용 사례</span>
+        <span><i>04</i>EASY AI 책자</span>
+      </div>
+    </div>
+    <div class="logo-stage">
+      <img class="logo-main" src="assets/techai_tui_icon.png" alt="TECHAI terminal icon">
+      <img class="logo-sub" src="assets/techai_ide_icon.png" alt="TECHAI IDE icon">
+      <div class="mini-terminal" aria-label="techai command terminal">
+        <div class="mini-terminal-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="mini-terminal-title">Terminal — command</span></div>
+        <div class="mini-terminal-body"><span class="term-prefix">$</span>techai<span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="org-footer">신한은행 TECH혁신UNIT 개발 AX CELL 김지원프로</div>
+</section>
+</body></html>
