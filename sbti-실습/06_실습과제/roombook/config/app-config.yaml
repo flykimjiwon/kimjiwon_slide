@@ -1,0 +1,24 @@
+# roombook 애플리케이션 설정 (실습용)
+
+app:
+  name: roombook
+  version: 0.4.2
+  port: 8080
+
+business:
+  openHour: 8
+  closeHour: 20
+  slotMinutes: 30
+  maxConcurrentReservations: 5
+  cancelDeadlineMinutes: 30
+
+database:
+  host: db.internal.example
+  port: 5432
+  name: roombook
+  user: roombook_app
+  # 비밀번호는 환경변수로 주입한다
+
+logging:
+  level: info
+  auditTable: audit_log

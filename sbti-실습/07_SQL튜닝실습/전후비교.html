@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL 튜닝 실습 — 전/후 비교</title>
+<style>
+:root{--blue:#0066cc;--line:#e2e7ee;--muted:#5f6672;--bad:#dc2626;--good:#16a34a;
+--mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+--font:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;padding:38px 26px 60px;background:#f7f9fc;color:#1a1a1a;font-family:var(--font);line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:30px;letter-spacing:-.03em;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 10px}
+.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;
+padding:11px 16px;font-size:14px;font-weight:700;margin:0 0 30px}
+h2{font-size:21px;margin:38px 0 4px;letter-spacing:-.02em}
+h2 em{font-style:normal;font:800 12px var(--mono);color:#fff;background:var(--blue);
+border-radius:999px;padding:4px 10px;margin-right:9px;vertical-align:3px}
+.time{color:var(--muted);font-size:14px;margin:0 0 14px}
+.time b{color:var(--good);font-size:16px}
+.time s{color:var(--bad);text-decoration:none}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.box.before{border-color:#fecaca}
+.box.after{border-color:#bbf7d0}
+.box h3{margin:0;padding:10px 15px;font-size:13px;font-weight:900;letter-spacing:.02em}
+.box.before h3{background:#fef2f2;color:#b91c1c}
+.box.after h3{background:#f0fdf4;color:#15803d}
+pre{margin:0;padding:15px;font:600 12.5px/1.62 var(--mono);overflow-x:auto;white-space:pre}
+.hl-bad{background:#fee2e2;border-radius:3px;padding:1px 2px}
+.hl-good{background:#dcfce7;border-radius:3px;padding:1px 2px}
+table{border-collapse:collapse;width:100%;margin-top:16px;font-size:14px;background:#fff}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#f4f7fb;font-weight:800;white-space:nowrap}
+td code{font:600 12px var(--mono);background:#f4f7fb;border-radius:4px;padding:1px 5px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.step b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;
+background:var(--blue);color:#fff;font:900 13px var(--mono);margin-bottom:9px}
+.step p{margin:0;font-size:14px;color:#374151}
+.step code{display:block;margin-top:9px;background:#0f172a;color:#dbeafe;border-radius:9px;
+padding:10px 12px;font:600 11.5px/1.5 var(--mono);white-space:pre-wrap}
+.check{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 20px;margin-top:14px}
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+color:var(--muted);font-size:13px}
+@media (max-width:860px){.pair,.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>SQL 튜닝 실습 — 전/후 비교</h1>
+<p class="sub">가상 은행 「한빛은행」 수신 시스템 · 느린 쿼리 2개 고치기</p>
+<p class="warn">※ 은행명 · 고객명 · 계좌번호 · 상품명 · 수치 전부 지어낸 값입니다. 실제 상품·고객·시스템과 무관합니다.</p>
+
+<h2><em>실습 방법</em>3단계</h2>
+<div class="steps">
+  <div class="step"><b>1</b>
+    <p>실습본만 열고 <strong>혼자</strong> 고쳐봅니다. 파일 위쪽 주석에 상황·인덱스·실행계획이 다 있습니다.</p>
+    <code>sql/01-거래내역조회_실습본.sql</code></div>
+  <div class="step"><b>2</b>
+    <p>택가이 코드에게 <strong>하나씩</strong> 물어봅니다. 한 번에 "최적화해줘"는 금물.</p>
+    <code>주석의 인덱스 목록과 WHERE 조건을
+비교해서 인덱스를 못 타는
+조건을 찾아줘</code></div>
+  <div class="step"><b>3</b>
+    <p>최적화 파일과 맞춰봅니다. VS Code에서 <strong>⌘+클릭</strong>하면 좌우로 열립니다.</p>
+    <code>sql/01-거래내역조회_최적화.sql</code></div>
+</div>
+
+<h2><em>문제 1</em>거래내역 조회 <span style="font-weight:400;font-size:15px;color:#5f6672">★★</span></h2>
+<p class="time"><s>6,842 ms</s> &nbsp;→&nbsp; <b>11 ms</b> &nbsp;(약 620배)</p>
+<div class="pair">
+  <div class="box before"><h3>전 — 실습본</h3><pre>SELECT <span class="hl-bad">*</span>
+FROM <span class="hl-bad">txn t, account a, product p</span>
+WHERE t.acct_no = a.acct_no
+  AND a.prod_cd = p.prod_cd
+  AND <span class="hl-bad">DATE(t.txn_at)</span> &gt;= '2026-07-01'
+  AND <span class="hl-bad">DATE(t.txn_at)</span> &lt;= '2026-07-31'
+  AND t.acct_no = <span class="hl-bad">000000000001</span>
+  AND (t.txn_type = 'DEPOSIT'
+    OR t.txn_type = 'WITHDRAW')
+  AND t.memo LIKE <span class="hl-bad">'%급여%'</span>
+ORDER BY t.txn_at DESC;</pre></div>
+  <div class="box after"><h3>후 — 최적화</h3><pre>SELECT <span class="hl-good">t.txn_at, t.txn_type, t.amount,
+       t.balance_after, t.memo, p.prod_nm</span>
+FROM txn t
+<span class="hl-good">JOIN</span> account a <span class="hl-good">ON</span> a.acct_no = t.acct_no
+<span class="hl-good">JOIN</span> product p <span class="hl-good">ON</span> p.prod_cd = a.prod_cd
+WHERE t.acct_no = <span class="hl-good">'000-000-000001'</span>
+  AND <span class="hl-good">t.txn_at &gt;= TIMESTAMP '2026-07-01 00:00:00'</span>
+  AND <span class="hl-good">t.txn_at &lt;  TIMESTAMP '2026-08-01 00:00:00'</span>
+  AND t.txn_type <span class="hl-good">IN ('DEPOSIT','WITHDRAW')</span>
+ORDER BY t.txn_at DESC;</pre></div>
+</div>
+<table>
+  <tr><th>바뀐 것</th><th>전</th><th>후</th><th>왜</th></tr>
+  <tr><td>날짜 조건</td><td><code>DATE(txn_at) &gt;= …</code></td><td><code>txn_at &gt;= …</code></td>
+      <td>컬럼을 함수로 감싸면 인덱스를 못 탄다. 끝은 <code>&lt; 다음달 1일</code> (<code>&lt;= 말일</code>이면 마지막 날이 빠짐)</td></tr>
+  <tr><td>계좌번호</td><td><code>= 000000000001</code></td><td><code>= '000-000-000001'</code></td>
+      <td><code>VARCHAR(14)</code>에 숫자 비교 → 암묵적 형변환으로 인덱스 무력화. 하이픈도 빠져 있었다</td></tr>
+  <tr><td>조회 컬럼</td><td><code>SELECT *</code></td><td>필요한 6개</td><td>txn은 컬럼이 넓다. 네트워크·메모리 낭비</td></tr>
+  <tr><td>적요 검색</td><td><code>LIKE '%급여%'</code></td><td>제거</td><td>선행 <code>%</code>는 인덱스 사용 불가. 필요하면 별도 검토</td></tr>
+  <tr><td>조인</td><td><code>FROM a, b, c</code></td><td><code>JOIN … ON</code></td><td>조인 조건 누락을 눈으로 잡을 수 있다</td></tr>
+</table>
+
+<h2><em>문제 2</em>상품별 가입현황 집계 <span style="font-weight:400;font-size:15px;color:#5f6672">★★★</span></h2>
+<p class="time"><s>30,188 ms</s> &nbsp;→&nbsp; <b>38 ms</b> &nbsp;(약 790배)</p>
+<div class="pair">
+  <div class="box before"><h3>전 — 실습본</h3><pre>SELECT p.prod_cd, p.prod_nm, p.prod_type,
+  <span class="hl-bad">(SELECT COUNT(*) FROM account a
+     WHERE a.prod_cd = p.prod_cd
+       AND a.status = 'NORMAL')</span>   AS 정상계좌수,
+  <span class="hl-bad">(SELECT COUNT(DISTINCT a.cust_no) FROM account a
+     WHERE a.prod_cd = p.prod_cd)</span>  AS 가입고객수,
+  <span class="hl-bad">(SELECT SUM(a.balance) FROM account a
+     WHERE a.prod_cd = p.prod_cd
+       AND a.status = 'NORMAL')</span>   AS 총잔액
+FROM product p
+GROUP BY p.prod_cd, p.prod_nm, p.prod_type
+<span class="hl-bad">HAVING COUNT(*) &gt; 0</span>
+ORDER BY 총잔액 DESC;
+
+<span class="hl-bad">-- account 를 21회 풀스캔 (상품7 x 서브쿼리3)</span></pre></div>
+  <div class="box after"><h3>후 — 최적화</h3><pre><span class="hl-good">CREATE INDEX idx_account_prod
+    ON account (prod_cd);</span>
+
+SELECT p.prod_cd, p.prod_nm, p.prod_type,
+  COUNT(*) <span class="hl-good">FILTER (WHERE a.status='NORMAL')</span>
+                                    AS 정상계좌수,
+  COUNT(DISTINCT a.cust_no)         AS 가입고객수,
+  <span class="hl-good">COALESCE(</span>SUM(a.balance)
+    <span class="hl-good">FILTER (WHERE a.status='NORMAL')</span><span class="hl-good">, 0)</span>
+                                    AS 총잔액
+FROM product p
+<span class="hl-good">LEFT JOIN</span> account a ON a.prod_cd = p.prod_cd
+GROUP BY p.prod_cd, p.prod_nm, p.prod_type
+ORDER BY 총잔액 DESC;</pre></div>
+</div>
+<table>
+  <tr><th>바뀐 것</th><th>전</th><th>후</th><th>왜</th></tr>
+  <tr><td>집계 방식</td><td>상관 서브쿼리 3개</td><td><code>LEFT JOIN</code> 1번</td>
+      <td>account를 21회 훑던 것을 1회로. 시간의 대부분이 여기 있었다</td></tr>
+  <tr><td>조인 종류</td><td>—</td><td><code>LEFT</code></td>
+      <td><strong>INNER면 가입 0건 상품(P007 참좋은 파킹통장)이 사라진다.</strong> 업무 요건 위반</td></tr>
+  <tr><td>조건별 집계</td><td>서브쿼리마다 WHERE</td><td><code>FILTER (WHERE …)</code></td>
+      <td>WHERE로 걸면 세 집계 전부에 적용된다. <code>CASE WHEN</code>도 같은 결과</td></tr>
+  <tr><td>NULL 처리</td><td>없음</td><td><code>COALESCE(…, 0)</code></td>
+      <td>가입 0건 상품의 SUM은 NULL. 화면엔 0이 나와야 한다</td></tr>
+  <tr><td><code>HAVING COUNT(*) &gt; 0</code></td><td>있음</td><td>삭제</td>
+      <td>GROUP BY 결과에 0건 그룹은 원래 없다. 무의미하고 오히려 위험</td></tr>
+  <tr><td>인덱스</td><td><code>account.prod_cd</code> 없음</td><td><code>idx_account_prod</code></td>
+      <td><strong>쿼리만 고치면 절반이다.</strong> 여기서 가장 많이 빠뜨린다</td></tr>
+</table>
+
+<h2><em>주의</em>AI 답을 그대로 믿지 마세요</h2>
+<div class="check">
+<table style="margin-top:0;border:0">
+  <tr><th style="border:0;border-bottom:1px solid var(--line)">확인할 것</th>
+      <th style="border:0;border-bottom:1px solid var(--line)">왜</th></tr>
+  <tr><td style="border:0"><b>날짜 경계</b></td>
+      <td style="border:0"><code>&lt; 다음달 1일</code>이어야 하는데 <code>&lt;= 말일</code>로 쓰면 <b>마지막 날이 통째로 빠진다</b></td></tr>
+  <tr><td style="border:0"><b>LEFT인지 INNER인지</b></td>
+      <td style="border:0">INNER로 바꾸면 가입 0건 상품이 조용히 사라진다</td></tr>
+  <tr><td style="border:0"><b>결과 건수</b></td>
+      <td style="border:0">문제 2는 상품 7개가 전부 나와야 한다. 6개면 조인이 틀린 것</td></tr>
+  <tr><td style="border:0"><b>CREATE INDEX</b></td>
+      <td style="border:0">쿼리만 고치고 인덱스를 빼먹는 경우가 가장 많다</td></tr>
+</table>
+</div>
+<p style="margin-top:14px;font-size:14px;color:#374151">
+고친 쿼리를 받았으면 <b>"왜 빨라지는지 한 줄로 설명해줘"</b>를 꼭 물어보세요.
+설명을 못 하면 그 답은 못 믿습니다.</p>
+
+<p class="foot">SBTI 과정 · SQL 튜닝 실습 · 전부 가상 데이터</p>
+
+</div>
+</body>
+</html>

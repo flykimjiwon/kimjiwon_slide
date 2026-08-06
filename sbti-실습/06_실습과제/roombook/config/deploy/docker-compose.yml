@@ -1,0 +1,28 @@
+# roombook 배포 구성 (실습용)
+
+version: "3.8"
+
+services:
+  api:
+    image: roombook/api:0.4.2
+    ports:
+      - "8080:8080"
+    environment:
+      - ROOMBOOK_DB_HOST=db
+      - ROOMBOOK_DB_USER=roombook_app
+      - ROOMBOOK_DB_PASS=P@ssw0rd!2026
+      - NODE_ENV=production
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=roombook
+      - POSTGRES_USER=roombook_app
+      - POSTGRES_PASSWORD=P@ssw0rd!2026
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  dbdata:

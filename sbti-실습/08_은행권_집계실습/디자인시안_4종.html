@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>디자인 시안 4종 — 한빛은행 집계 실습</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#3b3f46;font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Malgun Gothic",sans-serif}
+.picker{position:sticky;top:0;z-index:50;background:#23262b;padding:12px 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.picker b{color:#fff;font-size:14px;margin-right:8px}
+.picker button{background:#3b3f46;color:#cbd2dc;border:1px solid #565b64;border-radius:8px;padding:8px 16px;font:700 13px inherit;cursor:pointer}
+.picker button.on{background:#fff;color:#16202e;border-color:#fff}
+.stage{max-width:1080px;margin:26px auto 60px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.sian{display:none}.sian.on{display:block}
+.desc{max-width:1080px;margin:14px auto -14px;color:#cbd2dc;font-size:13px;line-height:1.6;padding:0 4px}
+.desc b{color:#fff}
+
+/* ═══ A. 전산단말 ═══ */
+.sA{background:#e8eaed;font-family:"Malgun Gothic","돋움",Dotum,sans-serif;color:#1c2430}
+.sA .top{background:#1f3a5f;color:#fff;padding:8px 14px;display:flex;align-items:center;gap:10px;font-size:13px}
+.sA .top b{font-size:14px;letter-spacing:0}
+.sA .top .id{margin-left:auto;font-size:11px;color:#b9c8dd}
+.sA .tabs{background:#d5d9de;border-bottom:1px solid #9aa1ab;display:flex}
+.sA .tabs span{padding:7px 18px;font-size:12.5px;border-right:1px solid #9aa1ab;color:#3d4654;background:#c8ccd2}
+.sA .tabs span.on{background:#f4f5f7;font-weight:700;color:#16202e;border-top:3px solid #1f3a5f;padding-top:4px}
+.sA .body{background:#f4f5f7;padding:14px}
+.sA .box{background:#fff;border:1px solid #b6bcc5}
+.sA .boxh{background:#eef0f3;border-bottom:1px solid #b6bcc5;padding:6px 10px;font-size:12.5px;font-weight:700;display:flex;gap:8px;align-items:center}
+.sA .boxh .code{color:#5b6572;font-weight:400;font-size:11px}
+.sA .req{width:100%;border-collapse:collapse;font-size:12px}
+.sA .req td{border:1px solid #d5d9de;padding:5px 9px}
+.sA .req td:first-child{background:#eef0f3;width:88px;font-weight:700}
+.sA .btnrow{display:flex;gap:6px;padding:10px;border-top:1px solid #d5d9de;background:#fafbfc}
+.sA .btn{border:1px solid #7b8494;background:linear-gradient(#fdfdfd,#e4e7ea);padding:6px 16px;font-size:12.5px;font-weight:700;cursor:pointer;border-radius:2px}
+.sA .btn.primary{background:linear-gradient(#31548a,#1f3a5f);color:#fff;border-color:#16headi2c47}
+.sA .verd{margin:10px;border:1px solid;padding:8px 12px;font-size:12.5px;display:flex;gap:8px;align-items:center}
+.sA .verd.ok{border-color:#2c7a3f;background:#eef7f0;color:#1d5c2e}
+.sA .verd.warn{border-color:#b07f1e;background:#fdf6e7;color:#7c5a10}
+.sA .verd.no{border-color:#a83232;background:#fbeeee;color:#7c1f1f}
+.sA table.res{border-collapse:collapse;font-size:12px;margin:0 10px 12px;width:calc(100% - 20px)}
+.sA table.res th{background:#dfe3e8;border:1px solid #b6bcc5;padding:4px 8px}
+.sA table.res td{border:1px solid #cfd4da;padding:4px 8px}
+.sA table.res td.n{text-align:right}
+
+/* ═══ B. 결재서류 ═══ */
+.sB{background:#fff;color:#111;font-family:"Malgun Gothic",sans-serif;padding:34px 40px;position:relative}
+.sB h1{font-family:"Apple Myungjo","Nanum Myeongjo",Batang,"바탕",serif;text-align:center;font-size:26px;letter-spacing:8px;margin:0 0 4px;font-weight:600}
+.sB .docline{border-top:3px double #111;margin:14px 0 18px}
+.sB .meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:14px}
+.sB .stamp{position:absolute;right:44px;top:30px;width:64px;height:64px;border:3px solid #c02020;border-radius:50%;color:#c02020;display:grid;place-items:center;font-size:13px;font-weight:800;transform:rotate(-12deg);letter-spacing:2px;opacity:.85}
+.sB .tabs{display:flex;gap:0;border:1px solid #111;width:fit-content;margin-bottom:16px}
+.sB .tabs span{padding:6px 16px;font-size:12.5px;border-right:1px solid #111}
+.sB .tabs span:last-child{border-right:0}
+.sB .tabs span.on{background:#111;color:#fff;font-weight:700}
+.sB h2{font-family:"Apple Myungjo","Nanum Myeongjo",Batang,serif;font-size:16px;margin:18px 0 8px;font-weight:700}
+.sB h2:before{content:'제 1 항 · '}
+.sB .req{width:100%;border-collapse:collapse;font-size:12.5px}
+.sB .req td{border:1px solid #111;padding:6px 10px}
+.sB .req td:first-child{width:90px;font-weight:700;text-align:center;background:#f5f5f2}
+.sB .paste{border:1.5px solid #111;margin-top:14px;padding:11px 13px;font:600 12px ui-monospace,Menlo,monospace;color:#333;min-height:56px;background:#fdfdfb}
+.sB .btnrow{display:flex;gap:8px;margin-top:10px}
+.sB .btn{border:1.5px solid #111;background:#fff;padding:7px 22px;font-size:13px;font-weight:700;cursor:pointer}
+.sB .btn.primary{background:#111;color:#fff}
+.sB .verd{margin-top:14px;font-size:13px;padding:9px 0;border-top:1px solid #111;border-bottom:1px solid #111}
+.sB .verd b.ok{color:#1a6b30}.sB .verd b.no{color:#c02020}.sB .verd b.wa{color:#9a6b00}
+.sB table.res{border-collapse:collapse;font-size:12px;margin-top:12px;width:100%}
+.sB table.res th{border:1px solid #111;border-bottom:2px solid #111;padding:5px 8px;background:#f5f5f2}
+.sB table.res td{border:1px solid #555;padding:5px 8px}
+.sB table.res td.n{text-align:right;font-family:ui-monospace,monospace}
+
+/* ═══ C. 단말 콘솔 ═══ */
+.sC{background:#0b0e14;color:#c9d4c9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:0 0 22px}
+.sC .bar{background:#161b24;color:#8b96a5;font-size:12px;padding:7px 14px;display:flex;gap:14px;border-bottom:1px solid #232a36}
+.sC .bar b{color:#e8eef5}
+.sC .bar .r{margin-left:auto;color:#5c8f4f}
+.sC .wrap{padding:16px 20px;font-size:12.5px;line-height:1.75}
+.sC .dim{color:#5a6473}
+.sC .p{color:#67c23a}
+.sC .cmd{color:#e8eef5}
+.sC .hr{color:#333c4b}
+.sC .tabs{margin:6px 0 12px}
+.sC .tabs span{color:#5a6473;margin-right:4px}
+.sC .tabs span.on{color:#0b0e14;background:#67c23a;padding:1px 8px;font-weight:700}
+.sC textarea{width:100%;background:#0f131b;border:1px solid #2b3444;color:#d7e6d7;font:600 12.5px/1.7 inherit;padding:10px 12px;height:84px;resize:none}
+.sC .btn{background:#1d2634;border:1px solid #3c4a5f;color:#c9d4c9;padding:6px 18px;font:700 12.5px inherit;cursor:pointer;margin-top:8px}
+.sC .btn.primary{background:#264a1f;border-color:#3f7a33;color:#b6f0a4}
+.sC .ok{color:#67c23a}.sC .wa{color:#e0a63c}.sC .no{color:#e05c5c}
+.sC table.res{border-collapse:collapse;font-size:12px;margin-top:8px}
+.sC table.res th{color:#8b96a5;border-bottom:1px solid #333c4b;padding:3px 14px 3px 0;text-align:left;font-weight:400}
+.sC table.res td{padding:2px 14px 2px 0;color:#d7e6d7}
+.sC table.res td.n{color:#a3d5f7}
+
+/* ═══ D. 학습 교재 ═══ */
+.sD{background:#f8f4ea;color:#2b2a26;font-family:"Malgun Gothic",sans-serif;padding:30px 38px}
+.sD .unit{font-size:12px;letter-spacing:3px;color:#8a6d3b;font-weight:700}
+.sD h1{font-family:"Apple Myungjo","Nanum Myeongjo",Batang,serif;font-size:24px;margin:4px 0 2px;color:#1f2c50}
+.sD .rule{height:5px;background:#1f2c50;width:52px;margin:10px 0 18px}
+.sD .tabs{display:flex;gap:22px;border-bottom:2px solid #d9cfb8;margin-bottom:18px}
+.sD .tabs span{padding:6px 2px;font-size:13.5px;color:#7a715e}
+.sD .tabs span.on{color:#1f2c50;font-weight:800;border-bottom:3px solid #1f2c50;margin-bottom:-2px}
+.sD .say{font-size:14px;line-height:1.75;margin:0 0 14px}
+.sD .say mark{background:linear-gradient(transparent 55%,#ffe680 55%);padding:0 2px}
+.sD .req{width:100%;border-collapse:collapse;font-size:13px;background:#fffdf6;border:1.5px solid #2b2a26}
+.sD .req td{border-bottom:1px solid #e4dcc8;padding:7px 11px}
+.sD .req td:first-child{width:84px;font-weight:800;color:#8a6d3b}
+.sD .stepline{margin:14px 0 8px;font-size:13px}
+.sD .stepline b{display:inline-grid;place-items:center;width:20px;height:20px;background:#1f2c50;color:#fff;border-radius:50%;font-size:11px;margin-right:5px}
+.sD .paste{border:1.5px dashed #b4a988;background:#fffdf6;padding:11px 13px;font:600 12px ui-monospace,Menlo,monospace;color:#555;min-height:52px;border-radius:6px}
+.sD .btn{border:none;background:#1f2c50;color:#fff;padding:9px 24px;font-size:13.5px;font-weight:800;cursor:pointer;border-radius:6px;margin-top:10px}
+.sD .btn.sub{background:#fffdf6;color:#1f2c50;border:1.5px solid #1f2c50}
+.sD .verd{margin-top:14px;padding:11px 14px;font-size:13.5px;border-radius:8px}
+.sD .verd.ok{background:#eef3e4;border:1.5px solid #7c9a4e;color:#42591d}
+.sD .verd.wa{background:#fdf3dc;border:1.5px solid #cfa64c;color:#7a5a12}
+.sD .verd.no{background:#f9e8e4;border:1.5px solid #c47058;color:#7c2f1c}
+.sD table.res{border-collapse:collapse;font-size:12.5px;margin-top:12px;width:100%;background:#fffdf6}
+.sD table.res th{border-top:2px solid #2b2a26;border-bottom:1.5px solid #2b2a26;padding:6px 10px;text-align:left}
+.sD table.res td{border-bottom:1px solid #e4dcc8;padding:6px 10px}
+.sD table.res td.n{text-align:right;font-family:ui-monospace,monospace}
+</style></head>
+<body>
+<div class="picker"><b>디자인 시안</b>
+<button data-s="A" class="on">A · 전산단말</button>
+<button data-s="B">B · 결재서류</button>
+<button data-s="C">C · 단말 콘솔</button>
+<button data-s="D">D · 학습교재</button>
+</div>
+
+<!-- ═══ A ═══ -->
+<div class="sian on" id="sA">
+<p class="desc"><b>A · 전산단말</b> — 행내 계정계·정보계 조회화면 문법. 네이비 헤더바, 각진 박스, 촘촘한 밀도. 매일 보는 화면이라 이질감이 0에 가깝다.</p>
+<div class="stage sA">
+  <div class="top"><b>한빛은행</b> 집계 실습 단말 <span class="id">화면번호 SBT-0210 · 교육망 · 가상데이터</span></div>
+  <div class="tabs"><span>01 테이블조회</span><span class="on">02 문제1 추천실적</span><span>03 문제2 페이지뷰</span><span>04 자유조회</span></div>
+  <div class="body">
+    <div class="box">
+      <div class="boxh">카드 가입권유 실적 상위 10명 <span class="code">[요건 SBT-Q1]</span></div>
+      <table class="req">
+        <tr><td>기간</td><td>2026-01-01 ~ 2026-06-30 (신청일 기준)</td></tr>
+        <tr><td>대상</td><td>카드 상품 · 재직 직원 / 실적은 정상(NORMAL) 건만, 취소는 별도 집계</td></tr>
+        <tr><td>순위</td><td>추천건수 기준 공동 순위 — 10위 동점자 전원 출력</td></tr>
+      </table>
+      <div class="btnrow"><button class="btn primary">실행＋채점(F8)</button><button class="btn">AI 요청문 복사(F2)</button><button class="btn">지우기(F5)</button></div>
+      <div class="verd ok"><b>[정상]</b> 정답과 일치 — 12행 (숨은 검증 통과)</div>
+      <div class="verd warn"><b>[주의]</b> 상위 20개는 일치하나 전체 988행 중 376행 누락 — 기간조건 위치 확인</div>
+      <table class="res">
+        <tr><th>순위</th><th>사번</th><th>직원명</th><th>영업점명</th><th>추천건수</th><th>취소율(%)</th></tr>
+        <tr><td class="n">1</td><td>1000001</td><td>김하늘</td><td>한빛 본점</td><td class="n">52</td><td class="n">10.3</td></tr>
+        <tr><td class="n">1</td><td>1000023</td><td>양하람</td><td>한빛 부산서면지점</td><td class="n">52</td><td class="n">3.7</td></tr>
+        <tr><td class="n">3</td><td>1000007</td><td>윤노을</td><td>한빛 여의도지점</td><td class="n">47</td><td class="n">9.6</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ B ═══ -->
+<div class="sian" id="sB">
+<p class="desc"><b>B · 결재서류</b> — 종이 문서·품의서 문법. 명조 제목, 이중 괘선, 검정 표, 빨간 스탬프 판정. 인쇄해도 그대로인 톤.</p>
+<div class="stage sB">
+  <div class="stamp">일치</div>
+  <h1>집 계 실 습 서</h1>
+  <div class="docline"></div>
+  <div class="meta"><span>한빛은행 교육원 · 가상데이터</span><span>문서번호 2026-교육-08호</span></div>
+  <div class="tabs"><span>테이블</span><span class="on">문제 1</span><span>문제 2</span><span>자유조회</span></div>
+  <h2>카드 가입권유 실적 상위 10명</h2>
+  <table class="req">
+    <tr><td>기 간</td><td>2026년 1월 1일부터 6월 30일까지 (신청일 기준)</td></tr>
+    <tr><td>대 상</td><td>카드 상품에 한하며, 재직 직원의 정상(NORMAL) 건만 실적으로 인정한다</td></tr>
+    <tr><td>순 위</td><td>추천건수 기준 공동 순위로 하되, 10위 동점자는 전원 기재한다</td></tr>
+  </table>
+  <div class="paste">-- AI가 작성한 쿼리를 이 난에 붙여넣으시오</div>
+  <div class="btnrow"><button class="btn primary">실행 및 채점</button><button class="btn">AI 요청문 복사</button></div>
+  <div class="verd">판정 : <b class="ok">일치 (12행)</b> — 숨은 검증(988행 · 무조회 376면) 통과 &nbsp;·&nbsp; 불일치 시 <b class="no">붉은 인</b>, 부분 일치 시 <b class="wa">보류 인</b>을 찍는다</div>
+  <table class="res">
+    <tr><th>순위</th><th>사번</th><th>성명</th><th>영업점</th><th>추천건수</th><th>취소율(%)</th></tr>
+    <tr><td class="n">1</td><td>1000001</td><td>김하늘</td><td>한빛 본점</td><td class="n">52</td><td class="n">10.3</td></tr>
+    <tr><td class="n">1</td><td>1000023</td><td>양하람</td><td>한빛 부산서면지점</td><td class="n">52</td><td class="n">3.7</td></tr>
+    <tr><td class="n">3</td><td>1000007</td><td>윤노을</td><td>한빛 여의도지점</td><td class="n">47</td><td class="n">9.6</td></tr>
+  </table>
+</div>
+</div>
+
+<!-- ═══ C ═══ -->
+<div class="sian" id="sC">
+<p class="desc"><b>C · 단말 콘솔</b> — SQL*Plus 세대의 감성. 다크 스크린, 모노스페이스, 그린 프롬프트. 개발 직군 대상 세션에 잘 맞는다.</p>
+<div class="stage sC">
+  <div class="bar"><b>HANBIT-EDU</b> sqlplus 교육접속 <span>가상데이터</span><span class="r">● 접속됨</span></div>
+  <div class="wrap">
+<span class="dim">한빛은행 집계 실습 콘솔 — 도움말은 help, 문제는 tab 키</span><br>
+<div class="tabs"><span>[1]테이블</span> <span class="on">[2]문제1</span> <span>[3]문제2</span> <span>[4]자유조회</span></div>
+<span class="hr">──────────────────────────────────────────────────────────</span><br>
+<span class="p">문제1&gt;</span> <span class="cmd">카드 가입권유 실적 상위 10명</span><br>
+<span class="dim">  기간 2026-01-01~06-30 · 카드만 · 재직만 · NORMAL만 실적 · 공동순위, 10위 동점 전원출력</span><br><br>
+<textarea readonly>-- AI가 짜준 쿼리를 붙여넣고 [실행+채점]
+WITH agg AS ( SELECT r.ref_emp_no, SUM(CASE WHEN r.ref_status='NORMAL' THEN 1 ELSE 0 END) 추천건수 ...</textarea>
+<button class="btn primary">실행+채점 ⏎</button> <button class="btn">AI 요청문 복사</button><br><br>
+<span class="ok">✔ PASS</span> <span class="dim">—</span> 정답과 일치 (12행) · 숨은검증 988/376 통과<br>
+<span class="wa">▲ WARN</span> <span class="dim">—</span> 상위20 일치, 전체 612행: 기간조건이 WHERE에 있음<br>
+<span class="no">✘ FAIL</span> <span class="dim">—</span> 10행: LIMIT 사용으로 공동 10위 일부 잘림<br>
+<table class="res">
+<tr><th>순위</th><th>사번</th><th>직원명</th><th>영업점</th><th>추천건수</th><th>취소율</th></tr>
+<tr><td class="n">1</td><td>1000001</td><td>김하늘</td><td>한빛 본점</td><td class="n">52</td><td class="n">10.3</td></tr>
+<tr><td class="n">1</td><td>1000023</td><td>양하람</td><td>한빛 부산서면지점</td><td class="n">52</td><td class="n">3.7</td></tr>
+<tr><td class="n">3</td><td>1000007</td><td>윤노을</td><td>한빛 여의도지점</td><td class="n">47</td><td class="n">9.6</td></tr>
+</table><br>
+<span class="p">문제1&gt;</span> <span style="border-left:8px solid #67c23a">&nbsp;</span>
+  </div>
+</div>
+</div>
+
+<!-- ═══ D ═══ -->
+<div class="sian" id="sD">
+<p class="desc"><b>D · 학습교재</b> — 사내 연수원 교재 문법. 아이보리 지면, 남색 잉크, 형광펜 강조. 비개발자 눈높이에 가장 부드럽다.</p>
+<div class="stage sD">
+  <div class="unit">UNIT 02</div>
+  <h1>AI에게 집계를 시켜보자</h1>
+  <div class="rule"></div>
+  <div class="tabs"><span>테이블 살펴보기</span><span class="on">문제 1 · 추천 실적</span><span>문제 2 · 페이지뷰</span><span>자유 조회</span></div>
+  <p class="say">영업기획부에서 급한 부탁이 왔습니다. <mark>"상반기 카드 추천 실적 상위 10명"</mark>을 뽑아야 하는데,
+  단순히 10줄을 자르면 <mark>10위 동점자가 잘려 나갑니다.</mark> AI가 이 함정을 피하는지 확인해 봅시다.</p>
+  <table class="req">
+    <tr><td>기간</td><td>2026-01-01 ~ 2026-06-30 (신청일)</td></tr>
+    <tr><td>대상</td><td>카드 상품 · 재직 직원 — 정상(NORMAL) 건만 실적</td></tr>
+    <tr><td>순위</td><td>추천건수 기준 공동 순위, 10위 동점자 전원 출력</td></tr>
+  </table>
+  <div class="stepline"><b>1</b>요청문 복사 → <b>2</b>사내 AI에게 붙여넣기 → <b>3</b>받은 쿼리를 아래에</div>
+  <div class="paste">-- AI가 만들어 준 쿼리를 여기 붙여넣으세요</div>
+  <button class="btn">실행하고 채점받기</button> <button class="btn sub">AI 요청문 복사</button>
+  <div class="verd ok"><b>참 잘했어요 ✓</b> — 정답과 일치합니다 (12행). 숨은 검증까지 통과!</div>
+  <div class="verd wa"><b>거의 다 왔어요 △</b> — 상위 20개는 맞지만 0건 페이지 376개가 사라졌어요. 기간 조건의 위치를 다시 보세요.</div>
+  <table class="res">
+    <tr><th>순위</th><th>사번</th><th>직원명</th><th>영업점</th><th>추천건수</th><th>취소율(%)</th></tr>
+    <tr><td class="n">1</td><td>1000001</td><td>김하늘</td><td>한빛 본점</td><td class="n">52</td><td class="n">10.3</td></tr>
+    <tr><td class="n">1</td><td>1000023</td><td>양하람</td><td>한빛 부산서면지점</td><td class="n">52</td><td class="n">3.7</td></tr>
+    <tr><td class="n">3</td><td>1000007</td><td>윤노을</td><td>한빛 여의도지점</td><td class="n">47</td><td class="n">9.6</td></tr>
+  </table>
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.picker button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.picker button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.sian').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s'+b.dataset.s).classList.add('on');
+});
+</script>
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "_comment": "관리자 화면 기능 토글. 실습용 가짜 설정",
+  "flags": {
+    "showDepartmentBreakdown": false,
+    "allowBulkCancel": true,
+    "enableNewCalendar": false,
+    "exportToExcel": true,
+    "showLegacyToast": false
+  },
+  "updatedAt": "2026-07-15",
+  "owner": "backend-team"
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>roombook — 회의실 예약</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>회의실 예약</h1>
+    <nav>
+      <a href="pages/booking-form.html">새 예약</a>
+      <a href="pages/my-reservations.html">내 예약</a>
+      <a href="pages/admin/dashboard-panel.html">관리자</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <div id="calendar-root"></div>
+  </main>
+
+  <script src="components/calendar-widget.js"></script>
+  <script src="components/modals/confirm-dialog.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

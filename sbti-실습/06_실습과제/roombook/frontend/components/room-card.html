@@ -1,0 +1,10 @@
+<!-- 회의실 카드 조각 — app.js 가 문자열로 조립해 쓴다 -->
+<div class="room-card" data-room-id="{{ROOM_ID}}">
+  <b class="room-name">{{ROOM_NAME}}</b>
+  <p class="room-meta">{{FLOOR}}층 · 정원 {{CAPACITY}}명</p>
+  <div class="room-slots">
+    <span class="slot free">{{SLOT_1}}</span>
+    <span class="slot taken">{{SLOT_2}}</span>
+  </div>
+  <button class="btn-book" data-action="book">예약</button>
+</div>

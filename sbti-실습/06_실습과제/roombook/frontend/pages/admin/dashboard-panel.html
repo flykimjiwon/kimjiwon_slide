@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>관리자 — roombook</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <h2>관리자 대시보드</h2>
+
+  <section class="stat-row">
+    <div><b id="stat-total">-</b><span>전체 예약</span></div>
+    <div><b id="stat-today">-</b><span>오늘 예약</span></div>
+    <div><b id="stat-rooms">-</b><span>회의실</span></div>
+  </section>
+
+  <section>
+    <h3>회의실별 이용률</h3>
+    <div id="usage-chart"></div>
+  </section>
+
+  <script src="usage-report.js"></script>
+</body>
+</html>

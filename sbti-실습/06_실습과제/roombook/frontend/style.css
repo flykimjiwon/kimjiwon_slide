@@ -1,0 +1,23 @@
+/* roombook 기본 스타일 */
+:root {
+  --brand: #0066cc;
+  --line: #e2e7ee;
+  --text: #1a1a1a;
+  --muted: #5f6672;
+}
+
+body { margin: 0; font-family: system-ui, sans-serif; color: var(--text); }
+
+.topbar {
+  display: flex; align-items: center; gap: 24px;
+  padding: 14px 24px; border-bottom: 1px solid var(--line);
+}
+.topbar h1 { font-size: 18px; margin: 0; }
+.topbar nav a { margin-right: 14px; color: var(--brand); text-decoration: none; }
+
+.room-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.room-card.full { opacity: .5; }
+
+.slot { display: inline-block; padding: 6px 10px; border-radius: 999px; }
+.slot.free { background: #eff6ff; color: var(--brand); }
+.slot.taken { background: #f1f5f9; color: var(--muted); }

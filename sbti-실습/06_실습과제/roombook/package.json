@@ -1,0 +1,15 @@
+{
+  "name": "roombook",
+  "version": "0.4.2",
+  "private": true,
+  "description": "사내 회의실 예약 시스템 (교육 실습용 가상 프로젝트)",
+  "scripts": {
+    "dev": "node backend/server.js",
+    "batch:sync": "python3 backend/services/batch/nightly-sync.py",
+    "db:migrate": "psql -f database/migrations/001-create-rooms.sql"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  }
+}
