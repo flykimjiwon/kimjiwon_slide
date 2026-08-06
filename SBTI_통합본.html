@@ -81,11 +81,26 @@
   }
   go(start, false);
 
-  // 숫자키 1~5로 섹션 전환 (포커스가 뷰어에 있을 때)
+  // 덱들은 키보드(←→·PageDown)로 넘긴다 — 키가 덱에 닿도록 포커스를 항상 iframe에 둔다.
+  function focusStage(){
+    try { stage.contentWindow.focus(); } catch(e) { stage.focus(); }
+  }
+  stage.addEventListener("load", focusStage);
+  addEventListener("load", focusStage);
+  // 메뉴 클릭 등으로 포커스가 부모로 왔을 때: 넘김 키가 부모에 떨어지면 즉시 iframe으로 돌려준다.
   addEventListener("keydown", e => {
     const n = parseInt(e.key, 10);
-    if (n >= 1 && n <= SECTIONS.length) go(SECTIONS[n-1].key);
+    if (n >= 1 && n <= SECTIONS.length) { go(SECTIONS[n-1].key); return; }
+    if (["ArrowRight","ArrowLeft","PageDown","PageUp"," ","Enter"].includes(e.key)) {
+      focusStage();
+      try { // 같은 출처로 접근 가능한 브라우저에선 이번 키도 그대로 전달
+        stage.contentDocument.dispatchEvent(new KeyboardEvent("keydown",
+          { key:e.key, code:e.code, bubbles:true }));
+        e.preventDefault();
+      } catch(err) {} // 접근 불가면 포커스만 이관 — 다음 키부터 덱이 받는다
+    }
   });
+  document.getElementById("nav").addEventListener("mouseleave", focusStage);
 </script>
 </body>
 </html>
