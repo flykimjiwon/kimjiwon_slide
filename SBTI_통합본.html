@@ -46,7 +46,6 @@
     { key:"sbti3",  label:"3일차 · 활용 사례",        src:"sbti3/index.html"  },
     { key:"easyai", label:"EASY AI · 용어사전",       src:"easyai/index.html" },
   ];
-  const PDF = "SBTI_통합본_2026-08-05.pdf";
   const stage = document.getElementById("stage");
   const menu  = document.getElementById("menu");
   const cur   = document.getElementById("cur");
@@ -70,9 +69,7 @@
     a.addEventListener("click", e => { e.preventDefault(); go(s.key); });
     menu.appendChild(a);
   });
-  const pdf = document.createElement("a");
-  pdf.href = PDF; pdf.className = "pdf"; pdf.textContent = "PDF ↓"; pdf.target = "_blank";
-  menu.appendChild(pdf);
+  // PDF 통합본은 용량 정책으로 저장소에서 제거됨(233f9e5) — 버튼도 함께 제거.
 
   // 시작 섹션: URL 해시 > 마지막 열람 > 표지
   let start = (location.hash || "").replace("#","");
