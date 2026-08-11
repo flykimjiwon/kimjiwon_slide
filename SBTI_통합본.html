@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>S.B.T.I 통합본 — 표지 + 강의 3종 + EASY AI</title>
+<link rel="icon" type="image/svg+xml" href="cover/assets/techai-code-favicon.svg"/>
+<style>
+  /* 원본 덱을 iframe에 그대로 띄우는 통합 뷰어.
+     덱 내부 렌더링에는 일절 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151922}
+  #stage{position:absolute;inset:0;border:0;width:100%;height:100%}
+
+  #nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:10;
+       font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  #handle{display:flex;align-items:center;gap:8px;justify-content:center;cursor:default;
+          background:rgba(17,24,39,.92);color:#c7d2fe;border:1px solid rgba(255,255,255,.14);
+          border-radius:999px;padding:7px 16px;font-size:12px;font-weight:800;letter-spacing:.08em;
+          box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap;user-select:none}
+  #handle b{color:#7ab2ff}
+  #menu{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+        background:rgba(17,24,39,.96);border:1px solid rgba(255,255,255,.14);border-radius:14px;
+        padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.5);white-space:nowrap}
+  #nav:hover #menu{display:flex;gap:6px}
+  #menu a{display:block;color:#dbeafe;text-decoration:none;font-size:12.5px;font-weight:800;
+          padding:9px 14px;border-radius:9px;letter-spacing:.02em}
+  #menu a:hover{background:rgba(255,255,255,.09)}
+  #menu a.active{background:#0a84ff;color:#fff}
+  #menu a.pdf{color:#8bbcff;border:1px dashed rgba(139,188,255,.45)}
+  #menu a.pdf:hover{background:rgba(10,132,255,.15)}
+</style>
+</head>
+<body>
+<iframe id="stage" src="cover/index.html" title="슬라이드"></iframe>
+
+<nav id="nav">
+  <div id="menu"></div>
+  <div id="handle">☰ <b id="cur">표지</b>&nbsp;· S.B.T.I 통합본</div>
+</nav>
+
+<script>
+  const SECTIONS = [
+    { key:"cover",  label:"표지",                    src:"cover/index.html"  },
+    { key:"sbti1",  label:"1일차 · AI 코딩 트렌드",   src:"sbti1/index.html"  },
+    { key:"sbti2",  label:"2일차 · 택가이 코드 소개", src:"sbti2/index.html"  },
+    { key:"sbti3",  label:"3일차 · 활용 사례",        src:"sbti3/index.html"  },
+    { key:"easyai", label:"EASY AI · 용어사전",       src:"easyai/index.html" },
+  ];
+  const stage = document.getElementById("stage");
+  const menu  = document.getElementById("menu");
+  const cur   = document.getElementById("cur");
+
+  function go(key, push){
+    const s = SECTIONS.find(x => x.key === key) || SECTIONS[0];
+    stage.src = s.src;
+    cur.textContent = s.label;
+    document.title = "S.B.T.I 통합본 — " + s.label;
+    menu.querySelectorAll("a[data-key]").forEach(a =>
+      a.classList.toggle("active", a.dataset.key === s.key));
+    try { localStorage.setItem("sbti-unified-section", s.key); } catch(e){}
+    if (push !== false) {
+      try { history.replaceState(null, "", "#" + s.key); } catch(e){}
+    }
+  }
+
+  SECTIONS.forEach(s => {
+    const a = document.createElement("a");
+    a.href = "#" + s.key; a.dataset.key = s.key; a.textContent = s.label;
+    a.addEventListener("click", e => { e.preventDefault(); go(s.key); });
+    menu.appendChild(a);
+  });
+  // PDF 통합본은 용량 정책으로 저장소에서 제거됨(233f9e5) — 버튼도 함께 제거.
+
+  // 시작 섹션: URL 해시 > 마지막 열람 > 표지
+  let start = (location.hash || "").replace("#","");
+  if (!SECTIONS.some(s => s.key === start)) {
+    try { start = localStorage.getItem("sbti-unified-section") || "cover"; } catch(e){ start = "cover"; }
+  }
+  go(start, false);
+
+  // 덱들은 키보드(←→·PageDown)로 넘긴다 — 키가 덱에 닿도록 포커스를 항상 iframe에 둔다.
+  function focusStage(){
+    try { stage.contentWindow.focus(); } catch(e) { stage.focus(); }
+  }
+  stage.addEventListener("load", focusStage);
+  addEventListener("load", focusStage);
+  // 메뉴 클릭 등으로 포커스가 부모로 왔을 때: 넘김 키가 부모에 떨어지면 즉시 iframe으로 돌려준다.
+  addEventListener("keydown", e => {
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= SECTIONS.length) { go(SECTIONS[n-1].key); return; }
+    if (["ArrowRight","ArrowLeft","PageDown","PageUp"," ","Enter"].includes(e.key)) {
+      focusStage();
+      try { // 같은 출처로 접근 가능한 브라우저에선 이번 키도 그대로 전달
+        stage.contentDocument.dispatchEvent(new KeyboardEvent("keydown",
+          { key:e.key, code:e.code, bubbles:true }));
+        e.preventDefault();
+      } catch(err) {} // 접근 불가면 포커스만 이관 — 다음 키부터 덱이 받는다
+    }
+  });
+  document.getElementById("nav").addEventListener("mouseleave", focusStage);
+</script>
+</body>
+</html>
