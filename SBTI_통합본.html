@@ -69,7 +69,10 @@
     a.addEventListener("click", e => { e.preventDefault(); go(s.key); });
     menu.appendChild(a);
   });
-  // PDF 통합본은 용량 정책으로 저장소에서 제거됨(233f9e5) — 버튼도 함께 제거.
+  const pdf = document.createElement("a");
+  pdf.href = "SBTI_통합본_픽셀크루_2026-08-10.pdf"; pdf.className = "pdf";
+  pdf.textContent = "PDF ↓"; pdf.target = "_blank";
+  menu.appendChild(pdf);
 
   // 시작 섹션: URL 해시 > 마지막 열람 > 표지
   let start = (location.hash || "").replace("#","");
