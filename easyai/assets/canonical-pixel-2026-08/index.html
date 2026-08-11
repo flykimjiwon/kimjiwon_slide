@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="EASY AI 용어사전의 기존 픽셀 유령 그림체를 기준으로 만든 30개 개념·90점 확장 정본 삽화 갤러리">
-  <title>EASY AI 정본 픽셀 삽화 90점</title>
+  <meta name="description" content="EASY AI 용어사전의 30개 개념을 픽셀 구성도와 시인성 우선 다이어그램으로 비교하는 540점 삽화 갤러리">
+  <title>EASY AI 정본·개념 비유 삽화 540점</title>
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="01-context-window-wide.png" imagesrcset="01-context-window-wide.png 1672w">
   <style>
@@ -25,6 +25,7 @@
       --focus-ring: rgba(24, 215, 242, .18);
       --dialog-backdrop: rgba(1, 5, 13, .76);
       --space-1: 4px;
+      --space-half: 2px;
       --space-2: 8px;
       --space-3: 12px;
       --space-4: 16px;
@@ -41,6 +42,7 @@
       --text-section: clamp(21px, 3vw, 30px);
       --text-body: 16px;
       --text-meta: 13px;
+      --text-meta-small: 11px;
       --motion: 160ms ease-out;
     }
 
@@ -105,7 +107,10 @@
     }
     .control-panel p { margin: 0; color: var(--muted); }
     .status { color: var(--yellow); }
-    .filterbar { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .filter-groups { display: grid; gap: var(--space-2); justify-items: end; }
+    .filter-group { display: grid; gap: var(--space-1); justify-items: end; }
+    .filter-label { margin: 0; color: var(--muted); font-family: var(--font-mono); font-size: var(--text-meta-small); letter-spacing: .04em; }
+    .filterbar { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: flex-end; }
     .filter { color: var(--muted); background: transparent; }
     .filter[aria-pressed="true"] { color: var(--navy); border-color: var(--cyan); background: var(--cyan); }
 
@@ -122,7 +127,14 @@
     .concept-number { margin: 0 0 var(--space-1); color: var(--cyan); font-family: var(--font-mono); font-size: var(--text-meta); }
     h2 { margin-bottom: var(--space-1); font-size: var(--text-section); line-height: 1.16; letter-spacing: -.035em; }
     .concept-head p { margin: 0; color: var(--muted); font-size: var(--text-meta); }
+    .variant-list { display: grid; gap: var(--space-3); padding: var(--space-3); }
+    .variant-block { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--canvas); }
+    .variant-block[hidden] { display: none; }
+    .variant-head { display: grid; gap: var(--space-half); padding: var(--space-3); border-bottom: 1px solid var(--line); background: var(--navy-2); }
+    .variant-head strong { color: var(--cyan); font-size: var(--text-meta); }
+    .variant-head span { color: var(--muted); font-size: var(--text-meta-small); }
     .asset-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); padding: var(--space-3); }
+    .asset-list-single { grid-template-columns: 1fr; }
     .asset-card {
       min-width: 0;
       overflow: hidden;
@@ -141,10 +153,11 @@
     .asset-card[data-ratio="wide"] .asset-media { aspect-ratio: 1672 / 941; }
     .asset-card[data-ratio="square"] .asset-media { aspect-ratio: 1; }
     .asset-card[data-ratio="portrait"] .asset-media { aspect-ratio: 753 / 941; }
-    img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
-    .asset-meta { display: grid; gap: 2px; padding: var(--space-2); background: var(--navy-2); }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .asset-card[data-treatment="pixel"] img { image-rendering: pixelated; }
+    .asset-meta { display: grid; gap: var(--space-half); padding: var(--space-2); background: var(--navy-2); }
     .asset-meta strong { font-size: var(--text-meta); }
-    .asset-meta span { color: var(--muted); font-size: 11px; }
+    .asset-meta span { color: var(--muted); font-size: var(--text-meta-small); }
 
     .guide {
       display: grid;
@@ -173,6 +186,7 @@
     @media (max-width: 960px) {
       .concept-grid { grid-template-columns: 1fr; }
       .asset-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .asset-list.asset-list-single { grid-template-columns: 1fr; }
     }
     @media (max-width: 680px) {
       .shell { width: min(100% - var(--space-6), 1180px); }
@@ -183,6 +197,9 @@
       .asset-card .asset-media img { height: auto; object-fit: contain; }
       .asset-meta { align-content: center; }
       .control-panel { align-items: flex-start; }
+      .filter-groups { justify-items: start; }
+      .filter-group { justify-items: start; }
+      .filterbar { justify-content: flex-start; }
       .preview-head { align-items: flex-start; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
@@ -191,10 +208,11 @@
 <body>
   <header class="hero">
     <div class="shell">
-      <p class="eyebrow">EASY AI / CANONICAL PIXEL ART SET</p>
-      <h1>기존 그림체 기준<br><em>정본 삽화 90점</em></h1>
-      <p class="lead">라이브 <code>/sbti4</code> 표지의 큰 사각 픽셀·친근한 <span class="keep">유령 작업자</span>·청록 직각 신호선 문법으로 만든 30개 개념 × 3개 비율 세트입니다. 기존 27점은 유지하고, <span class="keep">MCP · A2A · 하네스 · 지식 시스템</span> 장면 54점과 기존 개념을 다시 해석한 픽셀크루 장면 9점을 더했습니다.</p>
+      <p class="eyebrow">EASY AI / CONCEPT VISUAL SYSTEM</p>
+      <h1>개념은 같게, 표현은 넓게<br><em>정본 · 개념 비유 540점</em></h1>
+      <p class="lead">기존 <span class="keep">픽셀 구성도 270점</span>은 그대로 보존하고, 같은 30개 개념·정본·구조 비유 A·일상 비유 B를 둥근 도형과 명확한 연결선으로 다시 그린 <span class="keep">시인성 우선 270점</span>을 더했습니다. 가로·정사각·세로에서 두 처리 방식을 바로 비교할 수 있습니다.</p>
       <nav class="hero-links" aria-label="관련 페이지">
+        <a href="?treatment=clarity">시인성 우선 270점 보기</a>
         <a href="https://kimjiwon-slide.vercel.app/sbti4" target="_blank" rel="noreferrer">라이브 그림체 기준 보기</a>
         <a href="../expansion-2026-08/index.html">이전 후보 27점 보존본</a>
       </nav>
@@ -204,23 +222,36 @@
   <main class="shell">
     <section class="control-panel" aria-labelledby="gallery-control-title">
       <div>
-        <p id="gallery-control-title" class="status">CURRENT / CANONICAL · 90 ASSETS</p>
-        <p id="result-count" aria-live="polite">30개 개념, 90개 이미지가 표시됩니다.</p>
+        <p id="gallery-control-title" class="status">CURRENT / PIXEL + CLARITY · 540 ASSETS</p>
+        <p id="result-count" aria-live="polite">30개 개념, 540개 이미지가 표시됩니다.</p>
       </div>
-      <nav class="filterbar" aria-label="삽화 비율 필터" role="group">
-        <button class="filter" type="button" data-filter="all" aria-pressed="true">전체 90</button>
-        <button class="filter" type="button" data-filter="wide" aria-pressed="false">가로 30</button>
-        <button class="filter" type="button" data-filter="square" aria-pressed="false">정사각 30</button>
-        <button class="filter" type="button" data-filter="portrait" aria-pressed="false">세로 30</button>
-      </nav>
+      <div class="filter-groups">
+        <div class="filter-group"><p class="filter-label">표현 방식</p><nav class="filterbar" aria-label="삽화 처리 방식 필터" role="group">
+          <button class="filter" type="button" data-treatment-filter="all" aria-pressed="true">전체 그림체 540</button>
+          <button class="filter" type="button" data-treatment-filter="pixel" aria-pressed="false">픽셀 270</button>
+          <button class="filter" type="button" data-treatment-filter="clarity" aria-pressed="false">시인성 270</button>
+        </nav></div>
+        <div class="filter-group"><p class="filter-label">개념 버전</p><nav class="filterbar" aria-label="삽화 버전 필터" role="group">
+          <button class="filter" type="button" data-version-filter="all" aria-pressed="true">전체 버전 540</button>
+          <button class="filter" type="button" data-version-filter="canonical" aria-pressed="false">정본 180</button>
+          <button class="filter" type="button" data-version-filter="metaphor-a" aria-pressed="false">비유 A 180</button>
+          <button class="filter" type="button" data-version-filter="metaphor-b" aria-pressed="false">비유 B 180</button>
+        </nav></div>
+        <div class="filter-group"><p class="filter-label">캔버스 비율</p><nav class="filterbar" aria-label="삽화 비율 필터" role="group">
+          <button class="filter" type="button" data-ratio-filter="all" aria-pressed="true">전체 비율 540</button>
+          <button class="filter" type="button" data-ratio-filter="wide" aria-pressed="false">가로 180</button>
+          <button class="filter" type="button" data-ratio-filter="square" aria-pressed="false">정사각 180</button>
+          <button class="filter" type="button" data-ratio-filter="portrait" aria-pressed="false">세로 180</button>
+        </nav></div>
+      </div>
     </section>
 
-    <section id="concept-grid" class="concept-grid" aria-label="정본 삽화 목록"></section>
+    <section id="concept-grid" class="concept-grid" aria-label="삽화 목록"></section>
 
     <section class="guide" aria-label="채택 안내">
-      <div><strong>1. 한 지점에는 한 장</strong><p>같은 개념의 세 변형은 비교용입니다. 슬라이드 한 구간에는 우선 하나만 채택합니다.</p></div>
-      <div><strong>2. 픽셀을 보존</strong><p>최종 PNG의 정사각 픽셀과 여백 비율을 유지합니다. 세로 컷은 강제 왜곡하지 않았습니다.</p></div>
-      <div><strong>3. 원본과 후보는 유지</strong><p>기존 정본 27점과 본문 원본 삽화는 그대로 유지합니다. 이 폴더에는 54점 확장분과 원본 개념을 다시 해석한 픽셀크루 후보 9점을 별도로 보강했습니다.</p></div>
+      <div><strong>1. 한 지점에는 한 장</strong><p>각 개념의 정본·비유 A·비유 B와 세 비율, 두 처리 방식은 비교용입니다. 슬라이드 한 구간에는 우선 하나만 채택합니다.</p></div>
+      <div><strong>2. 표현 방식을 선택</strong><p>픽셀은 기존 라이브 표지의 분위기를, 시인성 우선은 도형과 연결 관계의 빠른 독해를 돕습니다. 설명하려는 문장에 맞춰 고릅니다.</p></div>
+      <div><strong>3. 원본과 후보는 유지</strong><p>기존 정본 90점과 픽셀 보강판 180점은 그대로 유지합니다. 같은 구조를 부드러운 다이어그램으로 풀어낸 시인성 우선 270점만 별도로 더했습니다.</p></div>
     </section>
   </main>
 
@@ -273,9 +304,49 @@
       { key: "square", label: "정사각", dimensions: "1:1 · 941×941" },
       { key: "portrait", label: "세로", dimensions: "4:5 · 753×941" }
     ];
-    const allAssets = concepts.flatMap((concept) => ratios.map((ratio, ratioIndex) => ({
-      ...ratio, concept, alt: concept.alts[ratioIndex], file: `${concept.number}-${concept.slug}-${ratio.key}.png`, caption: `${concept.title} · ${ratio.label} 정본`
+    const metaphorLabels = new Map([
+      ["01", ["작업창 · 용량 블록", "여행 가방 · 필수 짐"]], ["02", ["나침반 · 근거 문서", "닻 · 떠다니는 주장"]], ["03", ["작업대 · 되먹임 벨트", "탐험 지도 · 재탐색"]],
+      ["04", ["교환대 · 도구 포트", "열쇠고리 · 서비스 선택"]], ["05", ["안전 레일 · 통과 경로", "체 · 위험 조각 거르기"]], ["06", ["릴레이 · 결과 전달", "배차대 · 역할 분배"]],
+      ["07", ["도서 선반 · 돋보기 선택", "탐정 지도 · 단서 회수"]], ["08", ["깔때기 · 요약 카드", "압축 프레스 · 기억 큐브"]], ["09", ["공구 벽 · 지식 코어", "기록 보관소 · 다시 찾기"]],
+      ["10", ["전원 패널 · 서버 조립", "조립 선반 · 모듈 쌓기"]], ["11", ["세 서랍 · 핵심 부품", "작업대 · 도구와 자원"]], ["12", ["다리 · 양쪽 연결", "엘리베이터 · 세션 이동"]],
+      ["13", ["명함 교환 · 역할 발견", "역할 명부 · 적합한 상대"]], ["14", ["열쇠 카드 · 출입문", "검문소 · 허가된 통과"]], ["15", ["틀 · 조각이 맞춰짐", "분류함 · 형식별 정리"]],
+      ["16", ["수리대 · 다시 작동", "나선 계단 · 체크포인트"]], ["17", ["파이프 · 신호가 흐름", "화물 열차 · 순서 전달"]], ["18", ["지도 교차로 · 작업 길", "주문 패스 · 전문 작업대"]],
+      ["19", ["나무 가지 · 작업 분기", "팀 보드 · 작은 작업 칸"]], ["20", ["회전문 · 사람 확인", "검토 책상 · 승인 도장"]], ["21", ["실험실 · 통과와 실패", "검사대 · 비교 스캔"]],
+      ["22", ["빵부스러기 · 실행 흔적", "재생 화면 · 사건 되짚기"]], ["23", ["수족관 · 안쪽만 실행", "울타리 · 위험 반사"]], ["24", ["퍼즐 타일 · 가까운 조각", "서가 좌표 · 빠른 검색"]],
+      ["25", ["철도 분기 · 알맞은 모델", "우편 분류 · 목적지 선택"]], ["26", ["식료품 선반 · 바로 꺼내기", "코트 보관소 · 재사용 회수"]], ["27", ["씨앗 · 자라서 보관", "우편함 · 보존과 폐기"]],
+      ["28", ["모닥불 · 팀 상황 공유", "화이트보드 · 역할 정렬"]], ["29", ["바통 릴레이 · 도구와 위임", "양동이 줄 · 연결된 전달"]], ["30", ["장애물 코스 · 순차 검증", "보안 검색 · 안전한 출발"]]
+    ]);
+    const baseVersionsFor = (concept) => {
+      const [metaphorA, metaphorB] = metaphorLabels.get(concept.number);
+      return [
+        { key: "canonical", label: "정본 · 기존 구성도", blurb: "원래의 시스템 관계를 직접 보여 주는 기준 장면" },
+        { key: "metaphor-a", label: `비유 A · ${metaphorA}`, blurb: "작동 관계를 한 번 더 명확히 풀어낸 장면" },
+        { key: "metaphor-b", label: `비유 B · ${metaphorB}`, blurb: "일상 사물의 관계로 직관을 보강한 장면" }
+      ];
+    };
+    const treatments = [
+      { key: "pixel", label: "픽셀 구성도", blurb: "기존 픽셀크루의 직각 신호선과 사각 실루엣을 유지" },
+      { key: "clarity", label: "시인성 우선", blurb: "둥근 도형과 또렷한 연결선으로 관계를 빠르게 읽게 함" }
+    ];
+    const versionsFor = (concept) => baseVersionsFor(concept).flatMap((base) => treatments.map((treatment) => ({
+      ...base,
+      treatment: treatment.key,
+      treatmentLabel: treatment.label,
+      label: `${base.label} · ${treatment.label}`,
+      blurb: `${base.blurb}. ${treatment.blurb}.`
     })));
+    const fileFor = (concept, version, ratio) => {
+      if (version.treatment === "clarity") return `${concept.number}-${concept.slug}-${version.key}-clarity-${ratio.key}.png`;
+      return version.key === "canonical" ? `${concept.number}-${concept.slug}-${ratio.key}.png` : `${concept.number}-${concept.slug}-${version.key}-${ratio.key}.png`;
+    };
+    const allAssets = concepts.flatMap((concept) => versionsFor(concept).flatMap((version) => ratios.map((ratio, ratioIndex) => ({
+      ...ratio,
+      concept,
+      version,
+      alt: version.treatment === "pixel" && version.key === "canonical" ? concept.alts[ratioIndex] : `${concept.title}를 ${version.label.replace("비유 A · ", "").replace("비유 B · ", "").replace(" · 픽셀 구성도", "").replace(" · 시인성 우선", "")}로 설명한 ${ratio.label} ${version.treatment === "clarity" ? "고가독성 다이어그램" : "픽셀 장면"}`,
+      file: fileFor(concept, version, ratio),
+      caption: `${concept.title} · ${version.label} · ${ratio.label}`
+    }))));
     const grid = document.querySelector("#concept-grid");
     const resultCount = document.querySelector("#result-count");
     const dialog = document.querySelector("#preview-dialog");
@@ -283,32 +354,48 @@
     const previewTitle = document.querySelector("#preview-title");
     const previewCaption = document.querySelector("#preview-caption");
     const previewCount = document.querySelector("#preview-count");
-    let activeFilter = "all";
+    let activeRatio = "all";
+    let activeVersion = "all";
+    const requestedTreatment = new URLSearchParams(window.location.search).get("treatment");
+    let activeTreatment = ["pixel", "clarity"].includes(requestedTreatment) ? requestedTreatment : "all";
     let activeIndex = 0;
     let opener = null;
 
     grid.innerHTML = concepts.map((concept) => {
-      const cards = ratios.map((ratio, ratioIndex) => {
-        const index = allAssets.findIndex((asset) => asset.concept.number === concept.number && asset.key === ratio.key);
-        const asset = allAssets[index];
-        const loading = index === 0 ? "eager" : "lazy";
-        const priority = index === 0 ? " fetchpriority=\"high\"" : "";
-        return `<button class="asset-card" type="button" data-index="${index}" data-ratio="${ratio.key}" aria-label="${concept.title} ${ratio.label} 이미지 확대"><figure><div class="asset-media"><img src="${asset.file}" width="${ratio.key === "wide" ? "1672\" height=\"941" : ratio.key === "square" ? "941\" height=\"941" : "753\" height=\"941"}" loading="${loading}" decoding="async"${priority} alt="${asset.alt}"></div><figcaption class="asset-meta"><strong>${ratio.label}</strong><span>${ratio.dimensions}</span></figcaption></figure></button>`;
+      const blocks = versionsFor(concept).map((version) => {
+        const cards = ratios.map((ratio) => {
+          const index = allAssets.findIndex((asset) => asset.concept.number === concept.number && asset.version.key === version.key && asset.version.treatment === version.treatment && asset.key === ratio.key);
+          const asset = allAssets[index];
+          const loading = index === 0 ? "eager" : "lazy";
+          const priority = index === 0 ? " fetchpriority=\"high\"" : "";
+          return `<button class="asset-card" type="button" data-index="${index}" data-ratio="${ratio.key}" data-version="${version.key}" data-treatment="${version.treatment}" aria-label="${asset.caption} 이미지 확대"><figure><div class="asset-media"><img src="${asset.file}" width="${ratio.key === "wide" ? "1672\" height=\"941" : ratio.key === "square" ? "941\" height=\"941" : "753\" height=\"941"}" loading="${loading}" decoding="async"${priority} alt="${asset.alt}"></div><figcaption class="asset-meta"><strong>${ratio.label}</strong><span>${ratio.dimensions}</span></figcaption></figure></button>`;
+        }).join("");
+        return `<section class="variant-block" data-version="${version.key}" data-treatment="${version.treatment}"><header class="variant-head"><strong>${version.label}</strong><span>${version.blurb}</span></header><div class="asset-list">${cards}</div></section>`;
       }).join("");
-      return `<article class="concept-card" data-concept="${concept.number}"><header class="concept-head"><p class="concept-number">${concept.number} / ${concept.category} / CANONICAL</p><h2>${concept.title}</h2><p>${concept.summary}</p></header><div class="asset-list">${cards}</div></article>`;
+      return `<article class="concept-card" data-concept="${concept.number}"><header class="concept-head"><p class="concept-number">${concept.number} / ${concept.category} / 3 VISUALS · 2 STYLES</p><h2>${concept.title}</h2><p>${concept.summary}</p></header><div class="variant-list">${blocks}</div></article>`;
     }).join("");
 
     function visibleIndexes() {
       return [...document.querySelectorAll(".asset-card")].filter((card) => !card.hidden).map((card) => Number(card.dataset.index));
     }
-    function applyFilter(nextFilter) {
-      activeFilter = nextFilter;
-      document.querySelectorAll(".filter").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === nextFilter)));
-      document.querySelectorAll(".asset-card").forEach((card) => { card.hidden = nextFilter !== "all" && card.dataset.ratio !== nextFilter; });
+    function applyFilters() {
+      document.querySelectorAll("[data-ratio-filter]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.ratioFilter === activeRatio)));
+      document.querySelectorAll("[data-version-filter]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.versionFilter === activeVersion)));
+      document.querySelectorAll("[data-treatment-filter]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.treatmentFilter === activeTreatment)));
+      document.querySelectorAll(".asset-card").forEach((card) => {
+        const ratioMatches = activeRatio === "all" || card.dataset.ratio === activeRatio;
+        const versionMatches = activeVersion === "all" || card.dataset.version === activeVersion;
+        const treatmentMatches = activeTreatment === "all" || card.dataset.treatment === activeTreatment;
+        card.hidden = !(ratioMatches && versionMatches && treatmentMatches);
+      });
+      document.querySelectorAll(".asset-list").forEach((list) => list.classList.toggle("asset-list-single", list.querySelectorAll(".asset-card:not([hidden])").length === 1));
+      document.querySelectorAll(".variant-block").forEach((block) => { block.hidden = !block.querySelector(".asset-card:not([hidden])"); });
       document.querySelectorAll(".concept-card").forEach((card) => { card.hidden = !card.querySelector(".asset-card:not([hidden])"); });
       const count = visibleIndexes().length;
-      const label = nextFilter === "all" ? "전체" : ratios.find((ratio) => ratio.key === nextFilter).label;
-      resultCount.textContent = `${label} ${count}개 이미지가 표시됩니다.`;
+      const ratioLabel = activeRatio === "all" ? "전체 비율" : ratios.find((ratio) => ratio.key === activeRatio).label;
+      const versionLabel = activeVersion === "all" ? "전체 버전" : activeVersion === "canonical" ? "정본" : activeVersion === "metaphor-a" ? "비유 A" : "비유 B";
+      const treatmentLabel = activeTreatment === "all" ? "전체 그림체" : activeTreatment === "pixel" ? "픽셀" : "시인성 우선";
+      resultCount.textContent = `${treatmentLabel} · ${versionLabel} · ${ratioLabel} ${count}개 이미지가 표시됩니다.`;
     }
     function renderPreview() {
       const asset = allAssets[activeIndex];
@@ -316,7 +403,7 @@
       const position = indexes.indexOf(activeIndex) + 1;
       previewImage.src = asset.file;
       previewImage.alt = asset.alt;
-      previewTitle.textContent = `${asset.concept.title} · ${asset.label}`;
+      previewTitle.textContent = `${asset.concept.title} · ${asset.version.label} · ${asset.label}`;
       previewCaption.textContent = `${asset.alt} ${asset.dimensions}`;
       previewCount.textContent = `${position} / ${indexes.length}`;
       document.querySelector("#preview-prev").disabled = indexes.length < 2;
@@ -336,13 +423,16 @@
       activeIndex = indexes[(current + direction + indexes.length) % indexes.length];
       renderPreview();
     }
-    document.querySelectorAll(".filter").forEach((button) => button.addEventListener("click", () => applyFilter(button.dataset.filter)));
+    document.querySelectorAll("[data-ratio-filter]").forEach((button) => button.addEventListener("click", () => { activeRatio = button.dataset.ratioFilter; applyFilters(); }));
+    document.querySelectorAll("[data-version-filter]").forEach((button) => button.addEventListener("click", () => { activeVersion = button.dataset.versionFilter; applyFilters(); }));
+    document.querySelectorAll("[data-treatment-filter]").forEach((button) => button.addEventListener("click", () => { activeTreatment = button.dataset.treatmentFilter; applyFilters(); }));
     grid.addEventListener("click", (event) => { const button = event.target.closest(".asset-card"); if (button) openPreview(Number(button.dataset.index), button); });
     document.querySelector("#preview-close").addEventListener("click", () => dialog.close());
     document.querySelector("#preview-prev").addEventListener("click", () => movePreview(-1));
     document.querySelector("#preview-next").addEventListener("click", () => movePreview(1));
     dialog.addEventListener("close", () => { if (opener) opener.focus(); });
     dialog.addEventListener("keydown", (event) => { if (event.key === "ArrowLeft") movePreview(-1); if (event.key === "ArrowRight") movePreview(1); });
+    applyFilters();
   </script>
 </body>
 </html>

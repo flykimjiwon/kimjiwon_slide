@@ -1,14 +1,15 @@
-# EASY AI 정본 픽셀 삽화 갤러리 Design System
+# EASY AI 정본·시인성 삽화 갤러리 Design System
 
-상위 디자인 시스템: [`../../DESIGN.md`](../../DESIGN.md), [`../../visual-options/DESIGN.md`](../../visual-options/DESIGN.md). 이 폴더는 이전 후보 팩을 교체하지 않고, 라이브 [`/sbti4`](https://kimjiwon-slide.vercel.app/sbti4) 표지의 픽셀 언어에 맞춰 만든 확장 정본 90점을 보관한다. 기존 27점, 2026-08-04에 추가한 54점, 그리고 본문 원본을 덮어쓰지 않는 픽셀크루 재해석 9점을 한 세트로 비교한다.
+상위 디자인 시스템: [`../../DESIGN.md`](../../DESIGN.md), [`../../visual-options/DESIGN.md`](../../visual-options/DESIGN.md). 이 폴더는 이전 후보 팩을 교체하지 않고, 라이브 [`/sbti4`](https://kimjiwon-slide.vercel.app/sbti4) 표지 언어의 픽셀 270점과 같은 개념 관계를 더 빠르게 읽게 하는 시인성 우선 270점을 함께 보관한다. 30개 개념마다 정본·비유 A·비유 B를 가로·정사각·세로로 제공하므로, 두 처리 방식은 각각 270점, 전체는 540점이다.
 
 ## 1. Atmosphere & Identity
 
-라이브 표지의 규칙은 유광·입체 게임 렌더가 아니라, 큰 정사각 픽셀을 쌓은 친근한 작업자 유령과 짙은 남색 도트 격자다. 모든 장면은 한 개의 기술 개념을 작은 교육용 도식처럼 읽히게 하며, 유령·카드·도구·신호선이 단순한 관계만 보여 준다. 확장 개념은 `MCP · PROTOCOL`, `AGENT SYSTEM`, `SAFETY · EVAL`, `KNOWLEDGE`, `CONTEXT`, `RUNTIME`, `PIXEL CREW · REDRAW`로 라벨링해 비교한다.
+두 처리 방식은 같은 개념·동일한 비유 A/B·동일한 세 비율을 공유한다. 픽셀 구성도는 큰 정사각 픽셀을 쌓은 친근한 작업자 유령과 짙은 남색 도트 격자를 유지한다. 시인성 우선 다이어그램은 유령 실루엣을 둥근 사람 노드와 사물별 선명한 아이콘으로 바꾸고, 밝은 표면·얇은 화살표·넉넉한 여백으로 관계를 먼저 읽게 한다. 모든 장면은 한 개의 기술 개념을 작은 교육용 도식처럼 읽히게 하며, 확장 개념은 `MCP · PROTOCOL`, `AGENT SYSTEM`, `SAFETY · EVAL`, `KNOWLEDGE`, `CONTEXT`, `RUNTIME`, `PIXEL CREW · REDRAW`로 라벨링해 비교한다.
 
-- **기억할 장면**: 청록 신호선이 체크 카드·도구·파란 제어 코어를 잇는 굵은 픽셀 회로
+- **기억할 장면**: 픽셀판은 청록 신호선이 체크 카드·도구·파란 제어 코어를 잇는 굵은 회로다. 시인성판은 같은 가방·나침반·선반·검문소 관계를 둥근 카드와 부드러운 연결 화살표로 보여 준다.
 - **사용자**: 삽화를 슬라이드에 채택하기 전에 비율과 개념을 빠르게 비교하는 발표자료 작성자
-- **안티 레퍼런스**: 부드러운 모서리, 유광 3D, 블러·그라데이션, 촘촘한 네온 UI, 이미지 안 텍스트
+- **안티 레퍼런스**: 유광 3D, 사진 질감, 과한 블러, 촘촘한 네온 UI, 이미지 안 텍스트. 픽셀판은 부드러운 모서리를 쓰지 않으며, 시인성판은 관계를 구분하는 정도의 둥근 모서리만 쓴다.
+- **재생성 원본**: `metaphor-catalogue.mjs`의 개념별 A·B 비유와 `render-semantic-pixel-variants.mjs`의 단색 사각형 렌더러가 픽셀 보강 180개를 재현한다. `clarity-catalogue.mjs`와 `render-clarity-diagrams.mjs`는 정본·비유 A·비유 B의 시인성 우선 270개를 재현하며, `clarity-tokens.mjs`가 해당 다이어그램의 색상 원본이다. `pixel-tokens.mjs`와 `semantic-glyphs.mjs`는 픽셀판의 팔레트와 사물 실루엣 원본이다.
 
 ## 2. Color
 
@@ -33,11 +34,15 @@
 | `--green` | `#4ade80` | 검증·권한 통과 표시 |
 | `--coral` | `#ff8787` | 오류·차단 위험 표시 |
 | `--art-ink` | `#1b2733` | 유령 눈·삽화의 가장 짙은 세부 |
+| `clarityColors.surface` | `#F3F8FA` | 시인성 우선 다이어그램의 밝은 배경 |
+| `clarityColors.ink` | `#173042` | 시인성 우선 다이어그램의 선명한 윤곽 |
+| `clarityColors.cyan` | `#19BFD0` | 시인성 우선 다이어그램의 연결 화살표 |
+| `clarityColors.line` | `#B9D2D9` | 시인성 우선 다이어그램의 카드 경계 |
 | `--shadow` | `rgba(0,0,0,.36)` | 갤러리 모달만의 실제 깊이 그림자 |
 | `--focus-ring` | `rgba(24,215,242,.18)` | 클릭 가능한 카드 hover 외곽광 |
 | `--dialog-backdrop` | `rgba(1,5,13,.76)` | 모달 뒤 실제 차광층 |
 
-이미지 렌더러와 갤러리는 위 토큰만 사용한다. `art-*`와 `--sky`·`--blue-deep`·`--green`·`--coral`은 PNG 전용의 단색 픽셀 토큰이고, 세 alpha 토큰은 실제 떠 있는 UI 상태에만 쓴다. `--canvas`에는 그라데이션·광택·안개를 추가하지 않으며, 최종 PNG는 단색 사각형만으로 렌더링한다.
+갤러리는 `--*` 토큰만 사용한다. `art-*`와 `--sky`·`--blue-deep`·`--green`·`--coral`은 PNG 전용의 단색 픽셀 토큰이고, `clarityColors`와 `clarityAccents`는 시인성 PNG 전용 토큰이다. 세 alpha 토큰은 실제 떠 있는 UI 상태에만 쓴다. 픽셀판은 단색 사각형만으로, 시인성판은 평평한 벡터 도형과 관계 화살표로 렌더링한다.
 
 ## 3. Typography
 
@@ -56,7 +61,7 @@
 
 - 기본 단위는 4px: `--space-1`(4px), `--space-2`(8px), `--space-3`(12px), `--space-4`(16px), `--space-5`(20px), `--space-6`(24px), `--space-8`(32px), `--space-10`(40px), `--space-12`(48px)이다.
 - 콘텐츠 최대폭은 1180px, 데스크톱 바깥 여백은 20px, 모바일은 12px이다.
-- `ConceptCard`는 960px 이상에서 2열, 그 아래는 1열이다. 내부 비율 카드 3개는 충분한 식별 폭을 확보한 뒤 모바일에서 1열로 전환하며, 가로·정사각·세로 원본의 실제 비율을 유지해 잘라 보이지 않아야 한다.
+- `ConceptCard`는 960px 이상에서 2열, 그 아래는 1열이다. 각 카드 안에는 정본·비유 A·비유 B의 픽셀·시인성 `VariantBlock` 여섯 묶음이 있고, 내부 비율 카드 3개는 충분한 식별 폭을 확보한 뒤 모바일에서 1열로 전환한다. 처리·버전·비율 필터 결과가 한 장이면 그 카드가 전체 폭을 써서 관계가 축소되지 않게 한다.
 - 원본 PNG는 `wide` 1672×941, `square` 941×941, `portrait` 753×941로 고정한다. CSS 미디어 영역도 각각 정확히 `1672 / 941`, `1`, `753 / 941`를 사용해 비율을 근사하거나 가장자리 픽셀을 자르지 않는다.
 
 ## 5. Components
@@ -68,17 +73,29 @@
 - **Accessibility**: 현재 결과 수를 `aria-live`로 알리고 버튼 이름에 결과 수를 제공한다.
 - **Motion**: 160ms `transform`과 `border-color`만 사용하며 reduced-motion에서는 즉시 전환한다.
 
-### ConceptCard
+### VersionFilter
 
-- **Structure**: `article.concept-card > header + .asset-list`.
-- **States**: 필터로 내부 카드가 모두 감춰지면 `hidden` 처리한다.
+- **Structure**: `nav.filterbar > button.filter[data-version-filter]`.
+- **States**: 전체, 정본, 비유 A, 비유 B. 비율 필터와 독립적으로 조합한다.
+- **Accessibility**: 두 필터의 선택 상태는 각각 `aria-pressed`로 제공하고, 결과 수는 하나의 `aria-live` 문장으로 갱신한다.
+
+### TreatmentFilter
+
+- **Structure**: `nav.filterbar > button.filter[data-treatment-filter]`.
+- **States**: 전체 그림체, 픽셀, 시인성 우선. 버전·비율 필터와 독립적으로 조합한다.
+- **Accessibility**: `?treatment=clarity` URL로 시인성 우선 270점을 바로 열 수 있으며, 현재 처리 방식과 결과 수를 `aria-live`로 함께 알린다.
+
+### ConceptCard · VariantBlock
+
+- **Structure**: `article.concept-card > header + .variant-list > section.variant-block > header + .asset-list`.
+- **States**: 필터로 내부 카드가 모두 감춰지면 `VariantBlock`과 `ConceptCard`를 함께 `hidden` 처리한다.
 - **Accessibility**: 각 묶음은 고유한 `h2`로 시작한다.
-- **Layout**: 큰 화면 2열 concept grid, 내부 3열 asset grid; 모바일 1열. 모바일에서도 미디어를 정사각 썸네일로 강제하지 않고 각 원본 비율 전체를 보인다.
+- **Layout**: 큰 화면 2열 concept grid, 내부 3열 asset grid; 모바일 1열. 버전 또는 비율 필터로 카드가 하나만 남으면 `asset-list-single`으로 확장한다. 모바일에서도 미디어를 정사각 썸네일로 강제하지 않고 각 원본 비율 전체를 보인다.
 
 ### AssetCard
 
 - **Structure**: `button.asset-card > figure > .asset-media > img + figcaption`.
-- **States**: default, hover, focus-visible; 클릭 시 `PreviewDialog`를 연다.
+- **States**: default, hover, focus-visible; 클릭 시 `PreviewDialog`를 연다. 픽셀 카드만 `image-rendering: pixelated`를 사용하고 시인성 카드는 원래의 부드러운 윤곽을 보존한다.
 - **Accessibility**: 실제 장면 관계를 설명한 한국어 `alt`와 확대 목적의 접근성 이름을 제공한다.
 - **Motion**: hover에만 160ms `translateY`를 쓰며 장식 애니메이션은 없다.
 
