@@ -82,6 +82,14 @@
 - **Motion**: 없음.
 - **Layout**: 데스크톱 2열 grid, 640px 이하 1열 stack, 인쇄 시 2열 유지 가능한 폭에서만 사용.
 
+### SurfaceVisual
+
+- **Structure**: `.surface-grid > .surface-card > .surface-zoom + figcaption`.
+- **States**: default, hover, focus, lightbox open. 정적 그림에는 별도 장식 모션을 넣지 않는다.
+- **Accessibility**: 의미를 설명하는 `alt`, 동작을 알리는 버튼 이름, 보이는 캡션을 함께 둔다.
+- **Motion**: 확대 힌트만 150ms opacity 전환을 사용한다.
+- **Layout**: 데스크톱·인쇄 2열, 640px 이하 1열 stack. 원본 비율과 명시적 크기를 유지한다.
+
 ## 6. Motion & Interaction
 
 | Type | Duration | Easing | Usage |
@@ -111,4 +119,3 @@
 | Item | Location | Why accepted | Owner / Exit |
 | --- | --- | --- | --- |
 | 기존 CSS의 일부 raw 색상·간격 | `index.html` | 기존 단일 파일 디자인을 그대로 보존하는 범위이며 이번 권리 표시에 새 raw 토큰을 추가하지 않음 | 다음 전체 디자인 시스템 정리 때 통합 |
-
