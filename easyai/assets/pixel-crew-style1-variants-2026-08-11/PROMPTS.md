@@ -1,6 +1,6 @@
 # Prompt Set
 
-## 공통 스타일 프롬프트
+## A/B 공통 스타일 프롬프트
 
 ```text
 Use case: scientific-educational
@@ -49,3 +49,36 @@ Constraints: create a brand-new scene, not an edit. No readable text, letters, n
 | `15-failure-routing-state-b.png` | Use an isometric railway-switch metaphor: the current state token controls a cyan track junction while different failure artifacts are sent to a retry loop, repair bench, approval checkpoint, or locked terminal. Make cause-dependent routing obvious without text. |
 | `16-graph-engineering-closing-a.png` | Create a panoramic finale: all five Pixel Crew members stand around a completed luminous execution graph that clearly connects several small loops, parallel branches, tool nodes, memory, tests, and one human approval gate into a single successful outcome. Heroic but calm, suitable for the very bottom of the presentation. |
 | `16-graph-engineering-closing-b.png` | Show the crew on an elevated isometric orchestration control deck surveying a finished network of connected work loops below; cyan paths branch and rejoin around the blue intelligence core, with tools, state, failure recovery, and human review all visible as one coherent system. Strong closing tableau with generous margins. |
+
+## C안 공통 스타일 프롬프트 · 손발 없는 원본형
+
+```text
+Use case: scientific-educational
+Asset type: 16:9 landscape illustration for a Korean AI engineering presentation
+Input images: Image 1 is the mandatory character anatomy and silhouette reference. Image 2 is only the premium 3D voxel material, lighting, palette, and background reference; ignore every limb shown in Image 2.
+Hard anatomy lock: every colored crew character must be one uninterrupted rounded-rectangular pixel ghost body exactly like Image 1, ending only in a compact scalloped pixel hem. Absolutely zero external limbs or limb-like shapes: no arms, forearms, elbows, hands, fingers, gloves, shoulders, legs, knees, feet, shoes, boots, toes, side appendages, or separate blocks below the body. Props and tools float independently with visible air gaps or sit on autonomous stations; characters never hold or touch anything. Show action only through cyan paths, beams, tokens, and machines.
+Style/medium: premium 3D voxel pixel art on a deep navy-black background, subtle square dot grid, luminous cyan right-angle signal paths, electric-blue core glow, softly beveled block pixels, clean cinematic light. Use body-only cyan, yellow, coral, purple, and green crew ghosts with square white eyes, black square pupils, and tiny pink cheeks.
+Composition/framing: exactly 16:9 landscape, 1672×941 preferred, generous safe margins, no cropping.
+Constraints: no readable text, letters, numbers, logos, trademarks, watermark, interface screenshot, speech bubbles, maze, pellets, PAC-MAN references, or round ghost silhouettes. Before rendering, check every character twice and remove any arm, hand, leg, or foot-like protrusion.
+```
+
+Image 1은 `../ghost-crew-hero.svg`를 1672×941 PNG로 변환한 실루엣 기준이며, Image 2는 `../pixel-crew-redraw-2026-08-10/01-cover-pixel-crew.png`입니다.
+
+| 파일 | C안 Primary request |
+| --- | --- |
+| `01-cover-c.png` | Five body-only crew ghosts surround a glowing system-blueprint table; floating tools and evidence icons remain separate while cyan paths converge into a blue core. |
+| `02-context-window-c.png` | A finite glowing tray accepts only selected information tiles while excess tiles wait outside; selection is performed by autonomous cyan lanes. |
+| `03-grounding-c.png` | Trusted evidence cards connect directly to a claim core; a separate magnifier and records cabinet verify and preserve the source trail. |
+| `04-multiagent-c.png` | Five body-only specialists occupy separate work cells whose task lines converge on one finished artifact. |
+| `05-mcp-a2a-c.png` | Standardized adapters connect autonomous stations to tools and data below while cyan bridges connect body-only agent ghosts above. |
+| `06-rag-search-c.png` | A cyan search beam selects and ranks three relevant documents into a context tray beside the answer core. |
+| `07-memory-wiki-c.png` | Verified facts enter a shared knowledge cabinet, update linked memory, and return through cyan retrieval paths. |
+| `08-context-compaction-c.png` | Bulky context tiles enter an autonomous compression chamber; noise moves aside and one compact summary exits. |
+| `09-loop-harness-c.png` | Build, test, inspect, and repair stations form a guarded closed loop around the core while one state token advances through checkpoints. |
+| `10-loop-repair-c.png` | A failed cube returns to an autonomous repair station and rejoins the test loop as a checked artifact; tools float separately. |
+| `11-prompt-optimization-c.png` | Abstract instruction tiles pass through parallel evaluation gates; weak candidates return and one best candidate reaches the core. |
+| `12-graph-system-map-c.png` | A balanced node-and-edge system links body-only crew, tools, data, an abstract human review bust, and one moving state token. |
+| `13-graph-fanout-join-c.png` | One task splits into four specialist lanes and their separate outputs converge through an autonomous join gate. |
+| `14-human-checkpoint-c.png` | A workflow pauses at an approval gate using only an abstract head-and-shoulders reviewer icon, never a human hand. |
+| `15-failure-routing-state-c.png` | A central state switch routes distinct failure shapes to retry, repair, human review, or safe stop nodes. |
+| `16-graph-engineering-closing-c.png` | Five body-only ghosts hover around a completed graph with loops, branches, tools, memory, tests, recovery, review, and one successful outcome. |
