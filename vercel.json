@@ -39,6 +39,14 @@
       "destination": "/sbti1/index.html"
     },
     {
+      "source": "/sbtifull",
+      "destination": "/sbtifull/index.html"
+    },
+    {
+      "source": "/sbtifull/compare",
+      "destination": "/sbtifull/compare.html"
+    },
+    {
       "source": "/original",
       "destination": "/original.html"
     },

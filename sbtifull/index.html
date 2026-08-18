@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex"/>
+<title>S.B.T.I 통합본 (공개본) — AI 코딩 도구 도입 강의 3부작</title>
+<link rel="icon" type="image/svg+xml" href="../cover/assets/techai-code-favicon.svg"/>
+<style>
+  /* 원본 덱을 iframe에 그대로 띄우는 통합 뷰어.
+     덱 내부 렌더링에 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151922}
+  #stage{position:absolute;inset:0;border:0;width:100%;height:100%}
+
+  #nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:10;
+       font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  #handle{display:flex;align-items:center;gap:8px;justify-content:center;
+          background:rgba(17,24,39,.92);color:#c7d2fe;border:1px solid rgba(255,255,255,.14);
+          border-radius:999px;padding:7px 16px;font-size:12px;font-weight:800;letter-spacing:.08em;
+          box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap;user-select:none}
+  #handle b{color:#7ab2ff}
+  #handle .tag{color:#fbbf24;font-size:10.5px;border:1px solid rgba(251,191,36,.4);
+               border-radius:999px;padding:2px 7px;letter-spacing:.06em}
+  #menu{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+        background:rgba(17,24,39,.96);border:1px solid rgba(255,255,255,.14);border-radius:14px;
+        padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.5);white-space:nowrap}
+  #nav:hover #menu{display:flex;gap:6px}
+  #menu a{display:block;color:#dbeafe;text-decoration:none;font-size:12.5px;font-weight:800;
+          padding:9px 14px;border-radius:9px;letter-spacing:.02em}
+  #menu a:hover{background:rgba(255,255,255,.09)}
+  #menu a.active{background:#0a84ff;color:#fff}
+  #menu a.alt{color:#8bbcff;border:1px dashed rgba(139,188,255,.45)}
+  #menu a.alt:hover{background:rgba(10,132,255,.15)}
+</style>
+</head>
+<body>
+<iframe id="stage" src="sbti1/index.html" title="슬라이드"></iframe>
+
+<nav id="nav">
+  <div id="menu"></div>
+  <div id="handle">☰ <b id="cur">1부</b>&nbsp;· S.B.T.I 공개본 <span class="tag">MOSAIC</span></div>
+</nav>
+
+<script>
+  const SECTIONS = [
+    { key:"sbti1", label:"1부 · AI 코딩 트렌드",    src:"sbti1/index.html" },
+    { key:"sbti2", label:"2부 · 사내 도구 소개",     src:"sbti2/index.html" },
+    { key:"sbti3", label:"3부 · 활용 사례",         src:"sbti3/index.html" },
+  ];
+  const stage = document.getElementById("stage");
+  const menu  = document.getElementById("menu");
+  const cur   = document.getElementById("cur");
+
+  function go(key, push){
+    const s = SECTIONS.find(x => x.key === key) || SECTIONS[0];
+    stage.src = s.src;
+    cur.textContent = s.label;
+    document.title = "S.B.T.I 공개본 — " + s.label;
+    menu.querySelectorAll("a[data-key]").forEach(a =>
+      a.classList.toggle("active", a.dataset.key === s.key));
+    try { localStorage.setItem("sbtifull-section", s.key); } catch(e){}
+    if (push !== false) {
+      try { history.replaceState(null, "", "#" + s.key); } catch(e){}
+    }
+  }
+
+  SECTIONS.forEach(s => {
+    const a = document.createElement("a");
+    a.href = "#" + s.key; a.dataset.key = s.key; a.textContent = s.label;
+    a.addEventListener("click", e => { e.preventDefault(); go(s.key); });
+    menu.appendChild(a);
+  });
+  [["compare.html","원본 대조 ↗"],["../easyai/index.html","EASY AI 용어사전 ↗"]].forEach(([href,txt])=>{
+    const a = document.createElement("a");
+    a.href = href; a.className = "alt"; a.textContent = txt; a.target = "_blank";
+    menu.appendChild(a);
+  });
+
+  // 시작 섹션: URL 해시 > 마지막 열람 > 1부
+  let start = (location.hash || "").replace("#","");
+  if (!SECTIONS.some(s => s.key === start)) {
+    try { start = localStorage.getItem("sbtifull-section") || "sbti1"; } catch(e){ start = "sbti1"; }
+  }
+  go(start, false);
+
+  // 덱들은 키보드(←→·PageDown)로 넘긴다 — 키가 덱에 닿도록 포커스를 항상 iframe에 둔다.
+  function focusStage(){
+    try { stage.contentWindow.focus(); } catch(e) { stage.focus(); }
+  }
+  stage.addEventListener("load", focusStage);
+  addEventListener("load", focusStage);
+  addEventListener("keydown", e => {
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= SECTIONS.length) { go(SECTIONS[n-1].key); return; }
+    if (["ArrowRight","ArrowLeft","PageDown","PageUp"," ","Enter"].includes(e.key)) {
+      focusStage();
+      try {
+        stage.contentDocument.dispatchEvent(new KeyboardEvent("keydown",
+          { key:e.key, code:e.code, bubbles:true }));
+        e.preventDefault();
+      } catch(err) {}
+    }
+  });
+  document.getElementById("nav").addEventListener("mouseleave", focusStage);
+</script>
+</body>
+</html>

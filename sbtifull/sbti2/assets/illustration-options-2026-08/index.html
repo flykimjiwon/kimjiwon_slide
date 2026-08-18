@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SBTI2 11·12·16·17·18·19페이지 이미지 시안 원본과 투명 PNG 비교 갤러리">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1020'/%3E%3Cpath d='M16 20h32v24H16z' fill='none' stroke='%2338bdf8' stroke-width='4'/%3E%3Ccircle cx='25' cy='29' r='4' fill='%2334d399'/%3E%3Cpath d='m20 40 9-8 6 5 5-4 6 7' fill='none' stroke='%23f8fbff' stroke-width='3'/%3E%3C/svg%3E">
+  <title>SBTI2 이미지 시안 갤러리</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: #111827;
+      --surface-elevated: #172033;
+      --surface-muted: #0f172a;
+      --text: #f8fbff;
+      --muted: #b6c2d4;
+      --line: #263244;
+      --accent: #0a84ff;
+      --accent-hover: #38bdf8;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --checker-a: #1c2638;
+      --checker-b: #26344a;
+      --overlay: rgb(2 6 23 / 0.9);
+      --surface-glow: rgb(10 132 255 / 0.14);
+      --accent-soft: rgb(10 132 255 / 0.16);
+      --success-soft: rgb(52 211 153 / 0.14);
+      --text-soft: rgb(248 251 255 / 0.72);
+      --shadow-card: 0 20px 54px rgb(0 0 0 / 0.22);
+      --shadow-modal: 0 40px 120px rgb(0 0 0 / 0.56);
+      --focus-ring: 0 0 0 3px rgb(56 189 248 / 0.36);
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard", "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-16: 64px;
+      --radius-image: 12px;
+      --radius-control: 999px;
+      --radius-card: 20px;
+      --content: 1440px;
+    }
+
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 12% 0%, var(--surface-glow), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+    }
+    button, a { font: inherit; }
+    button { color: inherit; }
+    img { max-width: 100%; }
+    [hidden] { display: none !important; }
+
+    .shell {
+      width: min(var(--content), calc(100% - var(--space-8)));
+      margin-inline: auto;
+      padding-block: var(--space-16);
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-8);
+      align-items: end;
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      margin: 0 0 var(--space-3);
+      color: var(--accent-hover);
+      font: 800 0.75rem/1.3 var(--mono);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: var(--space-3);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 850;
+      letter-spacing: -0.055em;
+      line-height: 1.05;
+      word-break: keep-all;
+    }
+    .hero-copy {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      word-break: keep-all;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: var(--space-3);
+    }
+    .metric {
+      min-width: 104px;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--surface);
+      text-align: center;
+    }
+    .metric strong {
+      display: block;
+      color: var(--text);
+      font: 850 1.5rem/1.1 var(--mono);
+    }
+    .metric span {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .filter-panel {
+      position: sticky;
+      top: var(--space-3);
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: var(--space-4);
+      align-items: center;
+      margin-block: var(--space-8) var(--space-12);
+      padding: var(--space-4);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+    }
+    fieldset {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    legend {
+      float: left;
+      margin-right: var(--space-3);
+      padding: var(--space-2) 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .filter-list {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .filter-button,
+    .action-link,
+    .modal-control,
+    .modal-close {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      background: var(--surface-muted);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 750;
+      text-decoration: none;
+      transition: color 140ms ease-out, border-color 140ms ease-out, background-color 140ms ease-out, transform 140ms ease-out;
+    }
+    .filter-button {
+      flex: 0 0 auto;
+      padding: var(--space-2) var(--space-4);
+    }
+    .filter-button:hover,
+    .action-link:hover,
+    .modal-control:hover,
+    .modal-close:hover {
+      border-color: var(--accent-hover);
+      color: var(--text);
+    }
+    .filter-button[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+    .filter-button:active,
+    .action-link:active,
+    .modal-control:active,
+    .modal-close:active { transform: scale(0.98); }
+    .filter-button:focus-visible,
+    .action-link:focus-visible,
+    .image-button:focus-visible,
+    .modal-control:focus-visible,
+    .modal-close:focus-visible {
+      outline: 0;
+      box-shadow: var(--focus-ring);
+    }
+    .result-count {
+      margin: 0;
+      color: var(--text-soft);
+      font: 750 0.75rem/1.4 var(--mono);
+      white-space: nowrap;
+    }
+
+    .page-section {
+      margin-bottom: var(--space-16);
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: var(--space-4);
+      align-items: start;
+      margin-bottom: var(--space-6);
+    }
+    .page-number {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-card);
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      font: 850 1.125rem/1 var(--mono);
+    }
+    h2 {
+      margin-bottom: var(--space-1);
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      word-break: keep-all;
+    }
+    .section-description {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.875rem;
+      word-break: keep-all;
+    }
+    .keep-together { white-space: nowrap; }
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .asset-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+      transition: border-color 140ms ease-out, transform 140ms ease-out;
+    }
+    .asset-card:hover,
+    .asset-card:focus-within {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--line);
+    }
+    h3 {
+      margin-bottom: 0;
+      font-size: 1.125rem;
+      font-weight: 800;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+    .style-badge {
+      flex: 0 0 auto;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      color: var(--muted);
+      font: 800 0.75rem/1.3 var(--mono);
+    }
+    .asset-card[data-style="pixelcrew"] .style-badge { color: var(--warning); }
+    .asset-card[data-style="ghost"] .style-badge { color: var(--accent-hover); }
+    .asset-card[data-style="concept"] .style-badge { color: var(--success); }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+    .preview-pane {
+      min-width: 0;
+      background: var(--surface-muted);
+    }
+    .preview-pane.transparent {
+      background-color: var(--checker-a);
+      background-image:
+        linear-gradient(45deg, var(--checker-b) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--checker-b) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--checker-b) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%);
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+      background-size: 24px 24px;
+    }
+    .pane-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-2);
+      min-height: 38px;
+      padding: var(--space-2) var(--space-3);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .transparent .pane-label { color: var(--success); }
+    .image-button {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1672 / 941;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+    .image-button img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 140ms ease-out, opacity 140ms ease-out;
+    }
+    .image-button:hover img { transform: scale(1.018); }
+    .image-button:active img { opacity: 0.82; }
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4) var(--space-4);
+    }
+    .action-link {
+      display: inline-grid;
+      place-items: center;
+      padding-inline: var(--space-3);
+      text-align: center;
+    }
+    .action-link.transparent-download {
+      border-color: var(--success);
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    dialog {
+      width: min(1480px, calc(100% - var(--space-8)));
+      max-width: none;
+      max-height: calc(100dvh - var(--space-8));
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--surface-elevated);
+      color: var(--text);
+      box-shadow: var(--shadow-modal);
+    }
+    dialog::backdrop { background: var(--overlay); }
+    .modal-shell {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      max-height: calc(100dvh - var(--space-8));
+    }
+    .modal-head,
+    .modal-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-foot {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+    .modal-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 800;
+      word-break: keep-all;
+    }
+    .modal-close,
+    .modal-control {
+      padding-inline: var(--space-4);
+    }
+    .modal-stage {
+      display: grid;
+      place-items: center;
+      min-height: 0;
+      padding: var(--space-4);
+      overflow: auto;
+      background-color: var(--surface-muted);
+      background-image:
+        linear-gradient(45deg, var(--checker-b) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--checker-b) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--checker-b) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%);
+      background-position: 0 0, 0 16px, 16px -16px, -16px 0;
+      background-size: 32px 32px;
+    }
+    .modal-stage.original {
+      background: var(--surface-muted);
+    }
+    .modal-image {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100dvh - 164px);
+      object-fit: contain;
+    }
+    .modal-nav {
+      display: flex;
+      gap: var(--space-2);
+    }
+    .modal-link { color: var(--accent-hover); }
+
+    .empty-state {
+      padding: var(--space-12);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-card);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 1120px) {
+      .hero { grid-template-columns: 1fr; align-items: start; }
+      .metrics { width: min(420px, 100%); }
+      .filter-panel { grid-template-columns: 1fr; }
+      .result-count { justify-self: start; }
+      .asset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - var(--space-6), var(--content));
+        padding-block: var(--space-8);
+      }
+      .hero { gap: var(--space-6); }
+      .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+      .metric { min-width: 0; padding-inline: var(--space-2); }
+      .metric strong { font-size: 1.125rem; }
+      .filter-panel { position: static; margin-bottom: var(--space-8); }
+      .filter-list { flex-wrap: wrap; overflow-x: visible; }
+      legend { float: none; display: block; margin: 0 0 var(--space-2); padding: 0; }
+      .page-section { margin-bottom: var(--space-12); }
+      .section-head { grid-template-columns: 44px minmax(0, 1fr); }
+      .page-number { width: 44px; height: 44px; border-radius: var(--radius-image); }
+      .asset-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      dialog { width: calc(100% - var(--space-4)); max-height: calc(100dvh - var(--space-4)); }
+      .modal-shell { max-height: calc(100dvh - var(--space-4)); }
+      .modal-foot { align-items: stretch; flex-direction: column; }
+      .modal-nav { display: grid; grid-template-columns: 1fr 1fr; }
+      .modal-control { width: 100%; }
+      .modal-image { max-height: calc(100dvh - 236px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SBTI2 · Illustration Options</p>
+        <h1>이미지 시안 갤러리</h1>
+        <p class="hero-copy">11·12·16·17·18·19페이지와 루프 엔지니어링의 픽셀크루, 유령, 개념형 시안을 원본과 투명 PNG로 나란히 비교합니다. 이미지를 누르면 전체화면으로 확인할 수 있습니다.</p>
+      </div>
+      <div class="metrics" aria-label="갤러리 구성">
+        <div class="metric"><strong>7</strong><span>비교 주제</span></div>
+        <div class="metric"><strong>21</strong><span>개별 원본</span></div>
+        <div class="metric"><strong>21</strong><span>투명 PNG</span></div>
+      </div>
+    </header>
+
+    <section class="filter-panel" aria-label="이미지 필터">
+      <fieldset>
+        <legend>페이지</legend>
+        <div class="filter-list" data-filter-group="page">
+          <button class="filter-button" type="button" data-value="all" aria-pressed="true">전체</button>
+          <button class="filter-button" type="button" data-value="11" aria-pressed="false">11</button>
+          <button class="filter-button" type="button" data-value="12" aria-pressed="false">12</button>
+          <button class="filter-button" type="button" data-value="16" aria-pressed="false">16</button>
+          <button class="filter-button" type="button" data-value="17" aria-pressed="false">17</button>
+          <button class="filter-button" type="button" data-value="18" aria-pressed="false">18</button>
+          <button class="filter-button" type="button" data-value="19" aria-pressed="false">19</button>
+          <button class="filter-button" type="button" data-value="loop" aria-pressed="false">LOOP</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>스타일</legend>
+        <div class="filter-list" data-filter-group="style">
+          <button class="filter-button" type="button" data-value="all" aria-pressed="true">전체</button>
+          <button class="filter-button" type="button" data-value="pixelcrew" aria-pressed="false">픽셀크루</button>
+          <button class="filter-button" type="button" data-value="ghost" aria-pressed="false">유령</button>
+          <button class="filter-button" type="button" data-value="concept" aria-pressed="false">개념형</button>
+        </div>
+      </fieldset>
+      <p class="result-count" aria-live="polite"><span id="visibleCount">21</span>개 스타일 · <span id="visibleFileCount">42</span>개 파일</p>
+    </section>
+
+    <div id="gallery"></div>
+    <p class="empty-state" id="emptyState" hidden>현재 조건에 맞는 이미지가 없습니다.</p>
+  </main>
+
+  <dialog id="imageModal" aria-labelledby="modalTitle">
+    <div class="modal-shell">
+      <header class="modal-head">
+        <p class="modal-title" id="modalTitle">이미지 전체보기</p>
+        <button class="modal-close" type="button" id="modalClose">닫기</button>
+      </header>
+      <div class="modal-stage" id="modalStage">
+        <img class="modal-image" id="modalImage" alt="" width="1672" height="941">
+      </div>
+      <footer class="modal-foot">
+        <a class="modal-link" id="modalLink" href="" download>현재 PNG 다운로드</a>
+        <div class="modal-nav">
+          <button class="modal-control" type="button" id="modalPrevious">이전</button>
+          <button class="modal-control" type="button" id="modalNext">다음</button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    const pages = [
+      { number: "11", title: "AI가 도구를 쓰는 순서", description: "요청, 권한 확인, 도구 실행, 결과 반환, 다음 판단이 닫힌 순환으로 이어집니다.", slug: "tool-calling" },
+      { number: "12", title: "모델은 판단하고, 하네스가 실행합니다", description: "모델이 도구를 직접 만지지 않고 하네스가 권한 확인과 실행을 맡는 역할 분리입니다.", slug: "model-harness" },
+      { number: "16", title: "싱글은 빠르게, MAS는 AI 팀으로", description: "간단한 일의 싱글 경로와 큰 일의 전문 에이전트 병렬 경로를 비교합니다.", slug: "single-vs-mas" },
+      { number: "17", title: "오케스트레이터 중심 분업", description: "격리된 서브에이전트가 서로 직접 대화하지 않고 오케스트레이터로만 결과를 돌려줍니다.", slug: "orchestrator-mas" },
+      { number: "18", title: "AI가 궤도를 이탈하지 않게 만드는 시스템", description: "규칙과 컨텍스트, 도구와 권한, 검증과 재시도가 모델을 둘러싼 작업환경입니다.", slug: "harness-environment" },
+      { number: "19", title: "프롬프트·컨텍스트·하네스의 층", description: "판단 코어 바깥에서 도구 실행, 권한, 검증과 재시도가 통제되는 구조입니다.", slug: "harness-layers" },
+      { number: "L", filter: "loop", label: "루프 엔지니어링", title: "목표를 끝낼 때까지 <span class=\"keep-together\">실행·검증·수정</span>", description: "목표를 받은 AI가 실행과 테스트를 반복하고, 실패하면 수정해 다시 실행하며 성공하면 종료합니다.", slug: "loop-engineering", fileBase: "loop-engineering" }
+    ];
+
+    const styles = [
+      { id: "pixelcrew", title: "픽셀크루 스타일", badge: "PIXEL CREW" },
+      { id: "ghost", title: "유령 스타일", badge: "GHOST" },
+      { id: "concept", title: "개념형 스타일", badge: "CONCEPT" }
+    ];
+
+    const gallery = document.querySelector("#gallery");
+    const visibleCount = document.querySelector("#visibleCount");
+    const visibleFileCount = document.querySelector("#visibleFileCount");
+    const emptyState = document.querySelector("#emptyState");
+    const filters = { page: "all", style: "all" };
+
+    function pageValue(page) {
+      return page.filter || page.number;
+    }
+
+    function pageLabel(page) {
+      return page.label || `${page.number}페이지`;
+    }
+
+    function assetBase(page) {
+      return page.fileBase || `${page.number}-${page.slug}`;
+    }
+
+    function fileName(page, style) {
+      return `${assetBase(page)}-${style.id}.png`;
+    }
+
+    function transparentName(page, style) {
+      return `${assetBase(page)}-${style.id}-transparent.png`;
+    }
+
+    function renderGallery() {
+      gallery.innerHTML = pages.map((page, pageIndex) => `
+        <section class="page-section" data-page="${pageValue(page)}" aria-labelledby="page-${pageValue(page)}-title">
+          <header class="section-head">
+            <span class="page-number" aria-hidden="true">${page.number}</span>
+            <div>
+              <h2 id="page-${pageValue(page)}-title">${page.title}</h2>
+              <p class="section-description">${page.description}</p>
+            </div>
+          </header>
+          <div class="asset-grid">
+            ${styles.map((style, styleIndex) => {
+              const original = fileName(page, style);
+              const transparent = transparentName(page, style);
+              const label = pageLabel(page);
+              const eager = pageIndex === 0 ? "eager" : "lazy";
+              const order = pageIndex * styles.length + styleIndex;
+              return `
+                <article class="asset-card" data-style="${style.id}">
+                  <header class="card-head">
+                    <h3>${style.title}</h3>
+                    <span class="style-badge">${style.badge}</span>
+                  </header>
+                  <div class="compare-grid">
+                    <div class="preview-pane original">
+                      <div class="pane-label"><span>원본</span><span>1672 × 941</span></div>
+                      <button class="image-button" type="button" data-full="${original}" data-title="${label} · ${style.title} · 원본" data-kind="original" data-order="${order * 2}" aria-label="${label} ${style.title} 원본 전체보기">
+                        <img src="thumbs/original/${original}" alt="${label} ${style.title} 원본" width="640" height="360" loading="${eager}" decoding="async">
+                      </button>
+                    </div>
+                    <div class="preview-pane transparent">
+                      <div class="pane-label"><span>투명 PNG</span><span>RGBA</span></div>
+                      <button class="image-button" type="button" data-full="transparent/${transparent}" data-title="${label} · ${style.title} · 투명 PNG" data-kind="transparent" data-order="${order * 2 + 1}" aria-label="${label} ${style.title} 투명 PNG 전체보기">
+                        <img src="thumbs/transparent/${transparent}" alt="${label} ${style.title} 투명 PNG" width="640" height="360" loading="${eager}" decoding="async">
+                      </button>
+                    </div>
+                  </div>
+                  <footer class="card-actions">
+                    <a class="action-link" href="${original}" download>원본 PNG</a>
+                    <a class="action-link transparent-download" href="transparent/${transparent}" download>투명 PNG</a>
+                  </footer>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `).join("");
+    }
+
+    function applyFilters() {
+      let count = 0;
+      document.querySelectorAll(".page-section").forEach((section) => {
+        const pageMatch = filters.page === "all" || section.dataset.page === filters.page;
+        let visibleCards = 0;
+        section.querySelectorAll(".asset-card").forEach((card) => {
+          const styleMatch = filters.style === "all" || card.dataset.style === filters.style;
+          card.hidden = !(pageMatch && styleMatch);
+          if (!card.hidden) visibleCards += 1;
+        });
+        section.hidden = visibleCards === 0;
+        count += visibleCards;
+      });
+      visibleCount.textContent = String(count);
+      visibleFileCount.textContent = String(count * 2);
+      emptyState.hidden = count !== 0;
+    }
+
+    document.querySelectorAll("[data-filter-group]").forEach((group) => {
+      group.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-value]");
+        if (!button) return;
+        const key = group.dataset.filterGroup;
+        filters[key] = button.dataset.value;
+        group.querySelectorAll("button[data-value]").forEach((candidate) => {
+          candidate.setAttribute("aria-pressed", String(candidate === button));
+        });
+        applyFilters();
+      });
+    });
+
+    const modal = document.querySelector("#imageModal");
+    const modalTitle = document.querySelector("#modalTitle");
+    const modalImage = document.querySelector("#modalImage");
+    const modalStage = document.querySelector("#modalStage");
+    const modalLink = document.querySelector("#modalLink");
+    const modalClose = document.querySelector("#modalClose");
+    const modalPrevious = document.querySelector("#modalPrevious");
+    const modalNext = document.querySelector("#modalNext");
+    let currentButton = null;
+
+    function visibleImageButtons() {
+      return [...document.querySelectorAll(".image-button")].filter((button) => !button.closest("[hidden]"));
+    }
+
+    function showImage(button) {
+      currentButton = button;
+      modalTitle.textContent = button.dataset.title;
+      modalImage.src = button.dataset.full;
+      modalImage.alt = button.dataset.title;
+      modalLink.href = button.dataset.full;
+      modalStage.classList.toggle("original", button.dataset.kind === "original");
+      if (!modal.open) modal.showModal();
+    }
+
+    function moveModal(direction) {
+      const buttons = visibleImageButtons();
+      const currentIndex = buttons.indexOf(currentButton);
+      const nextIndex = (currentIndex + direction + buttons.length) % buttons.length;
+      showImage(buttons[nextIndex]);
+    }
+
+    gallery.addEventListener("click", (event) => {
+      const button = event.target.closest(".image-button");
+      if (button) showImage(button);
+    });
+    modalClose.addEventListener("click", () => modal.close());
+    modalPrevious.addEventListener("click", () => moveModal(-1));
+    modalNext.addEventListener("click", () => moveModal(1));
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.close();
+    });
+    modal.addEventListener("close", () => {
+      modalImage.removeAttribute("src");
+      currentButton?.focus();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (!modal.open) return;
+      if (event.key === "ArrowLeft") moveModal(-1);
+      if (event.key === "ArrowRight") moveModal(1);
+    });
+
+    renderGallery();
+    applyFilters();
+  </script>
+</body>
+</html>
