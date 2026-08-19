@@ -192,8 +192,25 @@ def stamp(html):
     return re.sub(r'(<head[^>]*>)', r'\1' + BUILD_MARK, html, count=1)
 
 
+def fix_base(html, deck):
+    """원본 <base href="/sbti{n}/"> -> /sbtifull/sbti{n}/.
+
+    원본 base를 그대로 두면 공개본 HTML이 모든 상대 에셋을 마스킹 안 된
+    원본 /sbti{n}/assets/ 에서 불러온다 — 텍스트만 치환되고 이미지·영상은
+    전부 원본이 뜬다(2026-08-19 라이브에서 실제 확인). file: 폴백 스크립트는
+    base를 "./"로 바꾸므로 그대로 둔다.
+    """
+    fixed = html.replace(f'<base href="/{deck}/">',
+                         f'<base href="/sbtifull/{deck}/">')
+    if fixed == html:
+        raise SystemExit(f"[{deck}] <base href=\"/{deck}/\"> 를 찾지 못함 — "
+                         "원본 head 구조가 바뀌었는지 확인 필요")
+    return fixed
+
+
 def transform(html, deck):
     html = cut_escape_hatches(html, deck)
+    html = fix_base(html, deck)
     html, store = protect(html)
     for table in (ORG_MAP, DEPT_MAP, PRODUCT_MAP, NAME_MAP):
         for k in sorted(table, key=len, reverse=True):
@@ -227,6 +244,7 @@ def main():
         # 원본으로 되돌아가는 링크가 남았는지 — 이게 남으면 마스킹이 무의미해진다
         escapes = re.findall(r'(?:href|src)="([^"]*(?:'
                              r'vercel\.app/sbti[123]|assets/sbti[123]\.pdf|attachments/'
+                             r'|(?<!sbtifull)/sbti[123]/'
                              r')[^"]*)"', out)
         # 참조는 하는데 파일이 없는 것
         broken = [a for a in set(re.findall(r'(?:href|src)="(assets/[^"]+)"', out))
