@@ -4,104 +4,203 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="robots" content="noindex"/>
-<title>S.B.T.I 통합본 (공개본) — AI 코딩 도구 도입 강의 3부작</title>
+<title>AI 코딩 도구 사내 도입 — 강의 통합본 (공개본)</title>
 <link rel="icon" type="image/svg+xml" href="../cover/assets/techai-code-favicon.svg"/>
 <style>
-  /* 원본 덱을 iframe에 그대로 띄우는 통합 뷰어.
-     덱 내부 렌더링에 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
-  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151922}
-  #stage{position:absolute;inset:0;border:0;width:100%;height:100%}
+  /* 세 덱을 각자 iframe에 그대로 띄우되, 부모가 66장을 하나의 연속된 덱으로 제어한다.
+     덱 내부 렌더링에는 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0d1117}
+  #stack{position:absolute;inset:0}
+  #stack iframe{position:absolute;inset:0;border:0;width:100%;height:100%;
+    visibility:hidden;opacity:0;transition:opacity .16s ease}
+  #stack iframe.on{visibility:visible;opacity:1;z-index:1}
 
-  #nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:10;
+  /* 상단 진행바 — 66장 전체 기준 */
+  #bar{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.09);z-index:20}
+  #fill{height:100%;width:0;background:linear-gradient(90deg,#3b82f6,#60a5fa);transition:width .18s ease}
+
+  /* 하단 컨트롤 */
+  #hud{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:center;
+       padding:0 0 14px;pointer-events:none;
        font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
-  #handle{display:flex;align-items:center;gap:8px;justify-content:center;
-          background:rgba(17,24,39,.92);color:#c7d2fe;border:1px solid rgba(255,255,255,.14);
-          border-radius:999px;padding:7px 16px;font-size:12px;font-weight:800;letter-spacing:.08em;
-          box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap;user-select:none}
-  #handle b{color:#7ab2ff}
-  #handle .tag{color:#fbbf24;font-size:10.5px;border:1px solid rgba(251,191,36,.4);
-               border-radius:999px;padding:2px 7px;letter-spacing:.06em}
-  #menu{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
-        background:rgba(17,24,39,.96);border:1px solid rgba(255,255,255,.14);border-radius:14px;
-        padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.5);white-space:nowrap}
-  #nav:hover #menu{display:flex;gap:6px}
-  #menu a{display:block;color:#dbeafe;text-decoration:none;font-size:12.5px;font-weight:800;
-          padding:9px 14px;border-radius:9px;letter-spacing:.02em}
-  #menu a:hover{background:rgba(255,255,255,.09)}
-  #menu a.active{background:#0a84ff;color:#fff}
-  #menu a.alt{color:#8bbcff;border:1px dashed rgba(139,188,255,.45)}
-  #menu a.alt:hover{background:rgba(10,132,255,.15)}
+  #pill{pointer-events:auto;display:flex;align-items:center;gap:2px;
+        background:rgba(13,17,23,.9);backdrop-filter:blur(10px);
+        border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:5px 7px;
+        box-shadow:0 8px 28px rgba(0,0,0,.45)}
+  #pill button{background:none;border:0;color:#c7d2fe;cursor:pointer;font:inherit;
+        font-size:14px;font-weight:800;padding:6px 12px;border-radius:999px;line-height:1}
+  #pill button:hover{background:rgba(255,255,255,.1)}
+  #pill button:disabled{opacity:.28;cursor:default;background:none}
+  #cnt{color:#e8eef7;font-size:12px;font-weight:800;letter-spacing:.06em;padding:0 10px;
+       min-width:78px;text-align:center;font-variant-numeric:tabular-nums}
+  #cnt small{color:#7d8da4;font-weight:600}
+  #part{color:#7ab2ff;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+        padding:0 12px 0 4px;border-left:1px solid rgba(255,255,255,.13);white-space:nowrap}
+
+  /* 챕터 점프 */
+  #jump{position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);
+        display:none;gap:5px;background:rgba(13,17,23,.96);border:1px solid rgba(255,255,255,.13);
+        border-radius:13px;padding:7px;box-shadow:0 16px 44px rgba(0,0,0,.55);white-space:nowrap}
+  #pill:hover #jump{display:flex}
+  #jump a{color:#dbeafe;text-decoration:none;font-size:12px;font-weight:800;
+          padding:8px 13px;border-radius:8px}
+  #jump a:hover{background:rgba(255,255,255,.1)}
+  #jump a.on{background:#2563eb;color:#fff}
+  #jump a.alt{color:#8bbcff;border:1px dashed rgba(139,188,255,.42)}
+
+  #boot{position:absolute;inset:0;display:grid;place-items:center;z-index:5;
+        color:#5b6b82;font:600 13px ui-monospace,Menlo,monospace;letter-spacing:.08em}
+  @media print{#hud,#bar,#boot{display:none}}
 </style>
 </head>
 <body>
-<iframe id="stage" src="sbti1/index.html" title="슬라이드"></iframe>
 
-<nav id="nav">
-  <div id="menu"></div>
-  <div id="handle">☰ <b id="cur">1부</b>&nbsp;· S.B.T.I 공개본 <span class="tag">MOSAIC</span></div>
-</nav>
+<div id="stack">
+  <iframe id="f0" src="sbti1/index.html" title="1부"></iframe>
+  <iframe id="f1" src="sbti2/index.html" title="2부"></iframe>
+  <iframe id="f2" src="sbti3/index.html" title="3부"></iframe>
+</div>
+<div id="boot">덱 불러오는 중…</div>
+
+<div id="bar"><div id="fill"></div></div>
+
+<div id="hud">
+  <div id="pill">
+    <div id="jump"></div>
+    <button id="prev" title="이전 (←)">‹</button>
+    <span id="cnt">— <small>/ —</small></span>
+    <button id="next" title="다음 (→)">›</button>
+    <span id="part">불러오는 중</span>
+  </div>
+</div>
 
 <script>
-  const SECTIONS = [
-    { key:"sbti1", label:"1부 · AI 코딩 트렌드",    src:"sbti1/index.html" },
-    { key:"sbti2", label:"2부 · 사내 도구 소개",     src:"sbti2/index.html" },
-    { key:"sbti3", label:"3부 · 활용 사례",         src:"sbti3/index.html" },
-  ];
-  const stage = document.getElementById("stage");
-  const menu  = document.getElementById("menu");
-  const cur   = document.getElementById("cur");
+const DECKS = [
+  { label:"1부 · AI 코딩 도구 트렌드", short:"1부 · 트렌드" },
+  { label:"2부 · 사내 AI 코딩 도구",   short:"2부 · 도구" },
+  { label:"3부 · 활용 사례",           short:"3부 · 사례" },
+];
+const frames = [0,1,2].map(i => document.getElementById("f"+i));
+const counts = [0,0,0];
+let ready = 0, g = 0;   // g = 전체 66장 기준 인덱스
 
-  function go(key, push){
-    const s = SECTIONS.find(x => x.key === key) || SECTIONS[0];
-    stage.src = s.src;
-    cur.textContent = s.label;
-    document.title = "S.B.T.I 공개본 — " + s.label;
-    menu.querySelectorAll("a[data-key]").forEach(a =>
-      a.classList.toggle("active", a.dataset.key === s.key));
-    try { localStorage.setItem("sbtifull-section", s.key); } catch(e){}
-    if (push !== false) {
-      try { history.replaceState(null, "", "#" + s.key); } catch(e){}
-    }
+const $cnt  = document.getElementById("cnt");
+const $part = document.getElementById("part");
+const $fill = document.getElementById("fill");
+const $jump = document.getElementById("jump");
+const $prev = document.getElementById("prev");
+const $next = document.getElementById("next");
+
+const total  = () => counts.reduce((a,b) => a+b, 0);
+const offset = d => counts.slice(0, d).reduce((a,b) => a+b, 0);
+
+// 전체 인덱스 -> {덱, 덱 안에서의 인덱스}
+function locate(gi){
+  let r = Math.max(0, Math.min(total()-1, gi));
+  for (let d = 0; d < 3; d++){
+    if (r < counts[d]) return { d, i:r };
+    r -= counts[d];
   }
+  return { d:2, i:counts[2]-1 };
+}
 
-  SECTIONS.forEach(s => {
+function render(){
+  const { d, i } = locate(g);
+  frames.forEach((f, idx) => f.classList.toggle("on", idx === d));
+  try { frames[d].contentWindow.show(i); } catch(e){}
+  const t = total();
+  $cnt.innerHTML = `${g+1} <small>/ ${t}</small>`;
+  $part.textContent = DECKS[d].short;
+  $fill.style.width = `${((g+1)/t)*100}%`;
+  $prev.disabled = g <= 0;
+  $next.disabled = g >= t-1;
+  $jump.querySelectorAll("a[data-d]").forEach(a =>
+    a.classList.toggle("on", +a.dataset.d === d));
+  document.title = `${DECKS[d].label} — 강의 통합본`;
+  try { history.replaceState(null, "", "#" + (g+1)); } catch(e){}
+  focusDeck(d);
+}
+
+function step(n){ const t = total(); if(!t) return;
+  g = Math.max(0, Math.min(t-1, g+n)); render(); }
+function goDeck(d){ g = offset(d); render(); }
+function focusDeck(d){ try { frames[d].contentWindow.focus(); } catch(e){} }
+
+// 화살표 키는 부모가 가로챈다 — 덱 자체 핸들러는 경계에서 멈추기 때문.
+function onKey(e){
+  const doc = e.target?.ownerDocument || document;
+  if (doc.body?.classList.contains("figmodal-open")) return;   // 확대 모달 열림 → 덱에 양보
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (["ArrowRight","PageDown"," "].includes(e.key)){
+    e.preventDefault(); e.stopImmediatePropagation(); step(1);
+  } else if (["ArrowLeft","PageUp","Backspace"].includes(e.key)){
+    e.preventDefault(); e.stopImmediatePropagation(); step(-1);
+  } else if (e.key === "Home"){
+    e.preventDefault(); e.stopImmediatePropagation(); g = 0; render();
+  } else if (e.key === "End"){
+    e.preventDefault(); e.stopImmediatePropagation(); g = total()-1; render();
+  } else if (["1","2","3"].includes(e.key)){
+    e.preventDefault(); e.stopImmediatePropagation(); goDeck(+e.key - 1);
+  }
+}
+
+function wire(d){
+  const f = frames[d];
+  let doc, win;
+  try { doc = f.contentDocument; win = f.contentWindow; } catch(e){ return; }
+  if (!doc || !win.show) return;
+
+  counts[d] = doc.querySelectorAll(".slide").length;
+
+  // 덱 자체 카운터·진행바·힌트를 숨긴다 — 부모가 66장 기준으로 다시 그린다.
+  const st = doc.createElement("style");
+  st.textContent = ".counter,.progress,.hint{display:none!important}";
+  doc.head.appendChild(st);
+
+  // capture 단계로 덱 핸들러보다 먼저 받는다.
+  doc.addEventListener("keydown", onKey, true);
+
+  // 덱 하단 이동 버튼을 전체 기준으로 다시 묶는다.
+  const n = doc.querySelector("#next"), p = doc.querySelector("#prev");
+  if (n) n.onclick = ev => { ev.preventDefault(); step(1); };
+  if (p) p.onclick = ev => { ev.preventDefault(); step(-1); };
+
+  if (++ready === 3) boot();
+}
+
+function boot(){
+  document.getElementById("boot").remove();
+
+  DECKS.forEach((s, d) => {
     const a = document.createElement("a");
-    a.href = "#" + s.key; a.dataset.key = s.key; a.textContent = s.label;
-    a.addEventListener("click", e => { e.preventDefault(); go(s.key); });
-    menu.appendChild(a);
+    a.href = "#"; a.dataset.d = d; a.textContent = s.short;
+    a.onclick = ev => { ev.preventDefault(); goDeck(d); };
+    $jump.appendChild(a);
   });
-  [["compare.html","원본 대조 ↗"],["../easyai/index.html","EASY AI 용어사전 ↗"]].forEach(([href,txt])=>{
+  [["../easyai/index.html","EASY AI 용어사전 ↗"]].forEach(([href,txt]) => {
     const a = document.createElement("a");
-    a.href = href; a.className = "alt"; a.textContent = txt; a.target = "_blank";
-    menu.appendChild(a);
+    a.href = href; a.target = "_blank"; a.className = "alt"; a.textContent = txt;
+    $jump.appendChild(a);
   });
 
-  // 시작 섹션: URL 해시 > 마지막 열람 > 1부
-  let start = (location.hash || "").replace("#","");
-  if (!SECTIONS.some(s => s.key === start)) {
-    try { start = localStorage.getItem("sbtifull-section") || "sbti1"; } catch(e){ start = "sbti1"; }
-  }
-  go(start, false);
+  // 시작 위치: #12 같은 해시 > 처음
+  const h = parseInt((location.hash||"").replace("#",""), 10);
+  g = (h >= 1 && h <= total()) ? h-1 : 0;
+  render();
+}
 
-  // 덱들은 키보드(←→·PageDown)로 넘긴다 — 키가 덱에 닿도록 포커스를 항상 iframe에 둔다.
-  function focusStage(){
-    try { stage.contentWindow.focus(); } catch(e) { stage.focus(); }
-  }
-  stage.addEventListener("load", focusStage);
-  addEventListener("load", focusStage);
-  addEventListener("keydown", e => {
-    const n = parseInt(e.key, 10);
-    if (n >= 1 && n <= SECTIONS.length) { go(SECTIONS[n-1].key); return; }
-    if (["ArrowRight","ArrowLeft","PageDown","PageUp"," ","Enter"].includes(e.key)) {
-      focusStage();
-      try {
-        stage.contentDocument.dispatchEvent(new KeyboardEvent("keydown",
-          { key:e.key, code:e.code, bubbles:true }));
-        e.preventDefault();
-      } catch(err) {}
-    }
-  });
-  document.getElementById("nav").addEventListener("mouseleave", focusStage);
+frames.forEach((f, d) => {
+  if (f.contentDocument?.readyState === "complete") wire(d);
+  f.addEventListener("load", () => wire(d));
+});
+
+$prev.onclick = () => step(-1);
+$next.onclick = () => step(1);
+document.addEventListener("keydown", onKey, true);
+addEventListener("hashchange", () => {
+  const h = parseInt((location.hash||"").replace("#",""), 10);
+  if (h >= 1 && h <= total() && h-1 !== g){ g = h-1; render(); }
+});
 </script>
 </body>
 </html>

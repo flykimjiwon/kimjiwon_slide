@@ -132,7 +132,57 @@ def strip_blur(html):
     return html
 
 
-def transform(html):
+# ── 5. 원본으로 되돌아가는 출구 차단 ──────────────────────────────
+# 덱 안에는 원본 배포 URL과 원본 PDF 링크가 박혀 있다. 그대로 두면
+# 모자이크본을 열람하다 한 번의 클릭으로 마스킹 안 된 원본에 도달한다.
+def cut_escape_hatches(html, deck):
+    # (a) 원본 덱 배포 URL -> 공개본으로
+    html = html.replace(f"https://kimjiwon-slide.vercel.app/{deck}",
+                        "https://kimjiwon-slide.vercel.app/sbtifull")
+    html = html.replace(f"kimjiwon-slide.vercel.app/{deck}",
+                        "kimjiwon-slide.vercel.app/sbtifull")
+
+    # (b) 원본 PDF 다운로드 버튼 통째로 제거 (PDF 자체도 공개본에서 뺀다)
+    html = re.sub(r'<a\b[^>]*href="assets/' + deck + r'\.pdf"[^>]*>.*?</a>',
+                  '', html, flags=re.S)
+
+    # (c) 첨부 파일·외부 배포 URL을 실제로 걸고 있는 슬라이드만 제거한다.
+    #     타운홀·부서장회의 별첨 5종과 제품명이 드러나는 외부 URL이 여기 모여 있다.
+    #     링크가 없는 단순 구분용 부록 슬라이드(sbti2)는 본문이므로 건드리지 않는다.
+    def drop_if_links_out(m):
+        sec = m.group(0)
+        leaks = re.search(r'href="[^"]*(?:attachments/|techai-code\.|harnesstgc\.'
+                          r'|baedal-blush\.|axslide\.|/agentmake)', sec)
+        return "" if leaks else sec
+
+    html = re.sub(r'<section class="slide[^"]*".*?</section>',
+                  drop_if_links_out, html, flags=re.S)
+    return html
+
+
+# 공개본 assets에서 통째로 빼는 것 — 원본 PDF와 미검수 별첨 자료
+ASSET_DENY_SUFFIX = (".pdf",)
+ASSET_DENY_DIRS = ("attachments",)
+
+
+def prune_assets(dst_dir):
+    removed = []
+    for p in sorted(dst_dir.rglob("*")):
+        if p.is_dir():
+            continue
+        if p.suffix.lower() in ASSET_DENY_SUFFIX or \
+           any(part in ASSET_DENY_DIRS for part in p.parts):
+            removed.append(p.relative_to(dst_dir))
+            p.unlink()
+    for d in ASSET_DENY_DIRS:
+        t = dst_dir / "assets" / d
+        if t.exists():
+            shutil.rmtree(t)
+    return removed
+
+
+def transform(html, deck):
+    html = cut_escape_hatches(html, deck)
     html, store = protect(html)
     for table in (ORG_MAP, DEPT_MAP, PRODUCT_MAP, NAME_MAP):
         for k in sorted(table, key=len, reverse=True):
@@ -156,25 +206,47 @@ def main():
         # assets는 심볼릭이 아니라 실제 복사 (Vercel이 symlink를 따라가지 않음)
         shutil.copytree(src_dir / "assets", dst_dir / "assets")
 
+        pruned = prune_assets(dst_dir)
+
         raw = (src_dir / "index.html").read_text(encoding="utf-8")
-        out = transform(raw)
+        out = transform(raw, d)
         (dst_dir / "index.html").write_text(out, encoding="utf-8")
 
         hits = {k: out.count(k) for k in FORBIDDEN if out.count(k)}
+        # 원본으로 되돌아가는 링크가 남았는지 — 이게 남으면 마스킹이 무의미해진다
+        escapes = re.findall(r'(?:href|src)="([^"]*(?:'
+                             r'vercel\.app/sbti[123]|assets/sbti[123]\.pdf|attachments/'
+                             r')[^"]*)"', out)
+        # 참조는 하는데 파일이 없는 것
+        broken = [a for a in set(re.findall(r'(?:href|src)="(assets/[^"]+)"', out))
+                  if not (dst_dir / a).exists()]
         report[d] = {
             "원본_bytes": len(raw.encode()),
             "모자이크_bytes": len(out.encode()),
             "blur_남음": len(re.findall(r'blur\(', out)),
             "금칙어_잔존": hits,
+            "원본_역링크_잔존": escapes,
+            "깨진_참조": broken,
+            "제외한_에셋": [str(p) for p in pruned],
         }
-        print(f"[{d}] {len(raw)}자 -> {len(out)}자 · blur {len(re.findall(chr(98)+'lur.', out))}건 · 금칙어 {len(hits)}종")
+        print(f"[{d}] {len(raw)}자 -> {len(out)}자 · 금칙어 {len(hits)}종 · "
+              f"역링크 {len(escapes)}건 · 깨진참조 {len(broken)}건 · 에셋제외 {len(pruned)}개")
         for k, v in hits.items():
-            print(f"    ! {k} x{v}")
+            print(f"    ! 금칙어 {k} x{v}")
+        for e in escapes:
+            print(f"    ! 원본 역링크 {e}")
+        for b in broken:
+            print(f"    ! 깨진 참조 {b}")
+        for p in pruned:
+            print(f"      - 제외 {p}")
 
     (OUT / "_build_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print("\n리포트:", OUT / "_build_report.json")
-    return 0 if not any(r["금칙어_잔존"] for r in report.values()) else 1
+    fail = any(r["금칙어_잔존"] or r["원본_역링크_잔존"] or r["깨진_참조"]
+               for r in report.values())
+    print("판정:", "실패 — 위 항목을 해결할 것" if fail else "통과")
+    return 1 if fail else 0
 
 
 if __name__ == "__main__":

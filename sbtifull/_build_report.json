@@ -1,20 +1,40 @@
 {
   "sbti1": {
     "원본_bytes": 91109,
-    "모자이크_bytes": 91168,
+    "모자이크_bytes": 91008,
     "blur_남음": 0,
-    "금칙어_잔존": {}
+    "금칙어_잔존": {},
+    "원본_역링크_잔존": [],
+    "깨진_참조": [],
+    "제외한_에셋": [
+      "assets/sbti1.pdf"
+    ]
   },
   "sbti2": {
     "원본_bytes": 142804,
-    "모자이크_bytes": 141621,
+    "모자이크_bytes": 141325,
     "blur_남음": 0,
-    "금칙어_잔존": {}
+    "금칙어_잔존": {},
+    "원본_역링크_잔존": [],
+    "깨진_참조": [],
+    "제외한_에셋": [
+      "assets/sbti2.pdf"
+    ]
   },
   "sbti3": {
     "원본_bytes": 88858,
-    "모자이크_bytes": 89082,
+    "모자이크_bytes": 85368,
     "blur_남음": 0,
-    "금칙어_잔존": {}
+    "금칙어_잔존": {},
+    "원본_역링크_잔존": [],
+    "깨진_참조": [],
+    "제외한_에셋": [
+      "assets/attachments/appendix-1-townhall-2025-08-01.pdf",
+      "assets/attachments/appendix-2-director-meeting-2025-10-21.pdf",
+      "assets/attachments/appendix-3-director-demo-2025-10-21.mp4",
+      "assets/attachments/appendix-4-claude-code-demo-2026-03-20.mp4",
+      "assets/attachments/appendix-5-director-presentation-2026-04-30.pdf",
+      "assets/sbti3.pdf"
+    ]
   }
 }
