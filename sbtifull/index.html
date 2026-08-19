@@ -4,8 +4,12 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="robots" content="noindex"/>
+<!-- 🔴 base 필수. 배포 주소가 /sbtifull (뒤 슬래시 없음)이라 base가 없으면
+     상대경로 sbti1/index.html 이 /sbti1 — 즉 마스킹 안 된 원본으로 풀린다. -->
+<base href="/sbtifull/"/>
+<script>if(location.protocol==="file:"){document.querySelector("base").setAttribute("href","./");}</script>
 <title>AI 코딩 도구 사내 도입 — 강의 통합본 (공개본)</title>
-<link rel="icon" type="image/svg+xml" href="../cover/assets/techai-code-favicon.svg"/>
+<link rel="icon" type="image/svg+xml" href="/cover/assets/techai-code-favicon.svg"/>
 <style>
   /* 세 덱을 각자 iframe에 그대로 띄우되, 부모가 66장을 하나의 연속된 덱으로 제어한다.
      덱 내부 렌더링에는 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
@@ -149,6 +153,18 @@ function wire(d){
   let doc, win;
   try { doc = f.contentDocument; win = f.contentWindow; } catch(e){ return; }
   if (!doc || !win.show) return;
+
+  // 🔴 안전장치: 공개본 표식이 없으면 원본이 잘못 실린 것이다. 그리지 않고 멈춘다.
+  if (!doc.querySelector('meta[name="x-sbti-build"][content="mosaic"]')){
+    document.body.innerHTML =
+      '<div style="position:absolute;inset:0;display:grid;place-items:center;'
+      + 'background:#1b1013;color:#fecaca;font:700 15px/1.7 -apple-system,sans-serif;'
+      + 'text-align:center;padding:30px">'
+      + '<div>공개본이 아닌 덱이 로드됐습니다 — 표시를 중단했습니다.<br>'
+      + '<span style="font-weight:400;color:#f8a6a6">iframe이 원본 경로로 풀렸을 수 있습니다. '
+      + 'scripts/build_sbtifull.py 를 다시 돌리고 &lt;base href="/sbtifull/"&gt; 를 확인하세요.</span></div></div>';
+    throw new Error("mosaic build marker missing in deck " + d);
+  }
 
   counts[d] = doc.querySelectorAll(".slide").length;
 

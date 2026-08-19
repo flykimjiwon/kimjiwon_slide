@@ -181,6 +181,17 @@ def prune_assets(dst_dir):
     return removed
 
 
+# 공개본임을 증명하는 표식. 뷰어가 이걸 확인하고, 없으면 렌더를 거부한다.
+# 경로가 잘못 풀려 원본이 iframe에 실리는 사고를 런타임에서 잡아내기 위한 것.
+BUILD_MARK = '<meta name="x-sbti-build" content="mosaic"/>'
+
+
+def stamp(html):
+    if BUILD_MARK in html:
+        return html
+    return re.sub(r'(<head[^>]*>)', r'\1' + BUILD_MARK, html, count=1)
+
+
 def transform(html, deck):
     html = cut_escape_hatches(html, deck)
     html, store = protect(html)
@@ -188,7 +199,7 @@ def transform(html, deck):
         for k in sorted(table, key=len, reverse=True):
             html = html.replace(k, table[k])
     html = restore(html, store)
-    return strip_blur(html)
+    return stamp(strip_blur(html))
 
 
 def main():
