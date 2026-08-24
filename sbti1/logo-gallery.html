@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>SBTI1 · 도구 로고 검수 갤러리</title>
+  <style>
+    :root {
+      --bg: #07101f;
+      --panel: #0d1829;
+      --panel-2: #132139;
+      --line: #223551;
+      --text: #f7faff;
+      --muted: #95a7c2;
+      --blue: #4b91ee;
+      --green: #2dbb67;
+      --orange: #f27a32;
+      --purple: #9364e8;
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(75, 145, 238, .17), transparent 32rem),
+        radial-gradient(circle at 92% 10%, rgba(147, 100, 232, .12), transparent 30rem),
+        var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Pretendard, "Noto Sans KR", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1280px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: end;
+      padding-bottom: 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 13px;
+      color: #7ab2ff;
+      font: 850 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+
+    .intro {
+      width: min(390px, 100%);
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 24px 0 42px;
+      color: var(--muted);
+      font: 750 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .legend span { display: inline-flex; align-items: center; gap: 8px; }
+
+    .legend i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(255,255,255,.08);
+    }
+
+    section + section { margin-top: 52px; }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -.025em;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font: 700 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .08em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid.browser { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(155deg, rgba(19, 33, 57, .96), rgba(10, 20, 36, .96));
+      box-shadow: 0 22px 58px rgba(0,0,0,.18);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .card:hover { transform: translateY(-4px); border-color: #47668f; }
+
+    .preview {
+      position: relative;
+      min-height: 228px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: linear-gradient(90deg, #f8fafc 0 50%, #111827 50% 100%);
+    }
+
+    .preview::before,
+    .preview::after {
+      position: absolute;
+      top: 14px;
+      font: 850 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .12em;
+    }
+
+    .preview::before { content: "LIGHT"; left: 15px; color: #768299; }
+    .preview::after { content: "DARK"; right: 15px; color: #71819b; }
+
+    .preview img {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 25px rgba(2,6,23,.24));
+    }
+
+    .browser .preview { min-height: 260px; }
+    .browser .preview img { width: 132px; height: 132px; }
+
+    .meta { padding: 18px 19px 20px; }
+
+    .name-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h3 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+
+    .format {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border: 1px solid #304664;
+      border-radius: 999px;
+      color: #9cb7db;
+      background: #101d31;
+      font: 850 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .08em;
+    }
+
+    .role {
+      min-height: 39px;
+      margin: 8px 0 16px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .source {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #cfe0ff;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .source::after { content: "↗"; color: #7ab2ff; }
+
+    .slide-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .slide-chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 74px;
+      padding: 11px 14px;
+      border-radius: 15px;
+      color: white;
+      box-shadow: inset 0 1px rgba(255,255,255,.14);
+    }
+
+    .slide-chip.blue { background: linear-gradient(135deg, #3f8ce8, #1558a8); }
+    .slide-chip.green { background: linear-gradient(135deg, #2dbb67, #0f7d38); }
+    .slide-chip.orange { background: linear-gradient(135deg, #f97b2f, #c74a06); }
+    .slide-chip.purple { background: linear-gradient(135deg, #9d6bf7, #5f21c9); }
+
+    .slide-chip .logos { display: flex; gap: 5px; flex: 0 0 auto; }
+
+    .slide-chip img {
+      display: block;
+      width: 40px;
+      height: 40px;
+      padding: 4px;
+      object-fit: contain;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 10px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 7px 18px rgba(2,6,23,.20);
+    }
+
+    .slide-chip b { display: block; font-size: 14px; }
+    .slide-chip span { display: block; margin-top: 3px; font-size: 10px; opacity: .82; }
+
+    .browser-strip { grid-template-columns: repeat(2, 1fr); }
+
+    footer {
+      margin-top: 54px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+
+    :focus-visible { outline: 3px solid #7ab2ff; outline-offset: 4px; border-radius: 4px; }
+
+    @media (max-width: 940px) {
+      header { grid-template-columns: 1fr; align-items: start; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 28px, 480px); padding-top: 30px; }
+      .grid, .grid.browser, .slide-strip, .browser-strip { grid-template-columns: 1fr; }
+      .preview { min-height: 210px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">SBTI1 · Asset review</p>
+        <h1>도구 로고<br>검수 갤러리</h1>
+      </div>
+      <p class="intro">18·19페이지에 넣기 전 공식 로고의 형태, 투명 배경, 밝은·어두운 화면에서의 대비를 한 번에 확인하는 페이지입니다.</p>
+    </header>
+
+    <div class="legend" aria-label="검수 기준">
+      <span><i></i> 공식 사이트·공식 GitHub 원본</span>
+      <span><i></i> 로컬 저장 완료</span>
+      <span><i></i> 슬라이드 적용 전</span>
+    </div>
+
+    <section aria-labelledby="compare-title">
+      <div class="section-head"><h2 id="compare-title">18페이지 · 도구 비교</h2><span>TERMINAL → AGENT → WORKSPACE</span></div>
+      <div class="grid">
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/cmux.png" alt="cmux 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>cmux</h3><span class="format">PNG · 256</span></div><p class="role">멀티태스킹용 네이티브 터미널</p><a class="source" href="https://github.com/manaflow-ai/cmux/blob/main/web/public/logo.png" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/tmux.svg" alt="tmux 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>tmux</h3><span class="format">SVG · VECTOR</span></div><p class="role">터미널 멀티플렉서</p><a class="source" href="https://github.com/tmux/tmux/blob/master/logo/tmux-logomark.svg" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/herdr.svg" alt="herdr 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>herdr</h3><span class="format">SVG · VECTOR</span></div><p class="role">터미널 기반 에이전트 멀티플렉서</p><a class="source" href="https://github.com/motionharvest/herdr/blob/main/assets/logo.svg" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/orca.png" alt="Orca 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>Orca</h3><span class="format">PNG · 256</span></div><p class="role">워크트리 중심 Agent Development Environment</p><a class="source" href="https://github.com/stablyai/orca/blob/main/resources/icon.png" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+      </div>
+
+      <div class="slide-strip" aria-label="18페이지 적용 예상 크기">
+        <div class="slide-chip blue"><div class="logos"><img src="assets/tool-logos/cmux.png" alt=""><img src="assets/tool-logos/tmux.svg" alt=""></div><div><b>cmux · tmux</b><span>터미널이 주인공</span></div></div>
+        <div class="slide-chip green"><div class="logos"><img src="assets/tool-logos/herdr.svg" alt=""></div><div><b>herdr</b><span>에이전트가 주인공</span></div></div>
+        <div class="slide-chip orange"><div class="logos"><img src="assets/tool-logos/orca.png" alt=""></div><div><b>Orca (ADE)</b><span>작업공간이 주인공</span></div></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="browser-title">
+      <div class="section-head"><h2 id="browser-title">19페이지 · 브라우저 자동화</h2><span>CODE-DRIVEN → GOAL-DRIVEN</span></div>
+      <div class="grid browser">
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/playwright.svg" alt="Playwright 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>Playwright</h3><span class="format">SVG · VECTOR</span></div><p class="role">코드 기반 브라우저 자동화 엔진</p><a class="source" href="https://github.com/microsoft/playwright.dev/blob/main/static/img/playwright-logo.svg" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+
+        <article class="card">
+          <div class="preview"><img src="assets/tool-logos/aside.png" alt="Aside 공식 로고"></div>
+          <div class="meta"><div class="name-row"><h3>Aside</h3><span class="format">PNG · 512</span></div><p class="role">목표 기반 AI 브라우저</p><a class="source" href="https://aside.com/icon.png" target="_blank" rel="noopener">공식 원본 보기</a></div>
+        </article>
+      </div>
+
+      <div class="slide-strip browser-strip" aria-label="19페이지 적용 예상 크기">
+        <div class="slide-chip green"><div class="logos"><img src="assets/tool-logos/playwright.svg" alt=""></div><div><b>Playwright</b><span>브라우저 자동화 엔진</span></div></div>
+        <div class="slide-chip purple"><div class="logos"><img src="assets/tool-logos/aside.png" alt=""></div><div><b>Aside</b><span>AI 브라우저</span></div></div>
+      </div>
+    </section>
+
+    <footer>현재 `sbti1/index.html`에는 로고를 반영하지 않았습니다. 이 갤러리에서 형태와 크기를 확인한 뒤 승인된 구성만 18·19페이지에 적용합니다.</footer>
+  </main>
+</body>
+</html>

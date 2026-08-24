@@ -1,0 +1,397 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sbti1 18·19 디자인 시안 3종</title>
+<style>
+:root{--bg:#eef2f7;--ink:#1a1a1a;--muted:#5f6672;--line:#e2e7ee;
+--blue:#1f6fd0;--green:#16a34a;--orange:#ea580c;--purple:#7c3aed;--cyan:#0ea5e9;
+--bp-canvas:#fbfdff;--bp-ink:#071939;--bp-muted:#53627a;--bp-line:#d8e4f2;--bp-web:#1767e8;--bp-code:#16945b;--bp-navy:#153665;--bp-warn:#d45b24;
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Segoe UI",sans-serif;
+--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font)}
+.page{max-width:1480px;margin:0 auto;padding:52px 36px 90px}
+.intro h1{font-size:34px;letter-spacing:-.04em;margin:0 0 8px}
+.intro p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.jump{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.jump a{font:700 12.5px var(--mono);color:var(--ink);text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px}
+.vhead{margin:64px 0 14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.vhead b{font-size:24px;letter-spacing:-.03em}
+.vhead .vtag{font:800 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
+.vhead span{color:var(--muted);font-size:14px}
+#v1 .vtag{background:#0d131c;color:#7ee787}
+#v2 .vtag{background:#e8f0fc;color:var(--bp-web)}
+#v3 .vtag{background:#fff1e8;color:var(--orange)}
+.frame{position:relative;width:100%;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14);margin-bottom:26px;background:#fff}
+.canvas{position:absolute;top:0;left:0;width:1600px;height:900px;transform-origin:0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.fcap{position:absolute;left:14px;top:12px;z-index:9;font:800 11px var(--mono);letter-spacing:.08em;color:#fff;background:rgba(15,23,42,.55);border-radius:999px;padding:4px 12px;backdrop-filter:blur(4px)}
+
+/* ============ 공통 다크 목업 (V1·V3 공유) ============ */
+.win{background:#0b1017;border:1px solid #253243;border-radius:12px;overflow:hidden;font-family:var(--mono);color:#dbe4ef;text-align:left;display:flex;flex-direction:column}
+.winbar{display:flex;align-items:center;gap:7px;padding:8px 12px;background:#141c26;border-bottom:1px solid #253243;font:700 11px var(--mono);color:#7f8b9c}
+.winbar i{width:10px;height:10px;border-radius:50%}
+.winbar i.r{background:#e5726f}.winbar i.y{background:#e0af5a}.winbar i.g{background:#5fba6f}
+.winbar em{font-style:normal;margin-left:6px}
+.tabs{display:flex;background:#0f1620;border-bottom:1px solid #1e2a38}
+.tabs span{padding:7px 16px;font-size:12px;color:#7f8b9c;border-right:1px solid #1e2a38}
+.tabs span.on{background:#0b1017;color:#4ade80}
+.term{flex:1;padding:14px;font-size:13px;line-height:1.9}
+.term u{text-decoration:none;color:#4ade80}.term s{text-decoration:none;color:#7f8b9c}
+.agents{flex:1;padding:12px;display:flex;flex-direction:column;justify-content:space-around}
+.ag{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 6px}
+.ag s{text-decoration:none;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:700}
+.ag s.w{background:#163b2b;color:#4ade80}.ag s.b{background:#3d2350;color:#d8b4fe}.ag s.d{background:#1b2f4a;color:#7cc4fb}
+.orcabody{flex:1;display:grid;grid-template-columns:.8fr 1.2fr}
+.wt{padding:12px;border-right:1px solid #1e2a38;font-size:12px}
+.wt i{display:block;font-style:normal;color:#6c7a8c;font-size:10px;margin-bottom:7px;letter-spacing:.08em}
+.wt div{padding:4px 8px;border-radius:5px;margin-bottom:4px;color:#c7d2e0}
+.wt div.on{background:#4a3711;color:#fde68a}
+.diff{padding:12px;font-size:12px;line-height:1.9}
+.diff em{display:block;font-style:normal;color:#6c7a8c;font-size:10.5px;margin-bottom:5px}
+.diff .add{display:block;background:rgba(74,222,128,.12);color:#86efac}
+.diff .del{display:block;background:rgba(248,113,113,.12);color:#fca5a5}
+.codebody{flex:1;padding:16px;font:600 13.5px/2 var(--mono);color:#dbe4ef;white-space:pre;text-align:left}
+.codebody u{text-decoration:none;color:#7ee787}.codebody s{text-decoration:none;color:#7f8b9c}
+.bwrap{flex:1;display:grid;grid-template-columns:1.1fr .9fr;min-height:0}
+.bpage{background:#f4f7fb;border-right:1px solid #253243;padding:14px;display:flex;flex-direction:column;gap:8px}
+.bhd{height:12px;border-radius:5px;background:#dbe4ef;width:58%}
+.blogin{margin:auto;width:70%;background:#fff;border:1px solid #dbe4ef;border-radius:9px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 16px rgba(15,23,42,.08)}
+.binp{height:14px;border:1px solid #dbe4ef;border-radius:5px;background:#f7f9fc}
+.bbtn{height:19px;border-radius:5px;background:#16a34a;color:#fff;font:800 10px/19px var(--font);text-align:center}
+.bpanel{padding:13px;display:flex;flex-direction:column;gap:8px;justify-content:center;text-align:left}
+.bmsg{align-self:flex-end;background:#7c3aed;color:#fff;font:750 12px/1.4 var(--font);padding:5px 12px;border-radius:11px 11px 3px 11px}
+.bstep{display:flex;align-items:center;gap:7px;font:700 11.5px/1.4 var(--mono);color:#a9b6c7}
+.bstep::before{content:"✓";color:#4ade80;font-weight:900}
+.bstep.run{color:#d8b4fe}.bstep.run::before{content:"●";color:#d8b4fe}
+.bwai{margin-left:auto;font-weight:800;color:#d8b4fe;background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.5);border-radius:999px;padding:2px 10px;font-size:10.5px}
+
+/* ============ V1 — Terminal Noir ============ */
+.v1{background:radial-gradient(circle at 14% 12%,rgba(31,111,208,.14),transparent 32%),radial-gradient(circle at 50% 0%,rgba(22,163,74,.09),transparent 30%),radial-gradient(circle at 88% 14%,rgba(234,88,12,.11),transparent 32%),linear-gradient(180deg,#0a0f16,#0d131c)}
+.v1.s19{background:radial-gradient(circle at 16% 14%,rgba(22,163,74,.13),transparent 34%),radial-gradient(circle at 86% 12%,rgba(124,58,237,.14),transparent 34%),linear-gradient(180deg,#0a0f16,#0d131c)}
+.v1 .eyebrow{font:800 15px var(--mono);letter-spacing:.06em;color:#58a6ff;margin-bottom:18px}
+.v1 .eyebrow b{color:#7ee787;font-weight:800}
+.v1 h2{margin:0 0 10px;font-size:56px;letter-spacing:-.05em;color:#f1f5fb;line-height:1.06}
+.v1 h2 span{background:linear-gradient(90deg,#58a6ff,#39d2f5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.v1.s19 h2 span{background:linear-gradient(90deg,#4ade80,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.v1 .sub{margin:0 0 34px;color:#8b98ab;font-size:19px;font-weight:600}
+.v1 .row{display:grid;grid-template-columns:repeat(3,440px);gap:26px}
+.v1 .card{position:relative;background:rgba(255,255,255,.035);border:1px solid rgba(148,163,184,.16);border-radius:18px;padding:0;text-align:left;display:flex;flex-direction:column;overflow:hidden}
+.v1 .card::before{content:"";height:3px;display:block}
+.v1 .card.k1::before{background:linear-gradient(90deg,#1f6fd0,#39d2f5)}
+.v1 .card.k2::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.v1 .card.k3::before{background:linear-gradient(90deg,#ea580c,#fdba74)}
+.v1 .chead{display:flex;align-items:baseline;justify-content:space-between;padding:18px 22px 4px}
+.v1 .chead b{font-size:25px;font-weight:900;letter-spacing:-.02em;color:#f1f5fb}
+.v1 .chead .tag{font:800 11px var(--mono);letter-spacing:.08em;border:1px solid;border-radius:999px;padding:3px 10px}
+.v1 .k1 .tag{color:#79b8ff;border-color:rgba(121,184,255,.45)}
+.v1 .k2 .tag{color:#4ade80;border-color:rgba(74,222,128,.45)}
+.v1 .k3 .tag{color:#fdba74;border-color:rgba(253,186,116,.45)}
+.v1 .csub{padding:0 22px 12px;font-size:14px;font-weight:750}
+.v1 .k1 .csub{color:#79b8ff}.v1 .k2 .csub{color:#4ade80}.v1 .k3 .csub{color:#fdba74}
+.v1 .win{margin:0 18px;border-radius:12px;min-height:190px}
+.v1 .k1 .win{border-color:rgba(31,111,208,.5);box-shadow:0 0 30px rgba(31,111,208,.22)}
+.v1 .k2 .win{border-color:rgba(22,163,74,.5);box-shadow:0 0 30px rgba(22,163,74,.2)}
+.v1 .k3 .win{border-color:rgba(234,88,12,.5);box-shadow:0 0 30px rgba(234,88,12,.2)}
+.v1 .clist{padding:16px 22px 0;display:flex;flex-direction:column;gap:9px}
+.v1 .clist div{display:flex;gap:9px;font-size:15px;font-weight:700;color:#cbd5e1;line-height:1.45;align-items:flex-start}
+.v1 .clist div::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:.5em;flex:0 0 auto}
+.v1 .k1 .clist div::before{background:#58a6ff}.v1 .k2 .clist div::before{background:#4ade80}.v1 .k3 .clist div::before{background:#fdba74}
+.v1 .wtline{margin-top:auto;padding:14px 22px 18px;border-top:1px solid rgba(148,163,184,.14);font-size:13px;font-weight:750;color:#7d8b9f}
+.v1 .wtline b{color:#f1f5fb;font-weight:900}
+.v1 .k3 .wtline b{color:#fdba74}
+.v1 .axis{width:1372px;margin-top:34px}
+.v1 .atrack{position:relative;height:7px;border-radius:999px;background:linear-gradient(90deg,#1f6fd0,#16a34a 50%,#ea580c);box-shadow:0 0 22px rgba(56,139,253,.35)}
+.v1.s19 .atrack{background:linear-gradient(90deg,#16a34a,#7c3aed);box-shadow:0 0 22px rgba(124,58,237,.4)}
+.v1 .adot{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#0d131c;border:5px solid #9fb0c6}
+.v1 .aline{display:flex;align-items:center;gap:20px}
+.v1 .acap{font:800 13px var(--mono);color:#7d8b9f;white-space:nowrap}
+.v1 .atrack{flex:1}
+.v1 .alabels{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px;font-size:16.5px;font-weight:850}
+.v1.s19 .alabels{grid-template-columns:repeat(2,1fr)}
+.v1 .alabels span{justify-self:center;border:1px solid;border-radius:999px;padding:8px 22px;background:rgba(255,255,255,.03)}
+.v1 .al1{color:#79b8ff;border-color:rgba(121,184,255,.4)}
+.v1 .al2{color:#4ade80;border-color:rgba(74,222,128,.4)}
+.v1 .al3{color:#fdba74;border-color:rgba(253,186,116,.4)}
+.v1 .alp{color:#c084fc;border-color:rgba(192,132,252,.4)}
+.v1 .row2{display:grid;grid-template-columns:560px 60px 560px;gap:26px;align-items:stretch}
+.v1 .bigcard{display:flex;flex-direction:column;text-align:left}
+.v1 .bigcard .win{margin:0;min-height:250px}
+.v1 .row2 .k2 .win,.v1 .row2 .kp .win{flex:1}
+.v1 .kp .tag{color:#c084fc;border-color:rgba(192,132,252,.45)}
+.v1 .kp .csub{color:#c084fc}
+.v1 .kp.card::before{background:linear-gradient(90deg,#7c3aed,#c084fc)}
+.v1 .kp .win{border-color:rgba(124,58,237,.5);box-shadow:0 0 30px rgba(124,58,237,.24)}
+.v1 .kp .clist div::before{background:#c084fc}
+.v1 .midarrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font:800 12.5px var(--mono);color:#7d8b9f;line-height:1.4}
+.v1 .midarrow i{font-style:normal;font-size:34px;font-weight:900;background:linear-gradient(90deg,#4ade80,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.v1 .closing{margin-top:26px;color:#8b98ab;font-size:16px;font-weight:650}
+.v1 .closing b{color:#f1f5fb}
+
+/* ============ V2 — Blueprint ============ */
+.v2{background:var(--bp-canvas);color:var(--bp-ink)}
+.v2 .topline{font:800 13px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bp-web);margin-bottom:16px}
+.v2 h2{margin:0 0 10px;font-size:52px;font-weight:900;letter-spacing:-.045em;line-height:1.08;color:var(--bp-ink)}
+.v2 .sub{margin:0 0 32px;color:var(--bp-muted);font-size:18px;font-weight:650}
+.v2 .row{display:grid;grid-template-columns:repeat(3,440px);gap:24px}
+.v2 .panel{border:1px solid var(--bp-line);border-radius:14px;background:#fff;overflow:hidden;text-align:left;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(7,25,57,.05)}
+.v2 .phead{display:flex;align-items:stretch;border-bottom:1px solid var(--bp-line)}
+.v2 .pnum{width:52px;display:flex;align-items:center;justify-content:center;font:900 21px var(--mono);color:#fff}
+.v2 .ptitle{flex:1;padding:12px 16px}
+.v2 .ptitle b{display:block;font-size:20px;font-weight:850;letter-spacing:-.02em}
+.v2 .ptitle span{display:block;font-size:12.5px;color:var(--bp-muted);font-weight:700;margin-top:2px}
+.v2 .n1 .pnum{background:var(--bp-web)}.v2 .n1 .ptitle{background:#eef4fd}.v2 .n1 .ptitle b{color:var(--bp-web)}
+.v2 .n2 .pnum{background:var(--bp-code)}.v2 .n2 .ptitle{background:#ecf7f1}.v2 .n2 .ptitle b{color:var(--bp-code)}
+.v2 .n3 .pnum{background:var(--bp-navy)}.v2 .n3 .ptitle{background:#eef1f7}.v2 .n3 .ptitle b{color:var(--bp-navy)}
+.v2 .np .pnum{background:var(--bp-warn)}.v2 .np .ptitle{background:#fdf1ea}.v2 .np .ptitle b{color:var(--bp-warn)}
+.v2 .flat{margin:16px;border:1px solid var(--bp-line);border-radius:10px;min-height:170px;display:flex;flex-direction:column;overflow:hidden;font-family:var(--mono)}
+.v2 .fbar{display:flex;gap:6px;align-items:center;padding:7px 10px;border-bottom:1px solid var(--bp-line);background:#f6f9fd;font:700 10.5px var(--mono);color:var(--bp-muted)}
+.v2 .fbar i{width:8px;height:8px;border-radius:50%;border:1.5px solid #b9c8dc;background:#fff}
+.v2 .ftabs{display:flex;border-bottom:1px solid var(--bp-line)}
+.v2 .ftabs span{padding:6px 14px;font-size:11.5px;color:var(--bp-muted);border-right:1px solid var(--bp-line)}
+.v2 .ftabs span.on{color:var(--bp-web);box-shadow:inset 0 -2px 0 var(--bp-web);font-weight:800}
+.v2 .fterm{flex:1;padding:12px;font-size:12.5px;line-height:1.9;color:var(--bp-ink)}
+.v2 .fterm u{text-decoration:none;color:var(--bp-code);font-weight:800}
+.v2 .fterm s{text-decoration:none;color:var(--bp-muted)}
+.v2 .frows{flex:1;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-around}
+.v2 .frow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--bp-ink);border:1px solid var(--bp-line);border-radius:7px;padding:6px 10px}
+.v2 .frow s{text-decoration:none;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:999px}
+.v2 .frow s.w{background:#ecf7f1;color:var(--bp-code)}
+.v2 .frow s.b{background:#fdf1ea;color:var(--bp-warn)}
+.v2 .frow s.d{background:#eef4fd;color:var(--bp-web)}
+.v2 .fsplit{flex:1;display:grid;grid-template-columns:.85fr 1.15fr}
+.v2 .fwt{padding:10px;border-right:1px solid var(--bp-line);font-size:11.5px}
+.v2 .fwt i{display:block;font-style:normal;color:var(--bp-muted);font-size:9.5px;letter-spacing:.08em;margin-bottom:6px}
+.v2 .fwt div{padding:4px 8px;border:1px solid transparent;border-radius:5px;margin-bottom:3px;color:var(--bp-ink)}
+.v2 .fwt div.on{border-color:var(--bp-navy);color:var(--bp-navy);font-weight:800;background:#eef1f7}
+.v2 .fdiff{padding:10px;font-size:11.5px;line-height:1.9}
+.v2 .fdiff em{display:block;font-style:normal;color:var(--bp-muted);font-size:10px;margin-bottom:4px}
+.v2 .fdiff .add{display:block;color:var(--bp-code);background:#ecf7f1}
+.v2 .fdiff .del{display:block;color:var(--bp-warn);background:#fdf1ea}
+.v2 .plist{padding:14px 18px 4px;display:flex;flex-direction:column;gap:8px}
+.v2 .plist div{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;font-weight:750;line-height:1.45;color:var(--bp-ink)}
+.v2 .plist svg{flex:0 0 auto;margin-top:2px}
+.v2 .wtline{margin-top:auto;padding:12px 18px 15px;border-top:1px solid var(--bp-line);font-size:12.5px;font-weight:750;color:var(--bp-muted)}
+.v2 .wtline b{font-weight:900;color:var(--bp-ink)}
+.v2 .n3 .wtline b{color:var(--bp-navy)}
+.v2 .lane{width:1368px;margin-top:30px;border:1px solid var(--bp-line);border-radius:12px;background:#fff;display:grid;grid-template-columns:170px 1fr;overflow:hidden;text-align:left}
+.v2 .lanet{background:#f2f6fc;border-right:1px solid var(--bp-line);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:850;color:var(--bp-ink);padding:14px}
+.v2 .laneb{position:relative;padding:20px 40px 16px}
+.v2 .laxis{position:relative;height:2px;background:var(--bp-ink);margin:12px 0 14px}
+.v2 .laxis::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:9px solid var(--bp-ink);border-right:0}
+.v2 .lnode{position:absolute;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid;font:900 12px/22px var(--mono);text-align:center}
+.v2 .lnode.c1{border-color:var(--bp-web);color:var(--bp-web)}
+.v2 .lnode.c2{border-color:var(--bp-code);color:var(--bp-code)}
+.v2 .lnode.c3{border-color:var(--bp-navy);color:var(--bp-navy)}
+.v2 .lnode.cp{border-color:var(--bp-warn);color:var(--bp-warn)}
+.v2 .llabels{display:grid;grid-template-columns:repeat(3,1fr);font-size:14.5px;font-weight:850}
+.v2 .llabels.two{grid-template-columns:repeat(2,1fr)}
+.v2 .llabels span{justify-self:center;color:var(--bp-ink)}
+.v2 .llabels span em{display:block;font-style:normal;font-size:11.5px;font-weight:700;color:var(--bp-muted);margin-top:2px}
+.v2 .lends{display:flex;justify-content:space-between;font:700 11.5px var(--mono);color:var(--bp-muted)}
+.v2 .row2{display:grid;grid-template-columns:660px 660px;gap:26px}
+.v2 .fcode{flex:1;padding:16px 18px;font:650 13px/2 var(--mono);color:var(--bp-ink);white-space:pre;text-align:left}
+.v2 .fcode u{text-decoration:none;color:var(--bp-web);font-weight:800}
+.v2 .fcode s{text-decoration:none;color:var(--bp-muted)}
+.v2 .fbrowser{flex:1;display:grid;grid-template-columns:1.1fr .9fr}
+.v2 .fpage{border-right:1px solid var(--bp-line);padding:12px;display:flex;flex-direction:column;gap:8px}
+.v2 .fhd{height:10px;border-radius:4px;background:#e6edf6;width:55%}
+.v2 .flogin{margin:auto;width:68%;border:1px solid var(--bp-line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:7px}
+.v2 .finp{height:12px;border:1px solid var(--bp-line);border-radius:4px;background:#f6f9fd}
+.v2 .fbtn{height:17px;border-radius:4px;border:1.5px solid var(--bp-code);color:var(--bp-code);font:800 9.5px/15px var(--font);text-align:center}
+.v2 .fpanel{padding:11px;display:flex;flex-direction:column;gap:7px;justify-content:center;text-align:left}
+.v2 .fmsg{align-self:flex-end;border:1.5px solid var(--bp-web);color:var(--bp-web);font:750 11.5px/1.4 var(--font);padding:4px 11px;border-radius:10px 10px 2px 10px;background:#eef4fd}
+.v2 .fstep{display:flex;gap:7px;align-items:center;font:700 11px/1.4 var(--mono);color:var(--bp-muted)}
+.v2 .fstep::before{content:"✓";color:var(--bp-code);font-weight:900}
+.v2 .fstep.run{color:var(--bp-warn)}.v2 .fstep.run::before{content:"●";color:var(--bp-warn)}
+.v2 .strip{width:1368px;margin-top:26px;border:1px solid var(--bp-line);border-radius:12px;background:#fff;display:grid;grid-template-columns:170px 1fr 1fr 1fr;overflow:hidden;text-align:left}
+.v2 .strip>div{padding:14px 18px;border-right:1px solid var(--bp-line)}
+.v2 .strip>div:last-child{border-right:0}
+.v2 .stitle{background:#f2f6fc;display:flex;align-items:center;font-size:14px;font-weight:850}
+.v2 .scell b{display:block;font-size:13.5px;font-weight:850;color:var(--bp-ink);margin-bottom:3px}
+.v2 .scell span{font-size:12px;color:var(--bp-muted);font-weight:650;line-height:1.5}
+
+/* ============ V3 — 목업 히어로 ============ */
+.v3{background:radial-gradient(circle at 10% 8%,rgba(31,111,208,.09),transparent 30%),radial-gradient(circle at 90% 10%,rgba(234,88,12,.08),transparent 30%),linear-gradient(180deg,#fff,#f2f6fb)}
+.v3.s19{background:radial-gradient(circle at 10% 8%,rgba(22,163,74,.09),transparent 32%),radial-gradient(circle at 90% 10%,rgba(124,58,237,.09),transparent 32%),linear-gradient(180deg,#fff,#f2f6fb)}
+.v3 .head{position:absolute;top:64px;left:90px;text-align:left;z-index:5}
+.v3 .topline{font:800 12.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.v3 h2{margin:0;font-size:50px;font-weight:900;letter-spacing:-.05em;line-height:1.05}
+.v3 h2 span{color:var(--blue)}
+.v3.s19 h2 span{color:var(--purple)}
+.v3 .sub{margin:10px 0 0;color:var(--muted);font-size:17px;font-weight:650}
+.v3 .ghost{position:absolute;font:900 240px/1 var(--font);letter-spacing:-.06em;color:rgba(26,26,26,.045);z-index:1;user-select:none}
+.v3 .stage{position:absolute;inset:0;z-index:2}
+.v3 .hero{position:absolute;display:flex;flex-direction:column;gap:12px;text-align:left}
+.v3 .hero .win{box-shadow:0 30px 70px rgba(15,23,42,.32);border-radius:14px}
+.v3 .chip{align-self:flex-start;font:800 12px var(--mono);letter-spacing:.06em;color:#fff;border-radius:999px;padding:5px 14px}
+.v3 .cap{font-size:15.5px;font-weight:800;color:var(--ink)}
+.v3 .cap em{font-style:normal;color:var(--muted);font-weight:700}
+.v3 .h1 .chip{background:var(--blue)}.v3 .h2c .chip{background:var(--green)}.v3 .h3 .chip{background:var(--orange)}
+.v3 .h1 .win{border-color:rgba(31,111,208,.55);box-shadow:0 30px 70px rgba(31,111,208,.28)}
+.v3 .h2c .win{border-color:rgba(22,163,74,.55);box-shadow:0 30px 70px rgba(22,163,74,.26)}
+.v3 .h3 .win{border-color:rgba(234,88,12,.55);box-shadow:0 30px 70px rgba(234,88,12,.26)}
+.v3 .thick{position:absolute;left:90px;right:90px;bottom:74px;z-index:4}
+.v3 .ttrack{position:relative;height:12px;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green) 50%,var(--orange))}
+.v3.s19 .ttrack{background:linear-gradient(90deg,var(--green),var(--purple))}
+.v3 .tdot{position:absolute;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:7px solid #9fb0c6;box-shadow:0 3px 10px rgba(15,23,42,.3)}
+.v3 .tlabels{display:flex;justify-content:space-between;margin-top:12px;font-size:16px;font-weight:850}
+.v3 .tlabels b{font-weight:850}
+.v3 .tends{display:flex;justify-content:space-between;font:800 12.5px var(--mono);color:#8fa0b5;margin-bottom:10px}
+.v3 .vs{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:6;width:74px;height:74px;border-radius:50%;background:#111827;color:#fff;font:900 22px/74px var(--font);text-align:center;box-shadow:0 14px 34px rgba(15,23,42,.35);border:4px solid #fff}
+</style></head><body>
+<div class="page">
+<div class="intro">
+<h1>sbti1 · 18–19 디자인 시안 3종</h1>
+<p>반영본(그라디언트 헤드 + 축 레일)은 본 덱 <b>sbti1/index.html</b>에 그대로 있습니다. 아래는 별도 방향 3가지 — 마음에 드는 시안을 고르면 본 덱에 이식합니다.</p>
+<div class="jump"><a href="#v1">V1 터미널 노어</a><a href="#v2">V2 블루프린트</a><a href="#v3">V3 목업 히어로</a></div>
+</div>
+
+<!-- ═══════════ V1 ═══════════ -->
+<div class="vhead" id="v1"><span class="vtag">V1</span><b>터미널 노어</b><span>오프닝·클로징(다크)과 톤을 맞춘 다크 반전 — 목업이 화면에 녹아들고 역할색은 네온 글로우로.</span></div>
+
+<div class="frame"><span class="fcap">V1 · 슬라이드 18</span><div class="canvas v1">
+<div class="eyebrow">$ compare <b>--focus</b></div>
+<h2>무엇이 <span>주인공</span>인가</h2>
+<p class="sub">여러 에이전트를 동시에 굴린다는 목표는 같고, 무엇을 중심으로 묶는지가 다릅니다.</p>
+<div class="row">
+  <div class="card k1"><div class="chead"><b>cmux · tmux</b><span class="tag">01 · terminal</span></div><div class="csub">터미널이 주인공</div>
+    <div class="win"><div class="tabs"><span class="on">claude</span><span>codex</span><span>dev</span></div><div class="term"><u>$</u> claude<br><s>분석 중…</s></div></div>
+    <div class="clist"><div>탭으로 나눠 쓰기</div><div>탭마다 세션(터미널) 실행</div></div>
+    <div class="wtline">워크트리 — <b>필요하면 직접</b></div></div>
+  <div class="card k2"><div class="chead"><b>herdr</b><span class="tag">02 · agent</span></div><div class="csub">에이전트가 주인공</div>
+    <div class="win"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>herdr — agents</em></div><div class="agents"><div class="ag"><div>Claude</div><s class="w">working</s></div><div class="ag"><div>Codex</div><s class="b">blocked</s></div><div class="ag"><div>Qwen</div><s class="d">done</s></div></div></div>
+    <div class="clist"><div>다중 탭 · 다중 실행</div><div>상태 관리 · 기록</div><div>에이전트로 터미널 관리 (오케스트레이션)</div></div>
+    <div class="wtline">워크트리 — <b>지원함</b></div></div>
+  <div class="card k3"><div class="chead"><b>Orca (ADE)</b><span class="tag">03 · workspace</span></div><div class="csub">작업공간이 주인공</div>
+    <div class="win"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>Orca — workspaces</em></div><div class="orcabody"><div class="wt"><i>WORKTREE</i><div class="on">api-feature</div><div>test-feature</div><div>review</div></div><div class="diff"><em>api-feature ↔ main</em><span class="del">- const { email }</span><span class="add">+ const { email, otp }</span></div></div></div>
+    <div class="clist"><div>GUI로 IDE 결합</div><div>워크트리 단위로 병렬 작업</div><div>변경 비교 · 리뷰 · 병합</div></div>
+    <div class="wtline">워크트리 — <b>워크플로의 핵심</b></div></div>
+</div>
+<div class="axis"><div class="aline"><span class="acap">터미널을 직접 다룬다</span><div class="atrack"><i class="adot" style="left:16.5%;border-color:#58a6ff"></i><i class="adot" style="left:50%;border-color:#4ade80"></i><i class="adot" style="left:83.5%;border-color:#fdba74"></i></div><span class="acap">작업 단위로 맡긴다</span></div>
+<div class="alabels"><span class="al1">터미널 중심</span><span class="al2">에이전트 중심</span><span class="al3">작업공간 중심</span></div></div>
+</div></div>
+
+<div class="frame"><span class="fcap">V1 · 슬라이드 19</span><div class="canvas v1 s19">
+<div class="eyebrow">$ browser <b>--autonomy</b></div>
+<h2>브라우저도 <span>AI가 직접</span> 씁니다</h2>
+<p class="sub">코드로 부리는 자동화 도구에서, 목표만 말하는 브라우저로.</p>
+<div class="row2">
+  <div class="card k2 bigcard"><div class="chead"><b>Playwright</b><span class="tag">code-driven</span></div><div class="csub">브라우저 자동화 엔진</div>
+    <div class="win"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>login.spec.ts — playwright</em></div><div class="codebody"><s>// 무엇을 할지 코드로 명시</s>
+await page.<u>goto</u>('https://techai')
+await page.<u>getByText</u>('로그인').click()
+await page.<u>getByPlaceholder</u>('직원번호')
+          .fill('123456')
+await page.<u>screenshot</u>()</div></div>
+    <div class="clist"><div>판단은 모델이, 실행은 Playwright가 — 뇌와 손</div><div>동작이 코드로 남아 그대로 다시 실행</div></div>
+    <div class="wtline">느낌 — <b>브라우저 자동화 SDK</b></div></div>
+  <div class="midarrow"><span>자율성<br>높아짐</span><i>→</i><span>제어력<br>낮아짐</span></div>
+  <div class="card kp bigcard"><div class="chead"><b>Aside</b><span class="tag">goal-driven</span></div><div class="csub">AI 브라우저</div>
+    <div class="win"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>naver.com</em><b class="bwai">Aside AI</b></div><div class="bwrap"><div class="bpage"><div class="bhd"></div><div class="blogin"><div class="binp"></div><div class="binp"></div><div class="bbtn">로그인</div></div></div><div class="bpanel"><div class="bmsg">“네이버에 로그인해”</div><div class="bstep">열린 탭 확인</div><div class="bstep">로그인 페이지 이동</div><div class="bstep run">아이디 입력 중…</div></div></div></div>
+    <div class="clist"><div>브라우저를 쓰는 옆에 AI가 함께 있음</div><div>한마디면 탭 확인·로그인까지 스스로</div></div>
+    <div class="wtline">느낌 — <b>AI가 들어간 Chrome</b></div></div>
+</div>
+<div class="axis"><div class="aline"><span class="acap">제어력 · 결정성 높음</span><div class="atrack"><i class="adot" style="left:25%;border-color:#4ade80"></i><i class="adot" style="left:75%;border-color:#c084fc"></i></div><span class="acap">자율성 높음</span></div>
+<div class="alabels"><span class="al2">코드로 시킨다</span><span class="alp">목표만 말한다</span></div></div>
+<p class="closing">이제는 매크로 수준이 아니라 <b>브라우저에서 하던 일 대부분을 맡길 수 있는 단계</b>입니다.</p>
+</div></div>
+
+<!-- ═══════════ V2 ═══════════ -->
+<div class="vhead" id="v2"><span class="vtag">V2</span><b>블루프린트 다이어그램</b><span>sbti2 거버넌스 장표 문법 — 번호 패널 · 얕은 테두리 · 플랫 다이어그램. 제출 문서 톤.</span></div>
+
+<div class="frame"><span class="fcap">V2 · 슬라이드 18</span><div class="canvas v2">
+<div class="topline">COMPARE · 세 도구</div>
+<h2>멀티 에이전트 도구 구조 비교</h2>
+<p class="sub">목표는 같고 — 여러 에이전트 동시 운용 — 중심 추상화가 다릅니다.</p>
+<div class="row">
+  <div class="panel n1"><div class="phead"><div class="pnum">1</div><div class="ptitle"><b>cmux · tmux</b><span>터미널이 주인공</span></div></div>
+    <div class="flat"><div class="ftabs"><span class="on">claude</span><span>codex</span><span>dev</span></div><div class="fterm"><u>$</u> claude<br><s>분석 중…</s></div></div>
+    <div class="plist"><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#1767e8" stroke-width="1.6"/></svg>탭으로 나눠 쓰기</div><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#1767e8" stroke-width="1.6"/></svg>탭마다 세션(터미널) 실행</div></div>
+    <div class="wtline">워크트리 — <b>필요하면 직접</b></div></div>
+  <div class="panel n2"><div class="phead"><div class="pnum">2</div><div class="ptitle"><b>herdr</b><span>에이전트가 주인공</span></div></div>
+    <div class="flat"><div class="fbar"><i></i><i></i><i></i>herdr — agents</div><div class="frows"><div class="frow">Claude<s class="w">working</s></div><div class="frow">Codex<s class="b">blocked</s></div><div class="frow">Qwen<s class="d">done</s></div></div></div>
+    <div class="plist"><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#16945b" stroke-width="1.6"/></svg>다중 탭 · 다중 실행</div><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#16945b" stroke-width="1.6"/></svg>상태 관리 · 기록 · 오케스트레이션</div></div>
+    <div class="wtline">워크트리 — <b>지원함</b></div></div>
+  <div class="panel n3"><div class="phead"><div class="pnum">3</div><div class="ptitle"><b>Orca (ADE)</b><span>작업공간이 주인공</span></div></div>
+    <div class="flat"><div class="fbar"><i></i><i></i><i></i>Orca — workspaces</div><div class="fsplit"><div class="fwt"><i>WORKTREE</i><div class="on">api-feature</div><div>test-feature</div><div>review</div></div><div class="fdiff"><em>api-feature ↔ main</em><span class="del">- const { email }</span><span class="add">+ const { email, otp }</span></div></div></div>
+    <div class="plist"><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#153665" stroke-width="1.6"/></svg>GUI로 IDE 결합 · 워크트리 병렬 작업</div><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#153665" stroke-width="1.6"/></svg>변경 비교 · 리뷰 · 병합</div></div>
+    <div class="wtline">워크트리 — <b>워크플로의 핵심</b></div></div>
+</div>
+<div class="lane"><div class="lanet">중심 추상화</div><div class="laneb">
+<div class="lends"><span>터미널을 직접 다룬다</span><span>작업 단위로 맡긴다</span></div>
+<div class="laxis"><span class="lnode c1" style="left:16.5%">1</span><span class="lnode c2" style="left:50%">2</span><span class="lnode c3" style="left:83.5%">3</span></div>
+<div class="llabels"><span>터미널 중심<em>cmux · tmux</em></span><span>에이전트 중심<em>herdr</em></span><span>작업공간 중심<em>Orca</em></span></div>
+</div></div>
+</div></div>
+
+<div class="frame"><span class="fcap">V2 · 슬라이드 19</span><div class="canvas v2">
+<div class="topline">BROWSER AUTOMATION</div>
+<h2>브라우저 자동화 실행 구조</h2>
+<p class="sub">코드로 명시하는 자동화 엔진에서, 목표만 전달하는 AI 브라우저로.</p>
+<div class="row2">
+  <div class="panel n1"><div class="phead"><div class="pnum">1</div><div class="ptitle"><b>Playwright (자동화 엔진)</b><span>동작을 코드로 명시 · code-driven</span></div></div>
+    <div class="flat"><div class="fbar"><i></i><i></i><i></i>login.spec.ts</div><div class="fcode"><s>// 무엇을 할지 코드로 명시</s>
+await page.<u>goto</u>('https://techai')
+await page.<u>getByText</u>('로그인').click()
+await page.<u>getByPlaceholder</u>('직원번호').fill('123456')
+await page.<u>screenshot</u>()</div></div>
+    <div class="plist"><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#1767e8" stroke-width="1.6"/></svg>판단은 모델, 실행은 Playwright — 뇌와 손 분리</div><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#1767e8" stroke-width="1.6"/></svg>동작이 코드로 남아 재실행 · QA 자동화에 강함</div></div>
+    <div class="wtline">성격 — <b>브라우저 자동화 SDK</b></div></div>
+  <div class="panel np"><div class="phead"><div class="pnum">2</div><div class="ptitle"><b>Aside (AI 브라우저)</b><span>목표만 전달 · goal-driven</span></div></div>
+    <div class="flat"><div class="fbar"><i></i><i></i><i></i>naver.com — Aside</div><div class="fbrowser"><div class="fpage"><div class="fhd"></div><div class="flogin"><div class="finp"></div><div class="finp"></div><div class="fbtn">로그인</div></div></div><div class="fpanel"><div class="fmsg">“네이버에 로그인해”</div><div class="fstep">열린 탭 확인</div><div class="fstep">로그인 페이지 이동</div><div class="fstep run">아이디 입력 중…</div></div></div></div>
+    <div class="plist"><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#d45b24" stroke-width="1.6"/></svg>브라우저 옆에 AI가 상주 — 목표 한마디로 수행</div><div><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="#d45b24" stroke-width="1.6"/></svg>메일 · 문서 · 사내 시스템 업무 자동화에 강함</div></div>
+    <div class="wtline">성격 — <b>AI가 들어간 Chrome</b></div></div>
+</div>
+<div class="lane"><div class="lanet">제어 방식</div><div class="laneb">
+<div class="lends"><span>제어력 · 결정성 높음</span><span>자율성 높음</span></div>
+<div class="laxis"><span class="lnode c1" style="left:25%">1</span><span class="lnode cp" style="left:75%">2</span></div>
+<div class="llabels two"><span>코드로 시킨다<em>Playwright</em></span><span>목표만 말한다<em>Aside</em></span></div>
+</div></div>
+<div class="strip"><div class="stitle">요점</div><div class="scell"><b>실행 기록</b><span>코드형은 동작이 스크립트로 남아 재현 가능</span></div><div class="scell"><b>적용 범위</b><span>단순 반복을 넘어 브라우저 업무 대부분</span></div><div class="scell"><b>선택 기준</b><span>재현성이 필요하면 코드형, 편의성은 AI 브라우저</span></div></div>
+</div></div>
+
+<!-- ═══════════ V3 ═══════════ -->
+<div class="vhead" id="v3"><span class="vtag">V3</span><b>목업 히어로</b><span>목업 화면을 주인공으로 크게 — 텍스트는 캡션 한 줄로 압축, 시각 임팩트 최대화.</span></div>
+
+<div class="frame"><span class="fcap">V3 · 슬라이드 18</span><div class="canvas v3">
+<div class="head"><div class="topline">compare · 세 도구</div><h2>무엇이 <span>주인공</span>인가</h2><p class="sub">터미널 → 에이전트 → 작업공간, 중심이 다르다</p></div>
+<span class="ghost" style="left:70px;bottom:150px">01·02·03</span>
+<div class="stage">
+  <div class="hero h1" style="left:90px;top:300px;width:430px"><span class="chip">01 · terminal — cmux · tmux</span>
+    <div class="win" style="height:250px"><div class="tabs"><span class="on">claude</span><span>codex</span><span>dev</span></div><div class="term"><u>$</u> claude<br><s>분석 중…</s><br><br><u>$</u> codex exec<br><s>대기 중…</s></div></div>
+    <div class="cap">탭마다 세션 실행 <em>· 워크트리는 직접</em></div></div>
+  <div class="hero h2c" style="left:565px;top:250px;width:460px"><span class="chip">02 · agent — herdr</span>
+    <div class="win" style="height:290px"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>herdr — agents</em></div><div class="agents"><div class="ag"><div>Claude</div><s class="w">working</s></div><div class="ag"><div>Codex</div><s class="b">blocked</s></div><div class="ag"><div>Qwen</div><s class="d">done</s></div><div class="ag"><div>GLM</div><s class="w">working</s></div></div></div>
+    <div class="cap">에이전트 상태 관리 · 오케스트레이션 <em>· 워크트리 지원</em></div></div>
+  <div class="hero h3" style="left:1070px;top:300px;width:440px"><span class="chip">03 · workspace — Orca (ADE)</span>
+    <div class="win" style="height:250px"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>Orca — workspaces</em></div><div class="orcabody"><div class="wt"><i>WORKTREE</i><div class="on">api-feature</div><div>test-feature</div><div>review</div></div><div class="diff"><em>api-feature ↔ main</em><span class="del">- const { email }</span><span class="add">+ const { email, otp }</span></div></div></div>
+    <div class="cap">워크트리 병렬 작업 · 리뷰 · 병합 <em>· 워크플로의 핵심</em></div></div>
+</div>
+<div class="thick"><div class="tends"><span>터미널을 직접 다룬다</span><span>작업 단위로 맡긴다</span></div><div class="ttrack"><i class="tdot" style="left:16.5%;border-color:var(--blue)"></i><i class="tdot" style="left:50%;border-color:var(--green)"></i><i class="tdot" style="left:83.5%;border-color:var(--orange)"></i></div><div class="tlabels"><b style="color:var(--blue)">터미널 중심</b><b style="color:var(--green)">에이전트 중심</b><b style="color:var(--orange)">작업공간 중심</b></div></div>
+</div></div>
+
+<div class="frame"><span class="fcap">V3 · 슬라이드 19</span><div class="canvas v3 s19">
+<div class="head"><div class="topline" style="color:var(--purple)">browser automation</div><h2>브라우저도 <span>AI가 직접</span> 씁니다</h2><p class="sub">코드로 시킨다 → 목표만 말한다</p></div>
+<span class="ghost" style="right:80px;bottom:140px">A→B</span>
+<div class="stage">
+  <div class="hero h2c" style="left:110px;top:270px;width:640px"><span class="chip">code-driven — Playwright</span>
+    <div class="win" style="height:330px"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>login.spec.ts — playwright</em></div><div class="codebody" style="font-size:15px">
+<s>// 무엇을 할지 코드로 명시</s>
+await page.<u>goto</u>('https://techai')
+await page.<u>getByText</u>('로그인').click()
+await page.<u>getByPlaceholder</u>('직원번호')
+          .fill('123456')
+await page.<u>screenshot</u>()</div></div>
+    <div class="cap">판단은 모델, 실행은 Playwright <em>· 코드로 남아 재실행 — 자동화 SDK</em></div></div>
+  <div class="hero" style="left:850px;top:270px;width:640px"><span class="chip" style="background:var(--purple)">goal-driven — Aside</span>
+    <div class="win" style="height:330px;border-color:rgba(124,58,237,.55);box-shadow:0 30px 70px rgba(124,58,237,.28)"><div class="winbar"><i class="r"></i><i class="y"></i><i class="g"></i><em>naver.com</em><b class="bwai">Aside AI</b></div><div class="bwrap"><div class="bpage"><div class="bhd"></div><div class="blogin"><div class="binp"></div><div class="binp"></div><div class="bbtn">로그인</div></div></div><div class="bpanel"><div class="bmsg">“네이버에 로그인해”</div><div class="bstep">열린 탭 확인</div><div class="bstep">로그인 페이지 이동</div><div class="bstep run">아이디 입력 중…</div></div></div></div>
+    <div class="cap">목표 한마디면 끝까지 스스로 <em>· AI가 들어간 Chrome</em></div></div>
+</div>
+<div class="vs">vs</div>
+<div class="thick"><div class="tends"><span>제어력 · 결정성 높음</span><span>자율성 높음</span></div><div class="ttrack"><i class="tdot" style="left:25%;border-color:var(--green)"></i><i class="tdot" style="left:75%;border-color:var(--purple)"></i></div><div class="tlabels"><b style="color:var(--green)">코드로 시킨다</b><b style="color:var(--purple)">목표만 말한다</b></div></div>
+</div></div>
+
+</div>
+<script>
+function fit(){document.querySelectorAll('.frame').forEach(f=>{const c=f.querySelector('.canvas');const s=f.clientWidth/1600;c.style.transform='scale('+s+')';f.style.height=(900*s)+'px'})}
+addEventListener('resize',fit);fit();
+</script>
+</body></html>
