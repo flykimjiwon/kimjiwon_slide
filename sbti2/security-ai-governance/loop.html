@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="택가이코드의 LLM, 하네스, Tool Calling 반복 실행 구조">
+  <link rel="icon" href="data:,">
+  <title>택가이코드 LLM·Tool Calling 실행 구조</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .architecture { grid-template-columns: var(--loop-grid); }
+
+    .input-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .request-visual {
+      display: grid;
+      place-items: center;
+      min-height: var(--request-visual-height);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-lg);
+      background: var(--color-web-softer);
+      text-align: center;
+    }
+
+    .request-visual .large-mark {
+      display: grid;
+      place-items: center;
+      width: var(--large-icon-size);
+      height: var(--large-icon-size);
+      margin: 0 auto;
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      color: var(--color-web);
+    }
+
+    .request-visual .icon { width: var(--request-glyph-size); height: var(--request-glyph-size); }
+
+    .request-visual b {
+      display: block;
+      margin-top: var(--space-3);
+      font-size: var(--type-heading-lg);
+      line-height: 1.2;
+      font-weight: 850;
+      letter-spacing: -0.025em;
+    }
+
+    .request-visual span {
+      display: block;
+      margin-top: var(--space-2);
+      color: var(--color-muted);
+      font-size: var(--type-body-sm);
+      font-weight: 650;
+    }
+
+    .context-list {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .context-list .feature-row {
+      min-height: var(--context-row-height);
+      padding: var(--space-2) var(--space-3);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+
+    .context-list b { font-size: var(--type-body-lg); }
+    .context-list span { font-size: var(--type-label); }
+
+    .condition-box {
+      margin-top: auto;
+      padding: var(--space-4);
+      border: var(--stroke) solid var(--line-code);
+      border-radius: var(--radius-lg);
+      background: var(--color-code-soft);
+    }
+
+    .condition-box b {
+      display: block;
+      color: var(--color-code-dark);
+      font-size: var(--type-body-lg);
+      line-height: 1.2;
+      font-weight: 820;
+    }
+
+    .condition-box span {
+      display: block;
+      margin-top: var(--space-2);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1.4;
+      font-weight: 650;
+      word-break: keep-all;
+    }
+
+    .loop-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .role-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    .role-summary-item {
+      display: grid;
+      grid-template-columns: var(--feature-icon-size) 1fr;
+      gap: var(--space-3);
+      align-items: center;
+      min-height: var(--role-summary-height);
+      padding: var(--space-3) var(--space-4);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-md);
+      background: var(--color-web-softer);
+    }
+
+    .role-summary-item.harness {
+      border-color: var(--line-code);
+      background: var(--color-code-softer);
+    }
+
+    .role-summary-item b {
+      display: block;
+      color: var(--color-ink);
+      font-size: var(--type-body-lg);
+      line-height: 1.2;
+      font-weight: 820;
+    }
+
+    .role-summary-item span {
+      display: block;
+      margin-top: var(--space-1);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1.35;
+      font-weight: 650;
+      word-break: keep-all;
+    }
+
+    .loop-map {
+      position: relative;
+      height: var(--loop-map-height);
+      margin-top: var(--space-3);
+      overflow: hidden;
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-lg);
+      background: var(--color-neutral-soft);
+    }
+
+    .loop-arrows {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .loop-arrows path {
+      fill: none;
+      stroke: var(--color-web);
+      stroke-width: var(--stroke-flow);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .loop-arrows path.return { stroke: var(--color-code); }
+
+    .loop-node {
+      position: absolute;
+      display: grid;
+      grid-template-columns: var(--loop-node-number-size) 1fr;
+      gap: var(--space-2);
+      align-items: center;
+      width: var(--loop-node-width);
+      min-height: var(--loop-node-height);
+      padding: var(--space-3);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .loop-node.context { left: var(--space-4); top: var(--space-3); }
+    .loop-node.decide { right: var(--space-4); top: var(--space-3); }
+    .loop-node.validate { right: var(--space-4); bottom: var(--space-3); border-color: var(--line-code); }
+    .loop-node.observe { left: var(--space-4); bottom: var(--space-3); border-color: var(--line-code); }
+
+    .loop-node-no {
+      display: grid;
+      place-items: center;
+      width: var(--loop-node-number-size);
+      height: var(--loop-node-number-size);
+      border-radius: var(--radius-sm);
+      background: var(--color-web-soft);
+      color: var(--color-web-dark);
+      font: 850 var(--type-label)/1 var(--font-mono);
+    }
+
+    .validate .loop-node-no,
+    .observe .loop-node-no {
+      background: var(--color-code-soft);
+      color: var(--color-code-dark);
+    }
+
+    .loop-node b {
+      display: block;
+      font-size: var(--type-body-sm);
+      line-height: 1.2;
+      font-weight: 820;
+      word-break: keep-all;
+    }
+
+    .loop-node span {
+      display: block;
+      margin-top: var(--space-1);
+      color: var(--color-muted);
+      font-size: var(--type-micro);
+      line-height: 1.25;
+      font-weight: 650;
+      word-break: keep-all;
+    }
+
+    .loop-decision {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: var(--loop-decision-width);
+      height: var(--loop-decision-height);
+      padding: var(--space-2);
+      border: var(--stroke-flow) solid var(--color-harness);
+      border-radius: var(--radius-pill);
+      background: var(--color-surface);
+      color: var(--color-harness);
+      font-size: var(--type-body-sm);
+      line-height: 1.25;
+      font-weight: 850;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      word-break: keep-all;
+    }
+
+    .loop-label {
+      position: absolute;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--color-neutral-soft);
+      color: var(--color-muted);
+      font-size: var(--type-micro);
+      line-height: 1;
+      font-weight: 750;
+    }
+
+    .loop-label.tool { left: 50%; bottom: var(--space-2); transform: translateX(-50%); }
+    .loop-label.repeat { left: 50%; top: var(--space-3); transform: translateX(-50%); color: var(--color-web-dark); }
+
+    .loop-exits {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+    }
+
+    .loop-exit {
+      padding: var(--space-3) var(--space-4);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-md);
+      background: var(--color-web-softer);
+      color: var(--color-ink-secondary);
+      font-size: var(--type-caption);
+      line-height: 1.3;
+      font-weight: 750;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .loop-exit.complete {
+      border-color: var(--line-code);
+      background: var(--color-code-soft);
+      color: var(--color-code-dark);
+    }
+
+    .tool-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    .tool-item {
+      display: grid;
+      grid-template-columns: var(--loop-node-number-size) 1fr;
+      gap: var(--space-2);
+      align-items: center;
+      min-height: var(--tool-item-height);
+      padding: var(--space-3);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+
+    .tool-item .icon-wrap {
+      width: var(--loop-node-number-size);
+      height: var(--loop-node-number-size);
+      border-radius: var(--radius-sm);
+    }
+
+    .tool-item .icon { width: var(--tool-glyph-size); height: var(--tool-glyph-size); }
+
+    .tool-item b {
+      color: var(--color-ink-secondary);
+      font: 800 var(--type-label)/1 var(--font-mono);
+    }
+
+    .terminal-window {
+      margin-top: var(--space-4);
+      overflow: hidden;
+      border: var(--stroke) solid var(--line-harness);
+      border-radius: var(--radius-md);
+      background: var(--color-harness);
+    }
+
+    .terminal-head {
+      display: flex;
+      gap: var(--space-1);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-harness-soft);
+    }
+
+    .terminal-head i {
+      width: var(--space-2);
+      height: var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--color-web);
+    }
+
+    .terminal-head i:nth-child(2) { background: var(--color-warning); }
+    .terminal-head i:nth-child(3) { background: var(--color-code); }
+
+    .terminal-lines {
+      display: grid;
+      gap: var(--space-2);
+      min-height: var(--terminal-lines-height);
+      padding: var(--space-4);
+    }
+
+    .terminal-lines span {
+      display: block;
+      height: var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--white-alpha-28);
+    }
+
+    .terminal-lines span:first-child { width: 72%; background: var(--color-code); }
+    .terminal-lines span:nth-child(2) { width: 88%; }
+    .terminal-lines span:nth-child(3) { width: 62%; }
+
+    .result-box {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border: var(--stroke) solid var(--line-code);
+      border-radius: var(--radius-lg);
+      background: var(--color-code-soft);
+    }
+
+    .result-box b {
+      display: block;
+      color: var(--color-code-dark);
+      font-size: var(--type-body-lg);
+      line-height: 1.2;
+      font-weight: 820;
+    }
+
+    .result-box span {
+      display: block;
+      margin-top: var(--space-2);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1.4;
+      font-weight: 650;
+      word-break: keep-all;
+    }
+
+    .footer-note {
+      margin-top: var(--space-3);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1;
+      font-weight: 700;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="icon-request" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v5h5M9 12h6M9 16h6"></path></symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="m15 9 5-5"></path></symbol>
+    <symbol id="icon-rules" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="m8 8 1.5 1.5L12 7m2 2h2m-8 5 1.5 1.5L12 13m2 2h2"></path></symbol>
+    <symbol id="icon-context" viewBox="0 0 24 24"><path d="M4 7h6l2 2h8v10H4z"></path><path d="M8 13h8M8 16h5"></path></symbol>
+    <symbol id="icon-model" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"></circle><circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle><path d="m10.7 6.5-3.4 4m9.4 0-3.4-4m-5.1 7 2.6 4m5-4-2.6 4M8 12h8"></path></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.7 8.1 7 10 4.3-1.9 7-5.4 7-10V6l-7-3Z"></path><path d="m9 12 2 2 4-5"></path></symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5"></path></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></symbol>
+    <symbol id="icon-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m7 9 3 3-3 3m6 0h4"></path></symbol>
+    <symbol id="icon-git" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"></circle><circle cx="18" cy="19" r="2"></circle><circle cx="6" cy="19" r="2"></circle><path d="M6 7v10m2-9c6 0 10 3 10 9"></path></symbol>
+    <symbol id="icon-plug" viewBox="0 0 24 24"><path d="M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-6 6v4m-3 0h6"></path></symbol>
+    <symbol id="icon-test" viewBox="0 0 24 24"><path d="M9 3h6m-5 0v5l-5 9a2.5 2.5 0 0 0 2.2 4h9.6A2.5 2.5 0 0 0 19 17l-5-9V3"></path><path d="m9 16 2 2 4-4"></path></symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"></path></symbol>
+    <symbol id="icon-log" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2"></rect><path d="M8.5 8H16M8.5 12H16M8.5 16H13"></path></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 2.5 2.5L16 9"></path></symbol>
+  </svg>
+
+  <main class="slide" id="slide" aria-label="택가이코드 LLM 및 Tool Calling 실행 구조 장표">
+    <header class="header">
+      <p class="kicker">Agent Execution Loop</p>
+      <h1>택가이코드 LLM·Tool Calling 실행 구조</h1>
+      <p class="subtitle">하네스가 요청·규칙·코드 컨텍스트를 구성하고, LLM의 Tool Call을 검증·실행한 뒤 결과를 다시 모델 입력에 반영합니다.</p>
+    </header>
+
+    <section class="architecture" aria-label="요청 입력, 반복 제어, Tool 실행 환경 구조">
+      <article class="numbered-panel" data-tone="input">
+        <header class="panel-head"><span class="panel-no">01</span><div class="panel-title">요청·컨텍스트 입력</div></header>
+        <div class="panel-body input-body">
+          <div class="request-visual">
+            <div>
+              <span class="large-mark"><svg class="icon"><use href="#icon-request"></use></svg></span>
+              <b>사용자 요청</b>
+              <span>목표와 완료 조건 정의</span>
+            </div>
+          </div>
+
+          <div class="context-list">
+            <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-target"></use></svg></span><div><b>목표·완료 조건</b><span>무엇을 바꾸고 언제 끝낼지 정의</span></div></div>
+            <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-rules"></use></svg></span><div><b>규칙·권한 정보</b><span>프로젝트 규칙과 허용 범위</span></div></div>
+            <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-context"></use></svg></span><div><b>코드·Tool 정보</b><span>관련 파일과 Tool 스키마</span></div></div>
+          </div>
+
+          <div class="condition-box"><b>입력 정본</b><span>요청, 규칙, 코드 컨텍스트, 이전 실행 결과를 하나의 모델 입력으로 구성합니다.</span></div>
+        </div>
+      </article>
+
+      <div class="flow-lane" aria-label="요청과 컨텍스트 전달">
+        <svg viewBox="0 0 84 28" aria-hidden="true"><line x1="6" y1="14" x2="78" y2="14"></line><polyline points="70,6 78,14 70,22"></polyline></svg>
+        <strong>요청 · 규칙 · 코드</strong>
+        <span>완료 조건<br>컨텍스트 전달</span>
+      </div>
+
+      <article class="numbered-panel" data-tone="loop">
+        <header class="panel-head"><span class="panel-no">02</span><div class="panel-title">LLM + 하네스 <small>(반복 제어)</small></div></header>
+        <div class="panel-body loop-body">
+          <div class="role-summary">
+            <div class="role-summary-item">
+              <span class="icon-wrap"><svg class="icon"><use href="#icon-model"></use></svg></span>
+              <div><b>LLM / 판단</b><span>다음 행동과 Tool Call 생성</span></div>
+            </div>
+            <div class="role-summary-item harness">
+              <span class="icon-wrap code"><svg class="icon"><use href="#icon-shield"></use></svg></span>
+              <div><b>Harness / 통제</b><span>권한·인자·스키마 검증과 결과 전달</span></div>
+            </div>
+          </div>
+
+          <div class="loop-map" aria-label="LLM과 하네스의 반복 실행 루프">
+            <svg class="loop-arrows" viewBox="0 0 728 272" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="var(--color-web)" stroke="none"></path></marker>
+                <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="var(--color-code)" stroke="none"></path></marker>
+              </defs>
+              <path d="M222 48 H506" marker-end="url(#arrow-blue)"></path>
+              <path d="M610 82 V190" marker-end="url(#arrow-blue)"></path>
+              <path class="return" d="M506 228 H222" marker-end="url(#arrow-green)"></path>
+              <path class="return" d="M220 205 C268 188 284 162 302 148" marker-end="url(#arrow-green)"></path>
+              <path d="M302 121 C282 92 258 72 220 65" marker-end="url(#arrow-blue)"></path>
+            </svg>
+
+            <div class="loop-node context"><span class="loop-node-no">01</span><div><b>컨텍스트 구성</b><span>요청·규칙·코드·Tool 정보</span></div></div>
+            <div class="loop-node decide"><span class="loop-node-no">02</span><div><b>다음 행동 판단</b><span>LLM이 Tool Call 또는 답변 생성</span></div></div>
+            <div class="loop-node validate"><span class="loop-node-no">03</span><div><b>Tool Call 검증</b><span>권한·인자·스키마 확인</span></div></div>
+            <div class="loop-node observe"><span class="loop-node-no">05</span><div><b>결과 관찰</b><span>출력·오류·변경·테스트 수집</span></div></div>
+            <div class="loop-decision">06<br>완료 조건 충족?</div>
+            <span class="loop-label tool">04 Tool 실행 결과 반환</span>
+          </div>
+
+          <div class="loop-exits">
+            <div class="loop-exit">미완료 → 결과를 컨텍스트에 추가하여 반복</div>
+            <div class="loop-exit complete">완료 → 수행 결과와 검증 상태를 사용자에게 보고</div>
+          </div>
+        </div>
+      </article>
+
+      <div class="flow-lane" aria-label="Tool Call과 실행 결과의 양방향 전달">
+        <svg viewBox="0 0 84 28" aria-hidden="true"><line x1="6" y1="14" x2="78" y2="14"></line><polyline points="14,6 6,14 14,22"></polyline><polyline points="70,6 78,14 70,22"></polyline></svg>
+        <strong>검증된 Tool Call</strong>
+        <span>실행 결과 · 오류<br>(양방향)</span>
+      </div>
+
+      <article class="numbered-panel" data-tone="tool">
+        <header class="panel-head"><span class="panel-no">03</span><div class="panel-title">Tool 실행 환경</div></header>
+        <div class="panel-body tool-body">
+          <div class="tool-grid" aria-label="택가이코드 Tool 유형">
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-file"></use></svg></span><b>FILE</b></div>
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-search"></use></svg></span><b>SEARCH</b></div>
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-terminal"></use></svg></span><b>SHELL</b></div>
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-git"></use></svg></span><b>GIT</b></div>
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-plug"></use></svg></span><b>MCP</b></div>
+            <div class="tool-item"><span class="icon-wrap harness"><svg class="icon"><use href="#icon-test"></use></svg></span><b>TEST</b></div>
+          </div>
+
+          <div class="terminal-window" aria-label="Tool 실행의 2D 터미널 개념도">
+            <div class="terminal-head"><i></i><i></i><i></i></div>
+            <div class="terminal-lines"><span></span><span></span><span></span></div>
+          </div>
+
+          <div class="result-box"><b>실행 결과 반환</b><span>출력, 오류, 파일 변경, 테스트 결과를 하네스에 전달합니다.</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="principles" aria-label="Tool Calling 실행 및 통제 원칙">
+      <div class="principles-lead"><b>실행 및 통제<br>원칙</b><span>판단과 실행을 분리한 반복 구조</span></div>
+      <div class="principle"><span class="icon-wrap"><svg class="icon"><use href="#icon-model"></use></svg></span><div><b>역할 분리</b><span>LLM은 판단, 하네스는 통제, Tool은 실행</span></div></div>
+      <div class="principle"><span class="icon-wrap warning"><svg class="icon"><use href="#icon-lock"></use></svg></span><div><b>실행 전 검증</b><span>권한·인자·스키마 확인 후 Tool 호출</span></div></div>
+      <div class="principle"><span class="icon-wrap code"><svg class="icon"><use href="#icon-log"></use></svg></span><div><b>결과 재입력</b><span>실행 결과와 오류를 다음 모델 입력에 반영</span></div></div>
+      <div class="principle"><span class="icon-wrap code"><svg class="icon"><use href="#icon-check"></use></svg></span><div><b>종료 조건</b><span>완료 조건을 충족한 경우에만 최종 보고</span></div></div>
+    </section>
+
+    <div class="footer-note">미완료 시 관찰 결과를 컨텍스트에 추가하고 다음 행동 판단을 반복</div>
+  </main>
+
+  <script>
+    const slide = document.getElementById("slide");
+    const fit = () => {
+      const scale = Math.min(window.innerWidth / 1672, window.innerHeight / 941);
+      slide.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    };
+    window.addEventListener("resize", fit);
+    fit();
+  </script>
+</body>
+</html>

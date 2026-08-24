@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="택가이웹과 택가이코드의 보안 및 AI 거버넌스 연동 구조">
+  <link rel="icon" href="data:,">
+  <title>택가이코드 보안·AI 거버넌스 구조</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .architecture { grid-template-columns: var(--gov-grid); }
+
+    .client-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .client-tool {
+      display: grid;
+      grid-template-columns: var(--large-icon-size) 1fr;
+      gap: var(--space-4);
+      align-items: center;
+      min-height: var(--client-tool-min-height);
+      padding: var(--space-4);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-lg);
+      background: var(--color-code-softer);
+    }
+
+    .client-tool-icon {
+      display: grid;
+      place-items: center;
+      width: var(--large-icon-size);
+      height: var(--large-icon-size);
+      border: var(--stroke) solid var(--line-code);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-code-dark);
+    }
+
+    .client-tool-icon .icon {
+      width: var(--client-tool-glyph-size);
+      height: var(--client-tool-glyph-size);
+    }
+
+    .client-tool b {
+      display: block;
+      font-size: var(--type-heading-lg);
+      line-height: 1.2;
+      font-weight: 850;
+      letter-spacing: -0.025em;
+    }
+
+    .client-tool span {
+      display: block;
+      margin-top: var(--space-2);
+      color: var(--color-muted);
+      font-size: var(--type-body-sm);
+      line-height: 1.4;
+      font-weight: 650;
+      word-break: keep-all;
+    }
+
+    .identity-box {
+      margin-top: auto;
+      padding: var(--space-4);
+      border: var(--stroke) solid var(--line-code);
+      border-radius: var(--radius-lg);
+      background: var(--color-code-soft);
+    }
+
+    .identity-box .feature-row span { font-size: var(--type-body-sm); }
+
+    .web-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .web-layout {
+      display: grid;
+      grid-template-columns: var(--dashboard-width) 1fr;
+      gap: var(--space-4);
+      height: var(--dashboard-height);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: var(--dashboard-nav-width) 1fr;
+      height: var(--dashboard-height);
+      overflow: hidden;
+      border: var(--stroke) solid var(--line-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+
+    .dashboard-nav {
+      padding: var(--space-3) var(--space-2);
+      background: var(--color-harness);
+      color: var(--color-white);
+    }
+
+    .dashboard-logo {
+      padding-bottom: var(--space-3);
+      border-bottom: var(--stroke) solid var(--white-alpha-20);
+      font: 800 var(--type-label)/1 var(--font-primary);
+      text-align: center;
+    }
+
+    .nav-line {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+      color: var(--white-alpha-70);
+      font-size: var(--type-micro);
+      line-height: 1;
+    }
+
+    .nav-line::before {
+      content: "";
+      width: var(--space-2);
+      height: var(--space-2);
+      border: var(--stroke) solid currentColor;
+      border-radius: var(--radius-xs);
+    }
+
+    .nav-line.active { color: var(--color-white); }
+
+    .dashboard-main {
+      padding: var(--space-3);
+      background: var(--color-web-softer);
+    }
+
+    .dashboard-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: var(--space-2);
+      color: var(--color-ink-secondary);
+      font-size: var(--type-body-sm);
+      font-weight: 800;
+    }
+
+    .dashboard-title i {
+      display: block;
+      width: var(--space-2);
+      height: var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--color-code);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+    }
+
+    .stat {
+      padding: var(--space-3);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+    }
+
+    .stat span {
+      color: var(--color-muted);
+      font-size: var(--type-micro);
+      font-weight: 700;
+    }
+
+    .stat b {
+      display: block;
+      margin-top: var(--space-2);
+      font-size: var(--type-heading);
+      line-height: 1;
+      font-weight: 850;
+    }
+
+    .mini-chart {
+      position: relative;
+      height: var(--chart-height);
+      margin-top: var(--space-2);
+      overflow: hidden;
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-sm);
+      background:
+        repeating-linear-gradient(0deg, transparent 0 var(--chart-grid-step), var(--line-default) var(--chart-grid-step) var(--chart-grid-line)),
+        var(--color-surface);
+    }
+
+    .mini-chart svg {
+      position: absolute;
+      inset: var(--space-2);
+      width: calc(100% - var(--space-4));
+      height: calc(100% - var(--space-4));
+    }
+
+    .mini-chart polyline {
+      fill: none;
+      stroke: var(--color-web);
+      stroke-width: var(--stroke-flow);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .activity {
+      display: grid;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+    }
+
+    .activity span {
+      display: block;
+      height: var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--line-default);
+    }
+
+    .activity span:nth-child(2) { width: 82%; }
+    .activity span:nth-child(3) { width: 68%; }
+
+    .web-functions {
+      display: grid;
+      align-content: start;
+      gap: var(--space-3);
+      padding-top: var(--space-1);
+    }
+
+    .web-functions .feature-row {
+      grid-template-columns: var(--web-mini-icon-size) 1fr;
+      gap: var(--space-3);
+    }
+
+    .web-functions .icon-wrap {
+      width: var(--web-mini-icon-size);
+      height: var(--web-mini-icon-size);
+      border-radius: var(--radius-xs);
+    }
+
+    .web-functions .icon { width: var(--web-mini-glyph-size); height: var(--web-mini-glyph-size); }
+    .web-functions b { font-size: var(--type-body); }
+    .web-functions span { margin-top: 0; font-size: var(--type-label); }
+
+    .auth-band {
+      margin-top: auto;
+      padding: var(--space-3) var(--space-4);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-md);
+      background: var(--color-web-soft);
+    }
+
+    .auth-band .feature-row {
+      grid-template-columns: var(--feature-icon-size) 1fr;
+    }
+
+    .auth-band b { font-size: var(--type-body-lg); }
+    .auth-band span { font-size: var(--type-body-sm); }
+
+    .harness-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .role-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    .role-box {
+      min-height: var(--role-box-min-height);
+      padding: var(--space-4);
+      border: var(--stroke) solid var(--line-web);
+      border-radius: var(--radius-md);
+      background: var(--color-web-softer);
+    }
+
+    .role-box.harness-role {
+      border-color: var(--line-code);
+      background: var(--color-code-softer);
+    }
+
+    .role-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--color-web-dark);
+      font: 850 var(--type-label)/1 var(--font-mono);
+    }
+
+    .harness-role .role-label { color: var(--color-code-dark); }
+    .role-label .icon { width: var(--role-label-glyph-size); height: var(--role-label-glyph-size); }
+
+    .role-box b {
+      display: block;
+      margin-top: var(--space-3);
+      font-size: var(--type-body-lg);
+      line-height: 1.35;
+      font-weight: 820;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+    }
+
+    .runtime-title {
+      margin: var(--space-4) 0 var(--space-3);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .runtime-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-2);
+    }
+
+    .runtime-step {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: var(--runtime-step-height);
+      padding: var(--space-2);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      text-align: center;
+    }
+
+    .runtime-step.control {
+      border-color: var(--line-web);
+      background: var(--color-web-softer);
+    }
+
+    .runtime-step.result {
+      border-color: var(--line-code);
+      background: var(--color-code-soft);
+    }
+
+    .runtime-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      right: var(--runtime-arrow-offset);
+      width: var(--runtime-arrow-size);
+      height: var(--runtime-arrow-size);
+      border-top: var(--stroke-flow) solid var(--color-web);
+      border-right: var(--stroke-flow) solid var(--color-web);
+      background: var(--color-surface);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .runtime-step small {
+      display: block;
+      color: var(--color-muted-light);
+      font: 800 var(--type-micro)/1 var(--font-mono);
+    }
+
+    .runtime-step b {
+      display: block;
+      margin-top: var(--space-2);
+      font-size: var(--type-body-sm);
+      line-height: 1.25;
+      font-weight: 820;
+      word-break: keep-all;
+    }
+
+    .guard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .guard-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      min-height: var(--runtime-guard-height);
+      padding: 0 var(--space-3);
+      border: var(--stroke) solid var(--line-default);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-soft);
+      color: var(--color-ink-secondary);
+      font-size: var(--type-caption);
+      font-weight: 750;
+    }
+
+    .guard-item::before {
+      content: "";
+      width: var(--space-2);
+      height: var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--color-code);
+    }
+
+    .runtime-note {
+      margin-top: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      border: var(--stroke) solid var(--line-warning);
+      border-radius: var(--radius-md);
+      background: var(--color-warning-soft);
+    }
+
+    .runtime-note .feature-row b { font-size: var(--type-body); }
+    .runtime-note .feature-row span { font-size: var(--type-label); }
+
+    .footer-note {
+      margin-top: var(--space-3);
+      color: var(--color-muted);
+      font-size: var(--type-caption);
+      line-height: 1;
+      font-weight: 700;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="icon-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m7 9 3 3-3 3m6 0h4"></path></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-2-13-4 16"></path></symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"></circle><path d="m11 12 8-8m-2 2 2 2m-5 1 2 2"></path></symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.3"></circle><path d="M5.5 20c.8-4.1 3-6.1 6.5-6.1s5.7 2 6.5 6.1"></path></symbol>
+    <symbol id="icon-model" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"></circle><circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle><path d="m10.7 6.5-3.4 4m9.4 0-3.4-4m-5.1 7 2.6 4m5-4-2.6 4M8 12h8"></path></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.7 8.1 7 10 4.3-1.9 7-5.4 7-10V6l-7-3Z"></path><path d="m9 12 2 2 4-5"></path></symbol>
+    <symbol id="icon-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6.2 7v5.2l-3.6 1.8v-7L4 5Z"></path></symbol>
+    <symbol id="icon-log" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2"></rect><path d="M8.5 8H16M8.5 12H16M8.5 16H13"></path></symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"></path></symbol>
+    <symbol id="icon-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.1 5.1L4 17l3 3 5.6-5.6a4 4 0 0 0 5.1-5.1l-2.5 2.5-3-3 2.5-2.5Z"></path></symbol>
+  </svg>
+
+  <main class="slide" id="slide" aria-label="택가이코드 보안 및 AI 거버넌스 구조 장표">
+    <header class="header">
+      <p class="kicker">Security · AI Governance</p>
+      <h1>택가이코드 보안·AI 거버넌스 구조</h1>
+      <p class="subtitle">택가이웹에서 인증·API Key·모델·권한·사용량을 관리하고, 택가이코드 하네스가 Tool 실행 전후의 통제를 담당합니다.</p>
+    </header>
+
+    <section class="architecture" aria-label="택가이코드, 택가이웹, 하네스 연동 구조">
+      <article class="numbered-panel" data-tone="code">
+        <header class="panel-head"><span class="panel-no">01</span><div class="panel-title">택가이코드 <small>(클라이언트)</small></div></header>
+        <div class="panel-body client-body">
+          <div class="client-tool">
+            <span class="client-tool-icon"><svg class="icon"><use href="#icon-terminal"></use></svg></span>
+            <div><b>택가이코드 Terminal</b><span>프로젝트 루트에서 실행하는 터미널 클라이언트</span></div>
+          </div>
+          <div class="client-tool">
+            <span class="client-tool-icon"><svg class="icon"><use href="#icon-code"></use></svg></span>
+            <div><b>택가이코드<br>VS Code</b><span>에디터 안에서 사용하는 확장 클라이언트</span></div>
+          </div>
+          <div class="identity-box">
+            <div class="feature-row">
+              <span class="icon-wrap code"><svg class="icon"><use href="#icon-key"></use></svg></span>
+              <div><b>개인 API Key 사용</b><span>사용자별 Key로 승인 모델을 호출하고 사용 이력을 구분</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="flow-lane" aria-label="택가이코드와 택가이웹의 양방향 연동">
+        <svg viewBox="0 0 84 28" aria-hidden="true"><line x1="6" y1="14" x2="78" y2="14"></line><polyline points="14,6 6,14 14,22"></polyline><polyline points="70,6 78,14 70,22"></polyline></svg>
+        <strong>API Key · 모델 정책</strong>
+        <span>사용량 · 오류 로그<br>(양방향)</span>
+      </div>
+
+      <article class="numbered-panel" data-tone="web">
+        <header class="panel-head"><span class="panel-no">02</span><div class="panel-title">택가이웹 <small>(중앙 관리)</small></div></header>
+        <div class="panel-body web-body">
+          <div class="web-layout">
+            <div class="dashboard" aria-label="택가이웹 관리 화면의 2D 개념도">
+              <div class="dashboard-nav">
+                <div class="dashboard-logo">TechAI</div>
+                <div class="nav-line active">홈</div>
+                <div class="nav-line">모델</div>
+                <div class="nav-line">Key</div>
+                <div class="nav-line">로그</div>
+                <div class="nav-line">정책</div>
+              </div>
+              <div class="dashboard-main">
+                <div class="dashboard-title"><span>관리 대시보드</span><i></i></div>
+                <div class="stat-grid">
+                  <div class="stat"><span>사용량</span><b>12,345</b></div>
+                  <div class="stat"><span>승인 모델</span><b>6</b></div>
+                </div>
+                <div class="mini-chart"><svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,48 24,41 48,45 72,28 96,33 120,18 144,25 168,9 200,14"></polyline></svg></div>
+                <div class="activity"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+
+            <div class="web-functions" aria-label="택가이웹 중앙 관리 기능">
+              <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-user"></use></svg></span><div><b>SSO 로그인</b><span>사내 사용자 인증</span></div></div>
+              <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-key"></use></svg></span><div><b>API Key 관리</b><span>사용자별 발급·회수</span></div></div>
+              <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-model"></use></svg></span><div><b>모델·권한 설정</b><span>승인 모델과 사용 범위</span></div></div>
+              <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-filter"></use></svg></span><div><b>보안 필터</b><span>PII 필터와 정책 적용</span></div></div>
+              <div class="feature-row"><span class="icon-wrap"><svg class="icon"><use href="#icon-log"></use></svg></span><div><b>사용량·감사 로그</b><span>오류와 사용 이력 수집</span></div></div>
+            </div>
+          </div>
+
+          <div class="auth-band">
+            <div class="feature-row">
+              <span class="icon-wrap"><svg class="icon"><use href="#icon-shield"></use></svg></span>
+              <div><b>인증 및 접근</b><span>SSO 로그인 후 개인 API Key 발급 → 택가이코드에서 사용</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="flow-lane" aria-label="택가이웹과 하네스의 양방향 연동">
+        <svg viewBox="0 0 84 28" aria-hidden="true"><line x1="6" y1="14" x2="78" y2="14"></line><polyline points="14,6 6,14 14,22"></polyline><polyline points="70,6 78,14 70,22"></polyline></svg>
+        <strong>모델 · 권한 정책</strong>
+        <span>실행 결과 · 메타데이터<br>(양방향)</span>
+      </div>
+
+      <article class="numbered-panel" data-tone="harness">
+        <header class="panel-head"><span class="panel-no">03</span><div class="panel-title">택가이코드 하네스 <small>(실행 통제)</small></div></header>
+        <div class="panel-body harness-body">
+          <div class="role-pair">
+            <div class="role-box">
+              <span class="role-label"><svg class="icon"><use href="#icon-model"></use></svg>LLM / 판단</span>
+              <b>컨텍스트를 읽고 다음 행동과 Tool Call을 생성</b>
+            </div>
+            <div class="role-box harness-role">
+              <span class="role-label"><svg class="icon"><use href="#icon-shield"></use></svg>HARNESS / 통제</span>
+              <b>권한·인자·스키마를 확인하고 실행 결과를 반환</b>
+            </div>
+          </div>
+
+          <div class="runtime-title">요청부터 다음 판단까지의 실행 순서</div>
+          <div class="runtime-row" aria-label="하네스 실행 순서">
+            <div class="runtime-step"><div><small>01</small><b>사용자 요청</b></div></div>
+            <div class="runtime-step control"><div><small>02</small><b>안전 확인</b></div></div>
+            <div class="runtime-step control"><div><small>03</small><b>Tool 실행</b></div></div>
+            <div class="runtime-step control"><div><small>04</small><b>결과 반환</b></div></div>
+            <div class="runtime-step result"><div><small>05</small><b>다음 판단</b></div></div>
+          </div>
+
+          <div class="guard-grid" aria-label="실행 시점 확인 항목">
+            <div class="guard-item">Tool 사용 권한</div>
+            <div class="guard-item">인자·스키마 형식</div>
+            <div class="guard-item">오류·변경 결과</div>
+            <div class="guard-item">감사 메타데이터</div>
+          </div>
+
+          <div class="runtime-note">
+            <div class="feature-row">
+              <span class="icon-wrap warning"><svg class="icon"><use href="#icon-tool"></use></svg></span>
+              <div><b>모델은 파일·터미널을 직접 실행하지 않음</b><span>허용된 Tool 실행은 하네스를 거치고 결과가 다음 모델 입력에 사용됩니다.</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="principles" aria-label="보안 및 데이터 처리 원칙">
+      <div class="principles-lead"><b>보안 및 데이터<br>처리 원칙</b><span>중앙 관리 + 실행 시점 통제</span></div>
+      <div class="principle"><span class="icon-wrap"><svg class="icon"><use href="#icon-user"></use></svg></span><div><b>SSO·API Key</b><span>사용 주체와 접근 경로를 사용자별로 구분</span></div></div>
+      <div class="principle"><span class="icon-wrap"><svg class="icon"><use href="#icon-model"></use></svg></span><div><b>모델·권한 관리</b><span>승인 모델과 사용 범위를 중앙에서 설정</span></div></div>
+      <div class="principle"><span class="icon-wrap warning"><svg class="icon"><use href="#icon-lock"></use></svg></span><div><b>실행 전 검증</b><span>Tool 호출 전에 권한과 입력 조건을 확인</span></div></div>
+      <div class="principle"><span class="icon-wrap code"><svg class="icon"><use href="#icon-log"></use></svg></span><div><b>로그·메타데이터</b><span>사용량·오류·실행 결과를 중앙에서 수집·관리</span></div></div>
+    </section>
+
+    <div class="footer-note">인증 → 정책 → 실행 → 결과를 하나의 관리·감사 흐름으로 연결</div>
+  </main>
+
+  <script>
+    const slide = document.getElementById("slide");
+    const fit = () => {
+      const scale = Math.min(window.innerWidth / 1672, window.innerHeight / 941);
+      slide.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    };
+    window.addEventListener("resize", fit);
+    fit();
+  </script>
+</body>
+</html>
