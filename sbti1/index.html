@@ -88,6 +88,8 @@ body:has(.slide.active:is(.ex-dark,.dark-title,.dark-product,.appendix-slide)) :
 .ba-foot span.g1{color:#16a34a;border-color:#bfe0cb;background:#f2fbf5}
 .ba-foot span.g2{color:#7c3aed;border-color:#ddcffb;background:#f8f5ff}
 .ba-foot i{font-style:normal;color:#9fb0c6;font-weight:900}
+.ba-line{width:min(1160px,100%);margin:clamp(8px,1.3vh,15px) auto 0;text-align:center;font-size:clamp(10.5px,1.5vh,15px);font-weight:700;color:var(--muted);line-height:1.5}
+.ba-line b{font-weight:900;color:var(--text)}
 
 /* ===== 도구 비교 (16p 뒤) — 이미지 없이 HTML+CSS 목업 ===== */
 .cmp-slide{padding:36px 54px}
@@ -258,6 +260,56 @@ body:has(.slide.active:is(.ex-dark,.dark-title,.dark-product,.appendix-slide)) :
 <div class="cmp-flow">
   <span class="f1">터미널 중심</span><i>&rarr;</i><span class="f2">에이전트 중심</span><i>&rarr;</i><span class="f3">작업공간 중심</span>
 </div>
+</section>
+<section class="slide ex-slide ba-slide" data-notes="브라우저 자동화도 같은 축으로 설명한다. Playwright는 무엇을 할지 코드로 명시하는 자동화 엔진 — 판단은 모델이 하고 Playwright는 손 역할. Aside는 사람이 쓰는 브라우저 안에 AI가 함께 있어 목표만 말하면 알아서 진행하는 완성형 AI 브라우저. 아래로 갈수록 제어력·결정성이 높고 위로 갈수록 자율성이 높다. Aside 화면 이미지는 assets/aside.png 로 교체 예정.">
+<div class="topline">browser automation</div>
+<h2 class="ex-h">브라우저도 <span>AI가 직접</span> 씁니다</h2>
+<p class="usage-sub">코드로 부리는 자동화 도구에서, 목표만 말하는 브라우저로.</p>
+
+<div class="ba-row">
+
+  <!-- Playwright -->
+  <div class="ba-card p1">
+    <div class="ba-head"><b>Playwright</b><span>브라우저 자동화 엔진</span></div>
+    <div class="ba-body">
+      <div class="ba-code"><s>// 무엇을 할지 코드로 명시</s>
+await page.<u>goto</u>('https://techai')
+await page.<u>getByText</u>('로그인').click()
+await page.<u>getByPlaceholder</u>('직원번호')
+          .fill('123456')
+await page.<u>screenshot</u>()</div>
+      <div class="ba-list">
+        <div>판단은 모델이, 실행은 Playwright가 — <b>뇌와 손</b></div>
+        <div>동작이 코드로 남아 그대로 다시 실행</div>
+        <div>개발 · QA 테스트 자동화에 강함</div>
+      </div>
+      <div class="ba-feel">느낌 — <b>브라우저 자동화 SDK</b></div>
+    </div>
+  </div>
+
+  <div class="ba-arrow"><span>자율성<br>높아짐</span><i>&rarr;</i><span>제어력<br>낮아짐</span></div>
+
+  <!-- Aside -->
+  <div class="ba-card p2">
+    <div class="ba-head"><b>Aside</b><span>AI 브라우저</span></div>
+    <div class="ba-body">
+      <!-- ▼ 이미지 교체: assets/aside.png 를 넣은 뒤, 아래 .ba-ph 한 줄을 지우고 그 다음 줄 주석을 풀면 끝 -->
+      <div class="ba-ph">Aside 화면 이미지 자리<span>assets/aside.png</span></div>
+      <!-- <div class="ba-shot"><img src="assets/aside.png" alt="Aside — 네이버 로그인을 대신 수행하는 화면"></div> -->
+      <div class="ba-list">
+        <div>브라우저를 쓰는 <b>옆에 AI가 함께</b> 있음</div>
+        <div>“네이버에 로그인해” 한마디면 <b>탭 확인·로그인까지</b> 스스로</div>
+        <div>메일 · 문서 · 사내 시스템 등 업무 자동화에 강함</div>
+      </div>
+      <div class="ba-feel">느낌 — <b>AI가 들어간 Chrome</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="ba-foot">
+  <span class="g1">코드로 시킨다</span><i>&rarr;</i><span class="g2">목표만 말한다</span>
+</div>
+<p class="ba-line">캡처 · 검색 같은 단순 반복을 넘어, 이제는 <b>매크로 수준이 아니라 브라우저에서 하던 일 대부분을 맡길 수 있는 단계</b>입니다.</p>
 </section><section class="slide ex-slide ex-dark" data-notes="클로징. 다음 강의(택가이 코드 소개)로 연결.">
 <div class="topline">next · lecture 2</div>
 <h2 class="ex-big">흐름을 이해했다면,<br>이제 <span>택가이 코드</span></h2>
