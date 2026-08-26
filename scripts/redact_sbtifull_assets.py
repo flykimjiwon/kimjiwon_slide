@@ -23,22 +23,43 @@ MASK = {
         ((0.000, 0.950, 0.160, 1.000), "계정 정보"),
         ((0.480, 0.978, 0.680, 1.000), "제품명"),
     ],
-    "sbti3/assets/tgc_wiki_mcp_ask.png": [
+    # build_sbtifull.py의 ASSET_RENAME 이후 이름 기준 (tgc_* -> aict_*)
+    "sbti3/assets/aict_wiki_mcp_ask.png": [
         ((0.020, 0.004, 0.300, 0.032), "제품명"),
         ((0.020, 0.040, 0.365, 0.072), "내부 문서명"),
         ((0.335, 0.448, 0.675, 0.479), "제품명"),
         ((0.030, 0.853, 0.755, 0.892), "실명"),
     ],
-    "sbti3/assets/tgc_devreq_aicr.png": [
+    "sbti3/assets/aict_devreq_aicr.png": [
         ((0.213, 0.020, 0.292, 0.074), "회사 로고"),
         ((0.748, 0.423, 0.847, 0.480), "부서명"),
         ((0.006, 0.116, 0.187, 0.180), "제품명"),
         ((0.193, 0.793, 0.342, 0.840), "실명"),
     ],
+    # ── 2026-08-26 증분: openclaw 캡처의 개인 텔레그램 정보 ──
+    # 상단 타이틀바에 개인 계정 핸들("Telegram @ ..."), 본문·상태줄에 오너 chatId
+    "sbti1/assets/openclaw_tg_carfilter.png": [
+        ((0.000, 0.000, 1.000, 0.042), "계정 정보"),
+    ],
+    "sbti1/assets/openclaw_tg_hotel.png": [
+        ((0.000, 0.000, 1.000, 0.042), "계정 정보"),
+    ],
+    "sbti1/assets/openclaw_tg_test.png": [
+        ((0.000, 0.000, 1.000, 0.042), "계정 정보"),
+    ],
+    "sbti1/assets/openclaw_tui.png": [
+        ((0.000, 0.000, 1.000, 0.040), "로컬 경로"),
+        ((0.255, 0.405, 0.535, 0.480), "개인 ID"),
+        ((0.325, 0.540, 0.640, 0.610), "개인 ID"),
+    ],
+    "sbti1/assets/openclaw_webui.png": [
+        ((0.000, 0.260, 0.165, 0.302), "개인 ID"),
+        ((0.293, 0.390, 0.398, 0.432), "개인 ID"),
+    ],
 }
 
 EXCLUDE = {
-    "sbti2/assets/techai_website_landing.png": "사내 포털 화면 · 공개본 제외",
+    "sbti2/assets/aicoding_website_landing.png": "사내 포털 화면 · 공개본 제외",
     "sbti3/assets/ttaengyo_logo.png":          "제휴 서비스 로고 · 공개본 제외",
     "sbti3/assets/ttaeng_poc_poster.jpg":      "PoC 시연 영상 · 공개본 제외",
 }

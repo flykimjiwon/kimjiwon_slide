@@ -47,6 +47,10 @@
       "destination": "/sbtifull/compare.html"
     },
     {
+      "source": "/easyaifull",
+      "destination": "/easyaifull/index.html"
+    },
+    {
       "source": "/original",
       "destination": "/original.html"
     },

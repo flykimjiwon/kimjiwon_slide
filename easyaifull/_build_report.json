@@ -1,0 +1,13 @@
+{
+  "원본_bytes": 8388001,
+  "모자이크_bytes": 8387143,
+  "금칙어_잔존": {},
+  "원본_역링크_잔존": [],
+  "깨진_참조": [],
+  "복사한_에셋": [
+    "assets/pixel-crew-redraw-2026-08-10/graph-01-system-map.png",
+    "assets/pixel-crew-redraw-2026-08-10/graph-02-fanout-join.png",
+    "assets/pixel-crew-redraw-2026-08-10/graph-03-human-checkpoint.png",
+    "assets/pixel-crew-redraw-2026-08-10/graph-04-failure-routing-state.png"
+  ]
+}

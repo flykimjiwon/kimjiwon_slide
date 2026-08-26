@@ -93,6 +93,7 @@ PRODUCT_MAP = {
     "TechAI":      "AI Coding",
     "techai":      "aicoding",
     "TGC":         "AICT",
+    "tgc":         "aict",   # tgc-server·.tgc-knowledge·data-slot="tgc-web" 등 소문자 표기
 }
 
 # 텍스트로 치환하면 안 되는 것: 파일 경로/속성값. 먼저 토큰으로 뺀다.
@@ -108,7 +109,28 @@ FORBIDDEN = (NAMES + ["신한", "TECH혁신UNIT", "AX CELL", "GITSOP", "스윙 S
              "투자서비스개발", "금융서비스개발", "여신서비스개발",
              "기관·제휴개발", "투자자산수탁", "고객마케팅", "신탁솔루션",
              "AX디지털솔루션", "AX·디지털솔루션", "AX 디지털솔루션",
-             "ICT아웃소싱", "땡겨요사업단"])
+             "ICT아웃소싱", "땡겨요사업단",
+             # 제품 약칭·영문 표기 — 치환 맵은 텍스트만 바꾸고 src/href는
+             # PROTECT_RE로 보호되므로, 파일명·경로에 남은 것은 여기서 잡는다
+             "TGC", "tgc", "TECHAI", "TechAI", "techai", "CXM"])
+
+# 파일명 자체에 제품 약칭이 박힌 에셋 — 공개본 사본에서 파일과 참조를 함께 개명.
+# 순서 중요: 긴 표기부터. redact_sbtifull_assets.py의 MASK/EXCLUDE 키는 개명 후 이름 기준.
+RENAME_RULES = [("techaicode", "aicodingtool"), ("techai", "aicoding"), ("tgc", "aict")]
+
+
+def build_rename_map(src_dir):
+    """src assets를 스캔해 {원본 파일명: 개명 파일명}을 만든다."""
+    renames = {}
+    for p in sorted((src_dir / "assets").rglob("*")):
+        if not p.is_file():
+            continue
+        new = p.name
+        for old_tok, new_tok in RENAME_RULES:
+            new = new.replace(old_tok, new_tok)
+        if new != p.name:
+            renames[p.name] = new
+    return renames
 
 
 def protect(html):
@@ -208,7 +230,13 @@ def fix_base(html, deck):
     return fixed
 
 
-def transform(html, deck):
+def transform(html, deck, renames):
+    # HTML 주석 제거 — 편집 메모·주석 처리된 교체용 마크업이 공개 소스에
+    # 남지 않게 하고, 주석 속 참조가 깨진참조/역링크 검사에 오탐되는 것도 막는다
+    html = re.sub(r'<!--.*?-->', '', html, flags=re.S)
+    # 확장자 포함 전체 파일명 단위 치환이라 본문·데이터에 오폭할 여지가 없다
+    for old, new in renames.items():
+        html = html.replace(old, new)
     html = cut_escape_hatches(html, deck)
     html = fix_base(html, deck)
     html, store = protect(html)
@@ -234,10 +262,15 @@ def main():
         # assets는 심볼릭이 아니라 실제 복사 (Vercel이 symlink를 따라가지 않음)
         shutil.copytree(src_dir / "assets", dst_dir / "assets")
 
+        renames = build_rename_map(src_dir)
+        for old, new in renames.items():
+            for p in dst_dir.rglob(old):
+                p.rename(p.with_name(new))
+
         pruned = prune_assets(dst_dir)
 
         raw = (src_dir / "index.html").read_text(encoding="utf-8")
-        out = transform(raw, d)
+        out = transform(raw, d, renames)
         (dst_dir / "index.html").write_text(out, encoding="utf-8")
 
         hits = {k: out.count(k) for k in FORBIDDEN if out.count(k)}

@@ -11,3 +11,6 @@ index_위험도평가_*.html
 
 # Playwright CLI 세션 로그 (도구 실행 잔해)
 .playwright-cli/
+
+# 파이썬 빌드 잔해
+__pycache__/
