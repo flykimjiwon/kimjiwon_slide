@@ -60,7 +60,12 @@
 cd my-projects/kimjiwon_slide
 python3 scripts/build_sbtifull.py          # 문자열 치환 + 덱 폴더 재생성
 python3 scripts/redact_sbtifull_assets.py  # 이미지 마스킹·제외 (반드시 위 스크립트 다음)
+python3 scripts/export_sbtifull_pdf.py     # 공개용 PDF 재생성 (반드시 위 두 개 다음)
 ```
+
+공개용 PDF(`SBTI_공개본.pdf`)는 마스킹 완료된 사본을 렌더해 만들며, 뷰어 1페이지의
+다운로드 칩과 챕터 점프 메뉴가 이 파일을 가리킨다. 슬라이드를 고치면 PDF도 다시 뽑아야
+화면과 PDF가 어긋나지 않는다.
 
 `build_sbtifull.py` 는 덱 폴더(`sbti1~3/`)만 갈아엎고 `index.html` · `compare.html` · 이 README는 건드리지 않는다.
 치환 규칙은 스크립트 상단의 `NAME_MAP` / `DEPT_MAP` / `ORG_MAP` / `PRODUCT_MAP` 에 있다.

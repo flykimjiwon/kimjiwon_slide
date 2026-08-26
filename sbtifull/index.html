@@ -9,7 +9,7 @@
 <base href="/sbtifull/"/>
 <script>if(location.protocol==="file:"){document.querySelector("base").setAttribute("href","./");}</script>
 <title>AI 코딩 도구 사내 도입 — 강의 통합본 (공개본)</title>
-<link rel="icon" type="image/svg+xml" href="/cover/assets/techai-code-favicon.svg"/>
+<link rel="icon" type="image/svg+xml" href="sbti1/assets/aicoding-code-favicon.svg"/>
 <style>
   /* 세 덱을 각자 iframe에 그대로 띄우되, 부모가 66장을 하나의 연속된 덱으로 제어한다.
      덱 내부 렌더링에는 개입하지 않으므로 비율·레이아웃이 단독 실행과 동일하다. */
@@ -55,7 +55,16 @@
 
   #boot{position:absolute;inset:0;display:grid;place-items:center;z-index:5;
         color:#5b6b82;font:600 13px ui-monospace,Menlo,monospace;letter-spacing:.08em}
-  @media print{#hud,#bar,#boot{display:none}}
+
+  /* 1페이지에서만 보이는 공개본 PDF 다운로드 칩 */
+  #pdfdl{position:fixed;top:16px;right:18px;z-index:20;display:none;align-items:center;gap:8px;
+        background:rgba(13,17,23,.9);backdrop-filter:blur(10px);
+        border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:9px 16px;
+        color:#dbeafe;text-decoration:none;font:800 12.5px "JetBrains Mono",ui-monospace,Menlo,monospace;
+        letter-spacing:.04em;box-shadow:0 8px 28px rgba(0,0,0,.45)}
+  #pdfdl:hover{background:rgba(37,99,235,.28);border-color:rgba(139,188,255,.5)}
+  #pdfdl small{color:#7d8da4;font-weight:600}
+  @media print{#hud,#bar,#boot,#pdfdl{display:none}}
 </style>
 </head>
 <body>
@@ -68,6 +77,8 @@
 <div id="boot">덱 불러오는 중…</div>
 
 <div id="bar"><div id="fill"></div></div>
+
+<a id="pdfdl" href="SBTI_공개본.pdf" download="SBTI_공개본.pdf">⬇ PDF 내려받기 <small>모자이크 공개본</small></a>
 
 <div id="hud">
   <div id="pill">
@@ -93,6 +104,7 @@ const $cnt  = document.getElementById("cnt");
 const $part = document.getElementById("part");
 const $fill = document.getElementById("fill");
 const $jump = document.getElementById("jump");
+const $pdfdl = document.getElementById("pdfdl");
 const $prev = document.getElementById("prev");
 const $next = document.getElementById("next");
 
@@ -117,6 +129,7 @@ function render(){
   $cnt.innerHTML = `${g+1} <small>/ ${t}</small>`;
   $part.textContent = DECKS[d].short;
   $fill.style.width = `${((g+1)/t)*100}%`;
+  $pdfdl.style.display = g === 0 ? "flex" : "none";   // 다운로드 칩은 1페이지에서만
   $prev.disabled = g <= 0;
   $next.disabled = g >= t-1;
   $jump.querySelectorAll("a[data-d]").forEach(a =>
@@ -169,10 +182,10 @@ function wire(d){
 
   counts[d] = doc.querySelectorAll(".slide").length;
 
-  // 덱 자체 카운터·진행바·힌트를 숨긴다 — 부모가 전체 기준으로 다시 그린다.
+  // 덱 자체 카운터·진행바·힌트·컨트롤(← Notes →)을 숨긴다 — 부모가 전체 기준으로 다시 그린다.
   // sbti1/2/3 태그 칩도 뺀다 — 부모 HUD가 1부·2부·3부로 이미 알려준다.
   const st = doc.createElement("style");
-  st.textContent = ".counter,.progress,.hint,.sbti-tag{display:none!important}";
+  st.textContent = ".counter,.progress,.hint,.sbti-tag,.controls{display:none!important}";
   doc.head.appendChild(st);
 
   // capture 단계로 덱 핸들러보다 먼저 받는다.
@@ -195,7 +208,9 @@ function boot(){
     a.onclick = ev => { ev.preventDefault(); goDeck(d); };
     $jump.appendChild(a);
   });
-  [["../easyai/index.html","EASY AI 용어사전 ↗"]].forEach(([href,txt]) => {
+  // 용어사전도 공개본(easyaifull)으로 — 원본 /easyai 로 나가는 출구를 남기지 않는다
+  [["../easyaifull","EASY AI 용어사전 ↗"],
+   ["SBTI_공개본.pdf","PDF 내려받기 ↓"]].forEach(([href,txt]) => {
     const a = document.createElement("a");
     a.href = href; a.target = "_blank"; a.className = "alt"; a.textContent = txt;
     $jump.appendChild(a);

@@ -61,6 +61,7 @@ ORG_MAP = {
     "신한은행(외부개발팀)": "외부 개발 파트너",
     "신한은행":       "금융권 A사",
     "TECH혁신UNIT":  "기술혁신 조직",
+    "Tech혁신Unit":  "기술혁신 조직",   # 혼합 표기 — 08-26 신규 슬라이드 푸터에서 실제 유출 적발
     "AX CELL":       "AX 조직",
     "은행 내부 개발망": "사내 폐쇄 개발망",
     "은행 내부망":    "사내 폐쇄망",
@@ -112,7 +113,9 @@ FORBIDDEN = (NAMES + ["신한", "TECH혁신UNIT", "AX CELL", "GITSOP", "스윙 S
              "ICT아웃소싱", "땡겨요사업단",
              # 제품 약칭·영문 표기 — 치환 맵은 텍스트만 바꾸고 src/href는
              # PROTECT_RE로 보호되므로, 파일명·경로에 남은 것은 여기서 잡는다
-             "TGC", "tgc", "TECHAI", "TechAI", "techai", "CXM"])
+             "TGC", "tgc", "TECHAI", "TechAI", "techai", "CXM",
+             # 조직명 혼합 표기 — 대문자만 잡다가 실제로 빠져나간 전례(08-26)
+             "Tech혁신Unit", "혁신Unit", "혁신UNIT"])
 
 # 파일명 자체에 제품 약칭이 박힌 에셋 — 공개본 사본에서 파일과 참조를 함께 개명.
 # 순서 중요: 긴 표기부터. redact_sbtifull_assets.py의 MASK/EXCLUDE 키는 개명 후 이름 기준.
