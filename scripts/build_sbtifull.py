@@ -206,6 +206,12 @@ def prune_assets(dst_dir):
     return removed
 
 
+# 사용자 결정(08-28)으로 익명화하지 않고 그대로 내보내는 문자열 — 본인 명의 바이라인.
+# 정확히 이 표기 하나만 통과시킨다. 대문자 변형(TECH혁신UNIT 등)은 여전히 치환·검사 대상.
+BYLINE_KEEP = "신한은행 Tech혁신Unit 개발 AX Cell 김지원프로"
+BYLINE_TOKEN = "\x00BYLINE\x00"
+
+
 # 공개본임을 증명하는 표식. 뷰어가 이걸 확인하고, 없으면 렌더를 거부한다.
 # 경로가 잘못 풀려 원본이 iframe에 실리는 사고를 런타임에서 잡아내기 위한 것.
 BUILD_MARK = '<meta name="x-sbti-build" content="mosaic"/>'
@@ -242,11 +248,13 @@ def transform(html, deck, renames):
         html = html.replace(old, new)
     html = cut_escape_hatches(html, deck)
     html = fix_base(html, deck)
+    html = html.replace(BYLINE_KEEP, BYLINE_TOKEN)   # 허용 바이라인은 치환에서 보호
     html, store = protect(html)
     for table in (ORG_MAP, DEPT_MAP, PRODUCT_MAP, NAME_MAP):
         for k in sorted(table, key=len, reverse=True):
             html = html.replace(k, table[k])
     html = restore(html, store)
+    html = html.replace(BYLINE_TOKEN, BYLINE_KEEP)
     return stamp(strip_blur(html))
 
 
@@ -276,7 +284,9 @@ def main():
         out = transform(raw, d, renames)
         (dst_dir / "index.html").write_text(out, encoding="utf-8")
 
-        hits = {k: out.count(k) for k in FORBIDDEN if out.count(k)}
+        # 허용 바이라인 1종만 제외하고 잔존 검사 — 그 외 신한/혁신Unit 변형은 전부 잡는다
+        scrub = out.replace(BYLINE_KEEP, "")
+        hits = {k: scrub.count(k) for k in FORBIDDEN if scrub.count(k)}
         # 원본으로 되돌아가는 링크가 남았는지 — 이게 남으면 마스킹이 무의미해진다
         escapes = re.findall(r'(?:href|src)="([^"]*(?:'
                              r'vercel\.app/sbti[123]|assets/sbti[123]\.pdf|attachments/'

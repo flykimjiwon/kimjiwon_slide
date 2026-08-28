@@ -70,9 +70,10 @@
 <body>
 
 <div id="stack">
+  <!-- 2·3부는 1부가 뜬 다음 src를 넣는다 — 첫 화면 대역폭을 1부에 몰아준다 -->
   <iframe id="f0" src="sbti1/index.html" title="1부"></iframe>
-  <iframe id="f1" src="sbti2/index.html" title="2부"></iframe>
-  <iframe id="f2" src="sbti3/index.html" title="3부"></iframe>
+  <iframe id="f1" data-src="sbti2/index.html" title="2부"></iframe>
+  <iframe id="f2" data-src="sbti3/index.html" title="3부"></iframe>
 </div>
 <div id="boot">덱 불러오는 중…</div>
 
@@ -162,11 +163,15 @@ function onKey(e){
   }
 }
 
+const wired = [false, false, false];
+
 function wire(d){
+  if (wired[d]) return;
   const f = frames[d];
   let doc, win;
   try { doc = f.contentDocument; win = f.contentWindow; } catch(e){ return; }
-  if (!doc || !win.show) return;
+  if (!doc || !win.show || !doc.body) return;
+  wired[d] = true;
 
   // 🔴 안전장치: 공개본 표식이 없으면 원본이 잘못 실린 것이다. 그리지 않고 멈춘다.
   if (!doc.querySelector('meta[name="x-sbti-build"][content="mosaic"]')){
@@ -196,12 +201,16 @@ function wire(d){
   if (n) n.onclick = ev => { ev.preventDefault(); step(1); };
   if (p) p.onclick = ev => { ev.preventDefault(); step(-1); };
 
-  if (++ready === 3) boot();
+  ready++;
+  onWired(d);
 }
 
-function boot(){
-  document.getElementById("boot").remove();
-
+// 점진 부팅 — 1부가 준비되는 즉시 화면을 열고, 2·3부는 뒤에서 이어 받는다.
+// 전체 장수(카운터·진행바)는 덱이 붙을 때마다 갱신된다.
+let menuBuilt = false;
+function buildMenu(){
+  if (menuBuilt) return;
+  menuBuilt = true;
   DECKS.forEach((s, d) => {
     const a = document.createElement("a");
     a.href = "#"; a.dataset.d = d; a.textContent = s.short;
@@ -215,15 +224,29 @@ function boot(){
     a.href = href; a.target = "_blank"; a.className = "alt"; a.textContent = txt;
     $jump.appendChild(a);
   });
-
-  // 시작 위치: #12 같은 해시 > 처음
-  const h = parseInt((location.hash||"").replace("#",""), 10);
-  g = (h >= 1 && h <= total()) ? h-1 : 0;
-  render();
 }
 
+function onWired(d){
+  if (d === 0){
+    document.getElementById("boot")?.remove();
+    buildMenu();
+    frames.slice(1).forEach(f => { if (!f.src) f.src = f.dataset.src; });
+  }
+  render();
+  if (ready === 3){
+    // 시작 위치: #12 같은 해시는 전체 장수가 확정된 뒤에 적용
+    const h = parseInt((location.hash||"").replace("#",""), 10);
+    if (h >= 1 && h <= total() && h-1 !== g){ g = h-1; render(); }
+  }
+}
+
+// load 이벤트는 덱의 모든 이미지·영상까지 기다린다 — 스크립트(show)가 준비된
+// 시점에 바로 연결해 첫 화면이 에셋 로딩에 볼모잡히지 않게 한다.
 frames.forEach((f, d) => {
-  if (f.contentDocument?.readyState === "complete") wire(d);
+  const t = setInterval(() => {
+    try { if (f.contentWindow?.show && f.contentDocument?.body){ wire(d); } } catch(e){}
+    if (wired[d]) clearInterval(t);
+  }, 60);
   f.addEventListener("load", () => wire(d));
 });
 
