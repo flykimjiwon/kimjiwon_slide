@@ -167,6 +167,14 @@ def cut_escape_hatches(html, deck):
     html = html.replace(f"kimjiwon-slide.vercel.app/{deck}",
                         "kimjiwon-slide.vercel.app/sbtifull")
 
+    # (a-2) "웹으로 보기" 버튼 → 공개본 PDF 다운로드 버튼 (사용자 결정 08-28).
+    #       공개본 안에서는 이미 웹으로 보고 있어 자기 자신을 여는 버튼이 무의미하다.
+    #       (a)가 URL을 sbtifull로 돌려놓은 뒤라 이 패턴으로 잡힌다.
+    html = re.sub(
+        r'<a\b[^>]*href="https://kimjiwon-slide\.vercel\.app/sbtifull"[^>]*>웹으로 보기 ↗</a>',
+        '<a class="deck-btn primary" href="/sbtifull/SBTI_공개본.pdf" download>PDF 다운로드 ↓</a>',
+        html)
+
     # (b) 원본 PDF 다운로드 버튼 통째로 제거 (PDF 자체도 공개본에서 뺀다)
     html = re.sub(r'<a\b[^>]*href="assets/' + deck + r'\.pdf"[^>]*>.*?</a>',
                   '', html, flags=re.S)
