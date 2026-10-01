@@ -1,0 +1,49 @@
+{
+  "capturedAt": "2026-09-30T09:17:10.087Z",
+  "captures": [
+    {
+      "file": "remotion-studio.png",
+      "url": "http://localhost:3090/JevLlm",
+      "state": {
+        "width": 1920,
+        "height": 1080,
+        "frame": 720,
+        "fps": 30,
+        "timeUI": "00:24.00"
+      },
+      "sha256": "a99b2fbe4883572013c0a9f5b9e4bd007623fe7d79683d91946e2dc24abec5b9",
+      "bytes": 162625
+    },
+    {
+      "file": "hyperframes-logo.png",
+      "source": "hyperframes-logo.svg",
+      "method": "Actual Studio header SVG, computed original colors resolved, browser-rendered at larger size on original studio background",
+      "width": 1200,
+      "height": 400,
+      "sha256": "c14c6cd03eb85a56057d05eb81ef0ebb443e291fd2d49e843ff509a274370e84",
+      "bytes": 26378
+    },
+    {
+      "file": "remotion-logo.png",
+      "source": "remotion-logo.svg",
+      "method": "Actual Studio header SVG, computed original colors resolved, browser-rendered at larger size on original studio background",
+      "width": 640,
+      "height": 640,
+      "sha256": "07ef436c2e9024b2b3c30f2e0c520380df0afa22910bc857847ede3ed2ba300b",
+      "bytes": 5921
+    },
+    {
+      "file": "hyperframes-studio.png",
+      "url": "http://localhost:3088/#project/hyperframes",
+      "state": {
+        "width": 1920,
+        "height": 1080,
+        "seconds": 24.76539999985695,
+        "paused": true,
+        "timeUI": "00:24/01:00"
+      },
+      "sha256": "1332130736fc948b17a66cd1aeb4df5a757029d895169fa6b4a392de142e5072",
+      "bytes": 168901
+    }
+  ]
+}

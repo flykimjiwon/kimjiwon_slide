@@ -23,6 +23,10 @@
   ],
   "rewrites": [
     {
+      "source": "/jopbap",
+      "destination": "/jopbap/index.html"
+    },
+    {
       "source": "/agentmake",
       "destination": "/agentmake/index.html"
     },
